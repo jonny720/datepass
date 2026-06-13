@@ -103,6 +103,8 @@ export function buildRecipientConfirmationWhatsAppUrl(params: RecipientConfirmat
     const normalizedPhone = normalizePhoneNumber(params.creatorPhone);
     return `https://wa.me/${normalizedPhone}?text=${encodedMessage}`;
   } else {
-    return `https://wa.me/?text=${encodedMessage}`;
+    // Use WhatsApp API fallback for generic composer
+    // More reliable on iPhone than wa.me without number
+    return `https://api.whatsapp.com/send?text=${encodedMessage}`;
   }
 }

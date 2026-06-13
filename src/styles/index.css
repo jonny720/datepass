@@ -100,33 +100,23 @@
   /* Date and time input fixes for mobile - iPhone Safari safe */
   input[type="date"],
   input[type="time"] {
+    /* Width constraints - prevent overflow */
     display: block;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-
-  /* Ensure native iOS controls respect container width */
-  input[type="date"]::-webkit-date-and-time-value,
-  input[type="time"]::-webkit-date-and-time-value {
-    text-align: start;
-    min-width: 0;
-  }
-
-  /* iOS Safari date/time inner controls */
-  input[type="date"]::-webkit-datetime-edit,
-  input[type="time"]::-webkit-datetime-edit {
-    display: block;
-    padding: 0;
-  }
-
-  input[type="date"]::-webkit-datetime-edit-fields-wrapper,
-  input[type="time"]::-webkit-datetime-edit-fields-wrapper {
-    padding: 0;
+    
+    /* Height for comfortable touch target */
+    min-height: 56px;
+    height: 56px;
+    
+    /* Prevent iPhone zoom on focus */
+    font-size: 16px;
+    line-height: 1.2;
+    
+    /* DO NOT set appearance: none - preserves native iOS picker */
+    /* Native appearance shows date/time picker indicators */
   }
 
   /* Dynamic viewport height support */

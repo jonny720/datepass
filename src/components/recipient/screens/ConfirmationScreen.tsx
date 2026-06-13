@@ -43,14 +43,18 @@ export function ConfirmationScreen({
     ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
     : '';
 
-  const getWhatsAppUrl = () => {
-    return buildRecipientConfirmationWhatsAppUrl({
+  const handleWhatsAppConfirmation = () => {
+    const whatsappUrl = buildRecipientConfirmationWhatsAppUrl({
       creatorPhone: config.whatsappNumber,
       language: config.language,
       activityName,
       selectedSlot: response.selectedSlot ?? undefined,
       coordinateLater: !response.selectedSlot,
     });
+    
+    // Use direct navigation for reliable iPhone behavior
+    // Avoids popup blockers and works from WhatsApp webview
+    window.location.assign(whatsappUrl);
   };
 
   const handleCopySummary = async () => {
@@ -181,7 +185,7 @@ export function ConfirmationScreen({
             variants={fadeInUp}
           >
             <PrimaryButton
-              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              onClick={handleWhatsAppConfirmation}
               fullWidth
               size="lg"
             >
@@ -319,7 +323,7 @@ export function ConfirmationScreen({
             variants={fadeInUp}
           >
             <PrimaryButton
-              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              onClick={handleWhatsAppConfirmation}
               fullWidth
               size="lg"
             >
@@ -424,7 +428,7 @@ export function ConfirmationScreen({
         {/* Actions */}
         <div className="space-y-3">
           <PrimaryButton
-            onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+            onClick={handleWhatsAppConfirmation}
             fullWidth
             size="lg"
           >
