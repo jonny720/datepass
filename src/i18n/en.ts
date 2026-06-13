@@ -52,16 +52,23 @@ export const en: TranslationDictionary = {
   creator_theme_after_dark_desc: 'Daring and mysterious',
   creator_opening_message_label: 'Add a short opening line',
   creator_opening_message_placeholder: 'I thought asking you out on WhatsApp was too boring.',
+  creator_yes_button_label: 'Customize the Yes button',
 
   // Creator flow - Step 4: Tone
   creator_tone_title: 'Choose your tone',
   creator_tone_subtitle: 'This sets the vibe for your intro cards',
-  creator_tone_playful: 'Playful',
-  creator_tone_playful_desc: 'Fun and lighthearted',
+  creator_tone_light: 'Light and playful',
+  creator_tone_light_desc: 'Fun and lighthearted',
   creator_tone_flirty: 'Flirty',
   creator_tone_flirty_desc: 'Charming and romantic',
   creator_tone_absurd: 'Absurd',
   creator_tone_absurd_desc: 'Quirky and unexpected',
+  creator_tone_romantic: 'Romantic',
+  creator_tone_romantic_desc: 'Sweet and thoughtful',
+  creator_tone_bold: 'Bold',
+  creator_tone_bold_desc: 'Confident and direct',
+  creator_tone_dry: 'Dry humor',
+  creator_tone_dry_desc: 'Witty and understated',
 
   // Creator flow - Step 5: Intro Cards
   creator_cards_title: 'Tell them about yourself',
@@ -115,6 +122,7 @@ export const en: TranslationDictionary = {
   creator_review_summary_activities: 'date ideas',
   creator_review_summary_slots: 'suggested times',
   creator_review_summary_coordinate: 'Coordinate later',
+  creator_review_share_message_label: 'Choose your opening message',
   creator_review_share_button: 'Share invitation',
   creator_review_whatsapp_button: 'WhatsApp',
   creator_review_copy_button: 'Copy link',

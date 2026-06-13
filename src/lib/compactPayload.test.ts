@@ -14,7 +14,7 @@ describe('compactPayload', () => {
     senderName: 'Alice',
     recipientName: 'Bob',
     theme: 'cruise',
-    introTone: 'playful',
+    introTone: 'light',
     introCards: [],
     activityIds: [],
     dateSlots: [],
@@ -67,8 +67,8 @@ describe('compactPayload', () => {
     });
 
     it('maps intro tone to compact code', () => {
-      const tones: Array<{ tone: 'playful' | 'flirty' | 'absurd'; code: string }> = [
-        { tone: 'playful', code: 'p' },
+      const tones: Array<{ tone: 'light' | 'flirty' | 'absurd'; code: string }> = [
+        { tone: 'light', code: 'p' },
         { tone: 'flirty', code: 'f' },
         { tone: 'absurd', code: 'a' },
       ];
@@ -211,7 +211,7 @@ describe('compactPayload', () => {
         senderName: 'Alice',
         recipientName: 'Bob',
         theme: 'cruise',
-        introTone: 'playful',
+        introTone: 'light',
         whatsappNumber: '',
       });
       expect(config.introCards).toEqual([]);
@@ -261,7 +261,7 @@ describe('compactPayload', () => {
 
     it('maps intro tone codes back to full names', () => {
       const tones = [
-        { code: 'p', tone: 'playful' },
+        { code: 'p', tone: 'light' },
         { code: 'f', tone: 'flirty' },
         { code: 'a', tone: 'absurd' },
       ];

@@ -13,7 +13,7 @@ describe('compression', () => {
     senderName: 'Alice',
     recipientName: 'Bob',
     theme: 'cruise',
-    introTone: 'playful',
+    introTone: 'light',
     introCards: [],
     activityIds: [],
     dateSlots: [],
@@ -263,7 +263,7 @@ describe('compression', () => {
         senderName: 'Alex',
         recipientName: 'Jordan',
         theme: 'cruise',
-        introTone: 'playful',
+        introTone: 'light',
         introCards: [
           { id: '1', promptKey: 'intro_card_1', answer: 'Adventure awaits!' },
           { id: '2', promptKey: 'intro_card_2', answer: 'Life is short' },

@@ -23,7 +23,7 @@ describe('useNavigation', () => {
         senderName: 'Test',
         recipientName: 'User',
         theme: 'cruise',
-        introTone: 'playful',
+        introTone: 'light',
         introCards: [],
         activityIds: ['coffee'],
         dateSlots: [{ id: '1', date: '2026-06-20', time: '19:00' }],

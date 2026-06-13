@@ -40,15 +40,23 @@ const CODE_TO_THEME = {
 
 // Intro tone code mappings
 const TONE_TO_CODE = {
-  playful: 'p',
+  light: 'l',
   flirty: 'f',
   absurd: 'a',
+  romantic: 'r',
+  bold: 'b',
+  dry: 'd',
 } as const;
 
 const CODE_TO_TONE = {
-  p: 'playful',
+  l: 'light',
   f: 'flirty',
   a: 'absurd',
+  r: 'romantic',
+  b: 'bold',
+  d: 'dry',
+  // Backwards compatibility: map old 'p' (playful) to 'light'
+  p: 'light',
 } as const;
 
 // Activity code mappings
@@ -129,7 +137,7 @@ export function fromCompactPayload(
     senderName: payload.s,
     recipientName: payload.r,
     theme: CODE_TO_THEME[payload.t as keyof typeof CODE_TO_THEME] || 'cruise',
-    introTone: CODE_TO_TONE[payload.i as keyof typeof CODE_TO_TONE] || 'playful',
+    introTone: CODE_TO_TONE[payload.i as keyof typeof CODE_TO_TONE] || 'light',
     introCards: [],
     activityIds: [],
     dateSlots: [],

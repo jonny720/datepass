@@ -1,4 +1,4 @@
-import type { Language, ThemeId, IntroTone, IntroCard, ActivityId, DateSlot } from './invite';
+import type { Language, ThemeId, IntroTone, IntroCard, ActivityId, DateSlot, YesButtonCopy } from './invite';
 
 export interface CreatorDraft {
   step: number;
@@ -13,6 +13,7 @@ export interface CreatorDraft {
   selectedCountryIso2: string;
   localPhoneNumber: string;
   openingMessage?: string;
+  yesButtonCopy?: YesButtonCopy;
 }
 
 export const INITIAL_DRAFT: CreatorDraft = {
@@ -21,13 +22,14 @@ export const INITIAL_DRAFT: CreatorDraft = {
   senderName: '',
   recipientName: '',
   theme: 'cruise',
-  introTone: 'playful',
+  introTone: 'light',
   introCards: [],
   activityIds: [],
   dateSlots: [],
   selectedCountryIso2: 'IL',
   localPhoneNumber: '',
   openingMessage: '',
+  yesButtonCopy: 'yes_lets_do',
 };
 
 export const TOTAL_STEPS = 8;

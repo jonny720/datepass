@@ -52,16 +52,23 @@ export interface TranslationDictionary {
   creator_theme_after_dark_desc: string;
   creator_opening_message_label: string;
   creator_opening_message_placeholder: string;
+  creator_yes_button_label: string;
 
   // Creator flow - Step 4: Tone
   creator_tone_title: string;
   creator_tone_subtitle: string;
-  creator_tone_playful: string;
-  creator_tone_playful_desc: string;
+  creator_tone_light: string;
+  creator_tone_light_desc: string;
   creator_tone_flirty: string;
   creator_tone_flirty_desc: string;
   creator_tone_absurd: string;
   creator_tone_absurd_desc: string;
+  creator_tone_romantic: string;
+  creator_tone_romantic_desc: string;
+  creator_tone_bold: string;
+  creator_tone_bold_desc: string;
+  creator_tone_dry: string;
+  creator_tone_dry_desc: string;
 
   // Creator flow - Step 5: Intro Cards
   creator_cards_title: string;
@@ -115,6 +122,7 @@ export interface TranslationDictionary {
   creator_review_summary_activities: string;
   creator_review_summary_slots: string;
   creator_review_summary_coordinate: string;
+  creator_review_share_message_label: string;
   creator_review_share_button: string;
   creator_review_whatsapp_button: string;
   creator_review_copy_button: string;

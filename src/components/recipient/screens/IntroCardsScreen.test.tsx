@@ -10,7 +10,7 @@ const mockConfig: InviteConfig = {
   senderName: 'Alex',
   recipientName: 'Jordan',
   theme: 'cruise',
-  introTone: 'playful',
+  introTone: 'light',
   introCards: [
     { id: '1', promptKey: 'playful-1', answer: 'Test answer 1' },
     { id: '2', promptKey: 'playful-2', answer: 'Test answer 2' },

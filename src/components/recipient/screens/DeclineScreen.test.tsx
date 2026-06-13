@@ -10,7 +10,7 @@ const mockConfig: InviteConfig = {
   recipientName: 'Test Recipient',
   language: 'en',
   theme: 'cruise',
-  introTone: 'playful',
+  introTone: 'light',
   introCards: [],
   activityIds: ['coffee'],
   dateSlots: [],

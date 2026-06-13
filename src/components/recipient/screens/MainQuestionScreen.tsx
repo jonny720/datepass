@@ -3,6 +3,7 @@ import { Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig } from '@/types';
+import { getYesButtonLabel } from '@/config/yesButtonConfig';
 import {
   Card,
   PrimaryButton,
@@ -30,7 +31,7 @@ interface MainQuestionScreenProps {
 }
 
 export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuestionScreenProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [escapeCount, setEscapeCount] = useState(0);
   const [buttonTransform, setButtonTransform] = useState({ x: 0, y: 0, scale: 1, rotate: 0, borderRadius: '0.75rem' });
   const [currentZone, setCurrentZone] = useState<SafeZone | null>(null);
@@ -244,7 +245,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
             >
               <PrimaryButton onClick={handleYesClick} fullWidth size="lg" disabled={celebrating}>
                 <Heart className="h-5 w-5 flex-shrink-0" fill="currentColor" />
-                {t('recipient_question_yes')}
+                {getYesButtonLabel(config.yesButtonCopy, language)}
               </PrimaryButton>
             </motion.div>
           </div>

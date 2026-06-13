@@ -8,6 +8,7 @@ import { RecipientScreen } from '@/components/recipient/RecipientScreen';
 import type { CreatorDraft, InviteConfig } from '@/types';
 import { buildInternationalWhatsAppNumber } from '@/lib/phoneUtils';
 import { findCountryByIso2 } from '@/data/countryDialingCodes';
+import { SHARE_MESSAGE_PRESETS } from '@/config/shareMessagePresets';
 import {
   PrimaryButton,
   SecondaryButton,
@@ -29,11 +30,12 @@ interface ReviewStepProps {
 }
 
 export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewConfig, setPreviewConfig] = useState<InviteConfig | null>(null);
+  const [selectedSharePreset, setSelectedSharePreset] = useState('preset_1');
 
   // Auto-generate invite URL on mount
   useEffect(() => {
@@ -61,6 +63,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       dateSlots: draft.dateSlots,
       whatsappNumber,
       ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
+      ...(draft.yesButtonCopy && { yesButtonCopy: draft.yesButtonCopy }),
     };
 
     const url = createInviteUrl(inviteConfig);
@@ -103,8 +106,12 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
   const handleWhatsApp = () => {
     if (!inviteUrl) return;
 
-    // Build WhatsApp message with the complete invite URL
-    const message = `${t('recipient_title')} 💌\n\n${inviteUrl}`;
+    // Get the selected preset message
+    const preset = SHARE_MESSAGE_PRESETS.find((p) => p.id === selectedSharePreset);
+    const presetMessage = preset ? preset.message[language] : SHARE_MESSAGE_PRESETS[0].message[language];
+
+    // Build WhatsApp message with preset + invite URL
+    const message = `${presetMessage}\n\n${inviteUrl}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, '_blank');
@@ -135,6 +142,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       dateSlots: draft.dateSlots,
       whatsappNumber,
       ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
+      ...(draft.yesButtonCopy && { yesButtonCopy: draft.yesButtonCopy }),
     };
 
     setPreviewConfig(config);
@@ -273,6 +281,32 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
                   {t('creator_review_summary_coordinate')}
                 </div>
               )}
+            </motion.div>
+
+            {/* Share Message Preset Selector */}
+            <motion.div variants={fadeInUp} className="w-full max-w-md">
+              <label className="mb-2 block text-sm font-medium text-white/90">
+                {t('creator_review_share_message_label')}
+              </label>
+              <div className="flex flex-col gap-2">
+                {SHARE_MESSAGE_PRESETS.map((preset) => {
+                  const isSelected = selectedSharePreset === preset.id;
+                  return (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      onClick={() => setSelectedSharePreset(preset.id)}
+                      className={`rounded-lg px-4 py-3 text-left text-sm transition-all ${
+                        isSelected
+                          ? 'bg-white text-purple-700 shadow-lg ring-2 ring-white/50'
+                          : 'bg-white/20 text-white hover:bg-white/30'
+                      }`}
+                    >
+                      {preset.message[language]}
+                    </button>
+                  );
+                })}
+              </div>
             </motion.div>
 
             {/* Share Actions */}

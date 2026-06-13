@@ -17,7 +17,7 @@ const mockConfigCruise: InviteConfig = {
   senderName: 'Alex',
   recipientName: 'Jordan',
   theme: 'cruise',
-  introTone: 'playful',
+  introTone: 'light',
   introCards: [
     { id: '1', promptKey: 'First thing you should know', answer: 'I make the best pancakes' },
     { id: '2', promptKey: 'My ideal weekend includes', answer: 'Coffee, books, and good company' },

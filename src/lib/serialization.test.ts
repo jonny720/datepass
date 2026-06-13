@@ -14,7 +14,7 @@ describe('serialization', () => {
     senderName: 'Alice',
     recipientName: 'Bob',
     theme: 'cruise',
-    introTone: 'playful',
+    introTone: 'light',
     introCards: [
       { id: '1', promptKey: 'test', answer: 'Test answer' },
     ],

@@ -17,10 +17,10 @@ export const INVITATION_PRESETS: InvitationPreset[] = [
     nameEn: 'Funny and light',
     nameHe: 'קליל ומצחיק',
     theme: 'cruise',
-    tone: 'playful',
+    tone: 'light',
     activityIds: ['coffee', 'sunset-walk', 'drinks'],
     getIntroCards: (language: Language) => {
-      const prompts = getDefaultPrompts(language, 'playful');
+      const prompts = getDefaultPrompts(language, 'light');
       return prompts.map((prompt) => ({
         id: prompt.id,
         promptKey: prompt.id,
@@ -33,10 +33,10 @@ export const INVITATION_PRESETS: InvitationPreset[] = [
     nameEn: 'First date',
     nameHe: 'דייט ראשון',
     theme: 'nature',
-    tone: 'playful',
+    tone: 'light',
     activityIds: ['coffee', 'restaurant', 'sunset-walk'],
     getIntroCards: (language: Language) => {
-      const prompts = getDefaultPrompts(language, 'playful');
+      const prompts = getDefaultPrompts(language, 'light');
       return prompts.map((prompt) => ({
         id: prompt.id,
         promptKey: prompt.id,

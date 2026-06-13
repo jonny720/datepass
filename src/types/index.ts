@@ -3,6 +3,7 @@ export type { Language, Direction, LanguageConfig } from './language';
 export type {
   ThemeId,
   IntroTone,
+  YesButtonCopy,
   IntroCard,
   ActivityId,
   DateSlot,

@@ -2,7 +2,9 @@ export type Language = 'he' | 'en';
 
 export type ThemeId = 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark';
 
-export type IntroTone = 'playful' | 'flirty' | 'absurd';
+export type IntroTone = 'light' | 'flirty' | 'absurd' | 'romantic' | 'bold' | 'dry';
+
+export type YesButtonCopy = 'yes_lets_do' | 'im_in' | 'you_convinced' | 'okay_worked' | 'fine_cute';
 
 export interface IntroCard {
   id: string;
@@ -38,4 +40,5 @@ export interface InviteConfig {
   dateSlots: DateSlot[];
   whatsappNumber?: string;
   openingMessage?: string;
+  yesButtonCopy?: YesButtonCopy;
 }

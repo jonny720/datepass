@@ -1,4 +1,4 @@
-import { Sparkles, Heart, Palette } from 'lucide-react';
+import { Sparkles, Heart, Palette, HeartHandshake, Flame, Coffee } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { CreatorDraft, IntroTone } from '@/types';
 import {
@@ -17,9 +17,12 @@ interface ToneStepProps {
 }
 
 const TONES: Array<{ id: IntroTone; icon: typeof Sparkles }> = [
-  { id: 'playful', icon: Sparkles },
+  { id: 'light', icon: Sparkles },
   { id: 'flirty', icon: Heart },
   { id: 'absurd', icon: Palette },
+  { id: 'romantic', icon: HeartHandshake },
+  { id: 'bold', icon: Flame },
+  { id: 'dry', icon: Coffee },
 ];
 
 export function ToneStep({ draft, updateDraft, onNext, onBack }: ToneStepProps) {

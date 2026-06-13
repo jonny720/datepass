@@ -10,8 +10,8 @@ export interface TonedIntroPrompt {
 export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
   // PLAYFUL
   {
-    id: "playful-1",
-    tone: "playful",
+    id: "light-1",
+    tone: "light",
     prompt: "In my free time I like to...",
     answers: [
       "reconsider decisions I made five minutes ago",
@@ -21,8 +21,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-2",
-    tone: "playful",
+    id: "light-2",
+    tone: "light",
     prompt: "My most unnecessary talent is...",
     answers: [
       "recognizing songs instantly and singing the lyrics incorrectly",
@@ -32,8 +32,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-3",
-    tone: "playful",
+    id: "light-3",
+    tone: "light",
     prompt: "A green flag about me...",
     answers: [
       "I laugh at my own jokes before finishing them",
@@ -43,8 +43,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-4",
-    tone: "playful",
+    id: "light-4",
+    tone: "light",
     prompt: "On this date you can expect...",
     answers: [
       "questionable dance moves if the right song plays",
@@ -54,8 +54,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-5",
-    tone: "playful",
+    id: "light-5",
+    tone: "light",
     prompt: "An important safety notice...",
     answers: [
       "excessive fun may lead to a second date",
@@ -65,8 +65,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-6",
-    tone: "playful",
+    id: "light-6",
+    tone: "light",
     prompt: "My controversial opinion is...",
     answers: [
       "pineapple belongs on pizza (fight me)",
@@ -76,8 +76,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-7",
-    tone: "playful",
+    id: "light-7",
+    tone: "light",
     prompt: "My ideal evening includes...",
     answers: [
       "good food and zero plans",
@@ -87,8 +87,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-8",
-    tone: "playful",
+    id: "light-8",
+    tone: "light",
     prompt: "I can probably beat you at...",
     answers: [
       "forgetting why I walked into a room",
@@ -98,8 +98,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-9",
-    tone: "playful",
+    id: "light-9",
+    tone: "light",
     prompt: "Something you should know in advance...",
     answers: [
       "I get competitive about guessing movie endings",
@@ -109,8 +109,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-10",
-    tone: "playful",
+    id: "light-10",
+    tone: "light",
     prompt: "My relationship with desserts is...",
     answers: [
       "complicated (I always want yours)",
@@ -120,8 +120,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-11",
-    tone: "playful",
+    id: "light-11",
+    tone: "light",
     prompt: "The fastest way to make me happy is...",
     answers: [
       "surprise snacks",
@@ -131,8 +131,8 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
     ],
   },
   {
-    id: "playful-12",
-    tone: "playful",
+    id: "light-12",
+    tone: "light",
     prompt: "My greatest weakness is...",
     answers: [
       "desserts I claimed I didn't want to order",
@@ -407,6 +407,210 @@ export const INTRO_PROMPTS_EN: TonedIntroPrompt[] = [
       "buying things because they have cute packaging",
       "refusing to accept that I need a jacket",
       "starting projects at midnight",
+    ],
+  },
+
+  // ROMANTIC
+  {
+    id: "romantic-1",
+    tone: "romantic",
+    prompt: "What I value most...",
+    answers: [
+      "deep conversations that last until sunrise",
+      "meaningful connections over casual ones",
+      "someone who notices the small things",
+      "genuine laughter and quiet moments",
+    ],
+  },
+  {
+    id: "romantic-2",
+    tone: "romantic",
+    prompt: "A perfect evening includes...",
+    answers: [
+      "good food, better company, and no rush to leave",
+      "stargazing and talking about everything",
+      "finding a quiet spot away from the noise",
+      "creating memories worth remembering",
+    ],
+  },
+  {
+    id: "romantic-3",
+    tone: "romantic",
+    prompt: "I'm looking for someone who...",
+    answers: [
+      "appreciates the beauty in ordinary moments",
+      "values quality time together",
+      "can be both adventurous and thoughtful",
+      "makes me want to be a better person",
+    ],
+  },
+  {
+    id: "romantic-4",
+    tone: "romantic",
+    prompt: "What excites me about this...",
+    answers: [
+      "the possibility of something real",
+      "getting to know someone worth knowing",
+      "seeing where genuine connection leads",
+      "finding someone who just gets it",
+    ],
+  },
+  {
+    id: "romantic-5",
+    tone: "romantic",
+    prompt: "You'll know we click if...",
+    answers: [
+      "conversations feel effortless",
+      "silence is comfortable, not awkward",
+      "we lose track of time together",
+      "everything just feels right",
+    ],
+  },
+  {
+    id: "romantic-6",
+    tone: "romantic",
+    prompt: "I believe in...",
+    answers: [
+      "taking chances on people who matter",
+      "chemistry that's impossible to fake",
+      "connections that feel meant to be",
+      "love at second sight (first is too cliché)",
+    ],
+  },
+
+  // BOLD
+  {
+    id: "bold-1",
+    tone: "bold",
+    prompt: "Fair warning...",
+    answers: [
+      "I say what I mean and mean what I say",
+      "I'm not here to play games",
+      "I know what I want",
+      "I don't do boring dates",
+    ],
+  },
+  {
+    id: "bold-2",
+    tone: "bold",
+    prompt: "What you should know...",
+    answers: [
+      "I'm direct, sometimes too direct",
+      "I value honesty over everything",
+      "I take initiative",
+      "I don't waste time on maybes",
+    ],
+  },
+  {
+    id: "bold-3",
+    tone: "bold",
+    prompt: "I'm attracted to...",
+    answers: [
+      "confidence without arrogance",
+      "people who know their worth",
+      "decisiveness and clarity",
+      "someone who can match my energy",
+    ],
+  },
+  {
+    id: "bold-4",
+    tone: "bold",
+    prompt: "On this date...",
+    answers: [
+      "let's skip the small talk",
+      "expect real conversations",
+      "we're either clicking or we're not",
+      "no pretending to be someone we're not",
+    ],
+  },
+  {
+    id: "bold-5",
+    tone: "bold",
+    prompt: "What sets me apart...",
+    answers: [
+      "I'm unapologetically myself",
+      "I don't settle for comfortable",
+      "I make decisions and stick to them",
+      "I chase what I want",
+    ],
+  },
+  {
+    id: "bold-6",
+    tone: "bold",
+    prompt: "Looking for someone who...",
+    answers: [
+      "isn't afraid of intensity",
+      "can handle honesty",
+      "knows what they want too",
+      "doesn't need validation from everyone",
+    ],
+  },
+
+  // DRY
+  {
+    id: "dry-1",
+    tone: "dry",
+    prompt: "My sense of humor...",
+    answers: [
+      "exists, allegedly",
+      "is an acquired taste (allegedly)",
+      "requires a certain appreciation for deadpan",
+      "has been described as 'interesting'",
+    ],
+  },
+  {
+    id: "dry-2",
+    tone: "dry",
+    prompt: "About me...",
+    answers: [
+      "I've been told I'm funny. I have my doubts.",
+      "I promise to be moderately entertaining",
+      "I'm either hilarious or unbearable. No middle ground.",
+      "I excel at stating the obvious",
+    ],
+  },
+  {
+    id: "dry-3",
+    tone: "dry",
+    prompt: "A skill I have...",
+    answers: [
+      "making observations no one asked for",
+      "finding the irony in everything",
+      "delivering bad news with a straight face",
+      "ruining moments with perfect timing",
+    ],
+  },
+  {
+    id: "dry-4",
+    tone: "dry",
+    prompt: "What to expect...",
+    answers: [
+      "sarcasm, but make it subtle",
+      "commentary that may or may not land",
+      "jokes delivered so dry they seem serious",
+      "an impressive collection of raised eyebrows",
+    ],
+  },
+  {
+    id: "dry-5",
+    tone: "dry",
+    prompt: "Looking for someone who...",
+    answers: [
+      "can detect sarcasm without tone indicators",
+      "appreciates understatement",
+      "laughs at things that aren't traditionally funny",
+      "gets it, or at least pretends to",
+    ],
+  },
+  {
+    id: "dry-6",
+    tone: "dry",
+    prompt: "I'm great at...",
+    answers: [
+      "making awkward situations more awkward",
+      "delivering punchlines three days later",
+      "communicating entirely through eyebrow movements",
+      "pretending to be less funny than I am",
     ],
   },
 ];

@@ -6,7 +6,7 @@ export const SAMPLE_INVITE: InviteConfig = {
   senderName: 'Alex',
   recipientName: 'Jordan',
   theme: 'cruise',
-  introTone: 'playful',
+  introTone: 'light',
   introCards: [
     {
       id: '1',
