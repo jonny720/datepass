@@ -83,14 +83,14 @@ export const he: TranslationDictionary = {
 
   // Creator flow - Step 8: WhatsApp
   creator_whatsapp_title: 'לאן לשלוח את התשובה?',
-  creator_whatsapp_subtitle: 'הוסיפו מספר וואטסאפ כדי שהאישור ייפתח ישירות בשיחה איתכם.',
-  creator_whatsapp_label: 'מספר וואטסאפ',
-  creator_whatsapp_placeholder: '972501234567',
-  creator_whatsapp_helper: 'יש להזין מספר מלא עם קידומת מדינה.',
-  creator_whatsapp_validation_error: 'יש להזין מספר וואטסאפ מלא עם קידומת מדינה, לדוגמה 972501234567.',
-  creator_whatsapp_skip: 'דלגו',
-  creator_whatsapp_privacy_note: 'המספר יהיה מוטמע בקישור השיתוף.',
-  creator_whatsapp_no_auto_send: 'שום דבר לא נשלח אוטומטית.',
+  creator_whatsapp_subtitle: 'הוסיפו את מספר הוואטסאפ שלכם כדי שהאישור ייפתח ישירות בשיחה איתכם.',
+  creator_whatsapp_country_label: 'מדינה',
+  creator_whatsapp_phone_label: 'מספר טלפון',
+  creator_whatsapp_placeholder: '050-123-4567',
+  creator_whatsapp_helper: 'הקלידו את המספר הרגיל שלכם. אנחנו נוסיף את קידומת המדינה אוטומטית.',
+  creator_whatsapp_validation_error: 'יש להזין מספר טלפון תקין.',
+  creator_whatsapp_skip: 'דלגו כרגע',
+  creator_whatsapp_privacy_note: 'המספר נשמר בתוך קישור ההזמנה כדי שהתשובה תוכל להיפתח ישירות בשיחה איתכם.',
 
   // Creator flow - Step 8: Review
   creator_review_title: 'ההזמנה שלך מוכנה',

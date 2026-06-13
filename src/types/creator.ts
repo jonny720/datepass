@@ -10,7 +10,8 @@ export interface CreatorDraft {
   introCards: IntroCard[];
   activityIds: ActivityId[];
   dateSlots: DateSlot[];
-  whatsappNumber: string;
+  selectedCountryIso2: string;
+  localPhoneNumber: string;
 }
 
 export const INITIAL_DRAFT: CreatorDraft = {
@@ -23,7 +24,8 @@ export const INITIAL_DRAFT: CreatorDraft = {
   introCards: [],
   activityIds: [],
   dateSlots: [],
-  whatsappNumber: '',
+  selectedCountryIso2: 'IL',
+  localPhoneNumber: '',
 };
 
 export const TOTAL_STEPS = 8;

@@ -5,6 +5,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { createInviteUrl } from '@/hooks/useNavigation';
 import { InvitationTicket } from '../InvitationTicket';
 import type { CreatorDraft, InviteConfig } from '@/types';
+import { buildInternationalWhatsAppNumber } from '@/lib/phoneUtils';
+import { findCountryByIso2 } from '@/data/countryDialingCodes';
 import {
   PrimaryButton,
   SecondaryButton,
@@ -32,6 +34,18 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
 
   // Auto-generate invite URL on mount
   useEffect(() => {
+    // Build international WhatsApp number if provided
+    let whatsappNumber: string | undefined;
+    if (draft.localPhoneNumber.trim()) {
+      const country = findCountryByIso2(draft.selectedCountryIso2);
+      if (country) {
+        whatsappNumber = buildInternationalWhatsAppNumber({
+          dialCode: country.dialCode,
+          localNumber: draft.localPhoneNumber,
+        });
+      }
+    }
+
     const inviteConfig: InviteConfig = {
       version: 1,
       language: draft.language,
@@ -42,7 +56,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       introCards: draft.introCards,
       activityIds: draft.activityIds,
       dateSlots: draft.dateSlots,
-      whatsappNumber: draft.whatsappNumber || undefined,
+      whatsappNumber,
     };
 
     const url = createInviteUrl(inviteConfig);
