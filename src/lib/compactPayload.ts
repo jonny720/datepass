@@ -30,6 +30,7 @@ const THEME_TO_CODE = {
   nature: 'n',
   party: 'p',
   after_dark: 'd',
+  temptation: 't',
 } as const;
 
 const CODE_TO_THEME = {
@@ -38,6 +39,7 @@ const CODE_TO_THEME = {
   n: 'nature',
   p: 'party',
   d: 'after_dark',
+  t: 'temptation',
 } as const;
 
 const INVITE_TYPE_TO_CODE = {

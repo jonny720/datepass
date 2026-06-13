@@ -52,7 +52,7 @@ export const INVITE_TYPE_CONFIGS: Record<InviteType, InviteTypeConfig> = {
       he: 'הזמנה קטנה מחכה לך.',
     },
     defaultTheme: 'cruise',
-    recommendedThemes: ['cruise', 'nature', 'after_dark', 'secret_mission', 'party'],
+    recommendedThemes: ['cruise', 'nature', 'after_dark', 'temptation', 'secret_mission', 'party'],
     activityOptions: ['coffee', 'drinks', 'restaurant', 'sunset-walk', 'movie', 'competitive', 'creative', 'surprise-me'],
     yesCopyOptions: ['yes_lets_do', 'im_in', 'you_convinced', 'okay_worked', 'fine_cute'],
     noCopyOptions: {

@@ -24,7 +24,7 @@ export const INITIAL_DRAFT: CreatorDraft = {
   language: 'en',
   senderName: '',
   recipientName: '',
-  recipientGender: 'private',
+  recipientGender: 'female',
   theme: 'cruise',
   introTone: 'light',
   introCards: [],

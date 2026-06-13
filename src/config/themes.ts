@@ -1,4 +1,4 @@
-import { Anchor, Shield, Leaf, PartyPopper, Moon } from 'lucide-react';
+import { Anchor, Shield, Leaf, PartyPopper, Moon, Flame } from 'lucide-react';
 import type { ThemeId } from '@/types';
 
 export interface ThemeConfig {
@@ -39,6 +39,12 @@ export const THEME_CONFIGS: Record<ThemeId, ThemeConfig> = {
     gradientClass: 'after-dark-background',
     decorativeComponent: 'AfterDarkElements',
   },
+  temptation: {
+    id: 'temptation',
+    icon: Flame,
+    gradientClass: 'after-dark-background',
+    decorativeComponent: 'AfterDarkElements',
+  },
 };
 
-export const THEME_IDS: ThemeId[] = ['cruise', 'secret_mission', 'nature', 'party', 'after_dark'];
+export const THEME_IDS: ThemeId[] = ['cruise', 'secret_mission', 'nature', 'party', 'after_dark', 'temptation'];

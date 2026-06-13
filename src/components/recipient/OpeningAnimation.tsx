@@ -71,7 +71,7 @@ export function OpeningAnimation({ theme, recipientName, openingMessage, onCompl
             {theme === 'secret_mission' && <MissionEnvelope />}
             {theme === 'nature' && <NatureEnvelope />}
             {theme === 'party' && <PartyEnvelope />}
-            {theme === 'after_dark' && <AfterDarkEnvelope />}
+            {(theme === 'after_dark' || theme === 'temptation') && <AfterDarkEnvelope />}
           </motion.div>
         )}
 
@@ -87,7 +87,7 @@ export function OpeningAnimation({ theme, recipientName, openingMessage, onCompl
             {theme === 'secret_mission' && <MissionReveal recipientName={recipientName} openingMessage={openingMessage} />}
             {theme === 'nature' && <NatureReveal recipientName={recipientName} openingMessage={openingMessage} />}
             {theme === 'party' && <PartyReveal recipientName={recipientName} openingMessage={openingMessage} />}
-            {theme === 'after_dark' && <AfterDarkReveal recipientName={recipientName} openingMessage={openingMessage} />}
+            {(theme === 'after_dark' || theme === 'temptation') && <AfterDarkReveal recipientName={recipientName} openingMessage={openingMessage} />}
           </motion.div>
         )}
       </AnimatePresence>

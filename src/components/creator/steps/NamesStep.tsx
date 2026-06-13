@@ -112,11 +112,27 @@ function getPrivateGenderMessage(language: 'en' | 'he') {
         'סליחה, הברווז אמר שזה עדיין קצת ענייננו.',
         'בסדר בסדר, לא שואלים. רק מתאימים ניסוח בשקט.',
         'מסתורי. מכובד. מעט דרמטי.',
+        'קיבלנו. נשאיר את הסקרנות במגירה.',
+        'המידע סווג ברמת “עזבו אותי”.',
+        'צודק/ת. זו הייתה שאלה חטטנית עם כוונות טובות.',
+        'המערכת מסמיקה וממשיכה הלאה.',
+        'נרשם בפרוטוקול: לא ענייננו, אבל בנימוס.',
+        'הברווז לחש “בסדר, הבנו”.',
+        'בחירה מסתורית. האפליקציה תתמודד.',
+        'הגבול הוצב. אנחנו עומדים מאחוריו במבוכה.',
       ]
     : [
         'Sorry, the app asked before thinking.',
         'Fair. We will mind our tiny invitation business.',
         'Mysterious. Respectable. Slightly dramatic.',
+        'Understood. Curiosity has been escorted out.',
+        'Classified under: absolutely none of our business.',
+        'Fair point. The app is looking respectfully away.',
+        'Noted. The form regrets its nosiness.',
+        'Mystery selected. The invitation will survive.',
+        'The duck said: boundaries are attractive.',
+        'Respectfully backing away from the question.',
+        'That answer has main-character privacy energy.',
       ];
   return messages[Math.floor(Math.random() * messages.length)];
 }

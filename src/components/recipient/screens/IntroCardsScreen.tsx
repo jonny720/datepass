@@ -39,6 +39,7 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
       case 'party':
         return 'party-background-soft';
       case 'after_dark':
+      case 'temptation':
         return 'after-dark-background';
       default:
         return 'bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50';
@@ -136,7 +137,7 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
                   <div className="mb-4 flex items-center gap-3">
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                        config.theme === 'after_dark'
+                        config.theme === 'after_dark' || config.theme === 'temptation'
                           ? 'bg-purple-100'
                           : config.theme === 'party'
                           ? 'bg-pink-100'
@@ -149,7 +150,7 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
                     >
                       <Icon
                         className={`h-5 w-5 flex-shrink-0 ${
-                          config.theme === 'after_dark'
+                          config.theme === 'after_dark' || config.theme === 'temptation'
                             ? 'text-purple-600'
                             : config.theme === 'party'
                             ? 'text-pink-600'

@@ -61,6 +61,8 @@ export const he: TranslationDictionary = {
   creator_theme_party_desc: 'אנרגטי וכיפי',
   creator_theme_after_dark: 'אחרי החשכה',
   creator_theme_after_dark_desc: 'מתגרה ומסתורי',
+  creator_theme_temptation: 'פיתוי 18+',
+  creator_theme_temptation_desc: 'פרובוקטיבי, שובב ולמבוגרים בלבד',
   creator_opening_message_label: 'הוסיפו משפט פתיחה קצר',
   creator_opening_message_placeholder: 'הזמנה קטנה הרגישה יותר כיפית מהודעה רגילה.',
   creator_yes_button_label: 'התאימו את כפתור הכן',

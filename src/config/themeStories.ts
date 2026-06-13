@@ -105,6 +105,22 @@ export const THEME_STORIES: Record<ThemeId, ThemeStory> = {
       status: { en: 'Required', he: 'נדרש' },
     },
   },
+  temptation: {
+    metadata: {
+      primary: { en: 'Mood', he: 'אווירה' },
+      secondary: { en: 'Boundary', he: 'גבול' },
+      tertiary: { en: 'Duration', he: 'משך' },
+      quaternary: { en: 'Recommended Energy', he: 'אנרגיה מומלצת' },
+      status: { en: '18+ Notice', he: 'סימון 18+' },
+    },
+    values: {
+      primary: { en: 'Playfully provocative', he: 'פרובוקטיבי בקטע משחקי' },
+      secondary: { en: 'Adults only', he: 'למבוגרים בלבד' },
+      tertiary: { en: 'One Evening', he: 'ערב אחד' },
+      quaternary: { en: 'Confident curiosity', he: 'סקרנות בטוחה בעצמה' },
+      status: { en: 'No validation', he: 'ללא אימות' },
+    },
+  },
 };
 
 /**

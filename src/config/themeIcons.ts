@@ -59,6 +59,12 @@ export const THEME_ICONS: Record<ThemeId, ThemeIconSet> = {
     tertiary: Flame,
     accent: Heart,
   },
+  temptation: {
+    primary: Flame,
+    secondary: Moon,
+    tertiary: Sparkles,
+    accent: Flame,
+  },
 };
 
 /**

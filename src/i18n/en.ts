@@ -62,6 +62,8 @@ export const en: TranslationDictionary = {
   creator_theme_party_desc: 'Energetic and fun',
   creator_theme_after_dark: 'After Dark',
   creator_theme_after_dark_desc: 'Daring and mysterious',
+  creator_theme_temptation: 'Temptation 18+',
+  creator_theme_temptation_desc: 'Provocative, playful, adults only',
   creator_opening_message_label: 'Add a short opening line',
   creator_opening_message_placeholder: 'A tiny invitation seemed more fun than a regular message.',
   creator_yes_button_label: 'Customize the Yes button',

@@ -177,6 +177,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       case 'party':
         return 'party-background-soft';
       case 'after_dark':
+      case 'temptation':
         return 'after-dark-background-soft';
       default:
         return 'bg-gradient-to-br from-stone-50 to-stone-100';
@@ -195,6 +196,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       case 'party':
         return <PartyElements />;
       case 'after_dark':
+      case 'temptation':
         return <AfterDarkElements />;
       default:
         return null;

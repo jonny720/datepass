@@ -31,6 +31,7 @@ export function InvitationTicket({
       case 'party':
         return 'bg-gradient-to-br from-pink-100 via-purple-100 to-yellow-100';
       case 'after_dark':
+      case 'temptation':
         return 'bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 text-white';
       default:
         return 'bg-white';
@@ -38,21 +39,21 @@ export function InvitationTicket({
   };
 
   const getBorderClass = () => {
-    if (theme === 'secret_mission' || theme === 'after_dark') {
+    if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
       return 'border-white/20';
     }
     return 'border-stone-200';
   };
 
   const getTextColorClass = () => {
-    if (theme === 'secret_mission' || theme === 'after_dark') {
+    if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
       return 'text-white/70';
     }
     return 'text-stone-600';
   };
 
   const getHeadingColorClass = () => {
-    if (theme === 'secret_mission' || theme === 'after_dark') {
+    if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
       return 'text-white';
     }
     return 'text-stone-900';
@@ -72,7 +73,7 @@ export function InvitationTicket({
           className={`
             rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide
             ${
-              theme === 'secret_mission' || theme === 'after_dark'
+              theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
                 ? 'bg-white/10 text-white/90'
                 : 'bg-stone-900/10 text-stone-900/90'
             }
@@ -88,7 +89,7 @@ export function InvitationTicket({
           className={`
             inline-flex items-center justify-center rounded-xl p-3
             ${
-              theme === 'secret_mission' || theme === 'after_dark'
+              theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
                 ? 'bg-white/10'
                 : 'bg-stone-900/5'
             }
@@ -113,7 +114,7 @@ export function InvitationTicket({
         {/* Divider */}
         <div
           className={`border-t border-dashed ${
-            theme === 'secret_mission' || theme === 'after_dark'
+            theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
               ? 'border-white/20'
               : 'border-stone-300'
           }`}
@@ -154,7 +155,7 @@ export function InvitationTicket({
       <div className="relative h-6">
         <div
           className={`absolute inset-0 border-t border-dashed ${
-            theme === 'secret_mission' || theme === 'after_dark'
+            theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
               ? 'border-white/20'
               : 'border-stone-300'
           }`}

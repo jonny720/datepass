@@ -3,7 +3,7 @@ export type Language = 'he' | 'en';
 export type InviteType = 'date' | 'birthday' | 'friends-night';
 export type RecipientGender = 'male' | 'female' | 'private';
 
-export type ThemeId = 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark';
+export type ThemeId = 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark' | 'temptation';
 
 export type IntroTone = 'light' | 'flirty' | 'absurd' | 'romantic' | 'bold' | 'dry';
 

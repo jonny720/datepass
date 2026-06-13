@@ -108,7 +108,7 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
 
   if (
     typeof c.theme !== 'string' ||
-    !['cruise', 'secret_mission', 'nature', 'party', 'after_dark'].includes(c.theme)
+    !['cruise', 'secret_mission', 'nature', 'party', 'after_dark', 'temptation'].includes(c.theme)
   ) {
     throw new InviteValidationError('Invalid theme');
   }

@@ -61,6 +61,15 @@ export const THEME_STAMPS: Record<ThemeId, StampConfig> = {
     color: 'text-indigo-700',
     borderColor: 'border-indigo-700',
   },
+  temptation: {
+    label: {
+      en: '18+\nONLY',
+      he: '18+\nבלבד',
+    },
+    rotation: -10,
+    color: 'text-pink-700',
+    borderColor: 'border-pink-700',
+  },
 };
 
 export const STAMP_MESSAGES: StampMessage[] = [

@@ -41,7 +41,7 @@ export function YesConfirmation({ theme, inviteType = 'date', onComplete }: YesC
         {theme === 'secret_mission' && <MissionConfirmation />}
         {theme === 'nature' && <NatureConfirmation />}
         {theme === 'party' && <PartyConfirmation />}
-        {theme === 'after_dark' && <AfterDarkConfirmation isDateInvite={inviteType === 'date'} />}
+        {(theme === 'after_dark' || theme === 'temptation') && <AfterDarkConfirmation isDateInvite={inviteType === 'date'} />}
       </motion.div>
     </motion.div>
   );
