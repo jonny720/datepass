@@ -42,6 +42,7 @@ const mockConfigMission: InviteConfig = {
 
 const mockResponse: RecipientResponse = {
   step: 7,
+  recipientGender: 'female',
   wantsDate: true,
   arrivalPreference: 'pickup',
   selectedActivity: 'coffee',

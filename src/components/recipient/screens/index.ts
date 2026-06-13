@@ -1,4 +1,5 @@
 export { ArrivalScreen } from './ArrivalScreen';
+export { GenderChoiceScreen } from './GenderChoiceScreen';
 export { IntroCardsScreen } from './IntroCardsScreen';
 export { MainQuestionScreen } from './MainQuestionScreen';
 export { ArrivalPreferenceScreen } from './ArrivalPreferenceScreen';

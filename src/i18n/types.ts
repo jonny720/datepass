@@ -198,6 +198,11 @@ export interface TranslationDictionary {
   recipient_mission_success_rate: string;
 
   // Recipient Screen 2: Intro Cards
+  recipient_gender_title: string;
+  recipient_gender_subtitle: string;
+  recipient_gender_male: string;
+  recipient_gender_female: string;
+  recipient_gender_private: string;
   recipient_cards_eyebrow: string;
   recipient_cards_title: string;
   recipient_cards_subtitle: string;
@@ -277,6 +282,7 @@ export interface TranslationDictionary {
   recipient_decline_title: string;
   recipient_decline_subtitle: string;
   recipient_decline_notification: string;
+  recipient_decline_regret: string;
 
   // Invalid link
   invalid_link_title: string;

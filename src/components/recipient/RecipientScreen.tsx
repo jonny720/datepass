@@ -4,10 +4,11 @@ import { useNavigation } from '@/hooks/useNavigation';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useRecipientState } from '@/hooks/useRecipientState';
 import { useEasterEggState } from '@/hooks/useEasterEggState';
-import type { InviteConfig } from '@/types';
+import type { InviteConfig, RecipientGender } from '@/types';
 import { RECIPIENT_STEPS } from '@/types';
 import {
   ArrivalScreen,
+  GenderChoiceScreen,
   IntroCardsScreen,
   MainQuestionScreen,
   ArrivalPreferenceScreen,
@@ -28,6 +29,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     response,
     setResponse,
     nextStep,
+    setRecipientGender,
     setWantsDate,
     setArrivalPreference,
     setSelectedActivity,
@@ -68,6 +70,16 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setResponse((prev) => ({ ...prev, step: -1 }));
   };
 
+  const handleRegretDecline = () => {
+    setWantsDate(null);
+    setResponse((prev) => ({ ...prev, step: RECIPIENT_STEPS.MAIN_QUESTION }));
+  };
+
+  const handleGenderSelect = (gender: RecipientGender) => {
+    setRecipientGender(gender);
+    nextStep();
+  };
+
   const handleActivitySelect = (activity: typeof config.activityIds[number]) => {
     setSelectedActivity(activity);
     nextStep();
@@ -99,6 +111,9 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
       case RECIPIENT_STEPS.ARRIVAL:
         return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} stampState={stampState} />;
 
+      case RECIPIENT_STEPS.GENDER:
+        return <GenderChoiceScreen onSelect={handleGenderSelect} />;
+
       case RECIPIENT_STEPS.INTRO_CARDS:
         return <IntroCardsScreen config={config} onNext={nextStep} easterEggState={easterEggState} duckState={duckState} />;
 
@@ -109,6 +124,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             onYes={handleYes}
             onNo={handleNo}
             onDecline={handleDecline}
+            recipientGender={response.recipientGender}
           />
         );
 
@@ -118,6 +134,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             config={config}
             onSelect={handleArrivalPreferenceSelect}
             easterEggState={easterEggState}
+            recipientGender={response.recipientGender}
           />
         );
 
@@ -151,7 +168,14 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
         );
 
       case -1: // Decline screen
-        return <DeclineScreen config={config} onCreateOwn={handleCreateOwn} />;
+        return (
+          <DeclineScreen
+            config={config}
+            onCreateOwn={handleCreateOwn}
+            onRegret={handleRegretDecline}
+            recipientGender={response.recipientGender}
+          />
+        );
 
       default:
         return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} stampState={stampState} />;

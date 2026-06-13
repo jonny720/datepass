@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { RecipientResponse, ActivityId, DateSlot, InviteConfig, ArrivalPreference } from '@/types';
+import type { RecipientResponse, ActivityId, DateSlot, InviteConfig, ArrivalPreference, RecipientGender } from '@/types';
 import { INITIAL_RESPONSE, RECIPIENT_STEPS } from '@/types';
 
 export function useRecipientState(config: InviteConfig) {
@@ -50,8 +50,12 @@ export function useRecipientState(config: InviteConfig) {
     });
   }, [config.dateSlots.length, hasValidIntroCards]);
 
-  const setWantsDate = useCallback((wants: boolean) => {
+  const setWantsDate = useCallback((wants: boolean | null) => {
     setResponse((prev) => ({ ...prev, wantsDate: wants }));
+  }, []);
+
+  const setRecipientGender = useCallback((recipientGender: RecipientGender) => {
+    setResponse((prev) => ({ ...prev, recipientGender }));
   }, []);
 
   const setSelectedActivity = useCallback((activity: ActivityId) => {
@@ -88,6 +92,7 @@ export function useRecipientState(config: InviteConfig) {
     updateResponse,
     nextStep,
     prevStep,
+    setRecipientGender,
     setWantsDate,
     setArrivalPreference,
     setSelectedActivity,

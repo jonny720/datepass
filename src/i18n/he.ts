@@ -197,6 +197,11 @@ export const he: TranslationDictionary = {
   recipient_mission_success_rate: 'שיעור הצלחה: יקבע בשטח',
 
   // Recipient Screen 2: Intro Cards
+  recipient_gender_title: 'לפני שממשיכים',
+  recipient_gender_subtitle: 'בחרו איך לפנות אליך בניסוחים.',
+  recipient_gender_male: 'זכר',
+  recipient_gender_female: 'נקבה',
+  recipient_gender_private: 'זה לא עניינך',
   recipient_cards_eyebrow: 'לפני שממשיכים...',
   recipient_cards_title: 'כמה דברים שכדאי שתדעי',
   recipient_cards_subtitle: 'מידע חשוב. כנראה.',
@@ -276,6 +281,7 @@ export const he: TranslationDictionary = {
   recipient_decline_title: 'הכול בסדר',
   recipient_decline_subtitle: 'לפחות האפקטים היו מגניבים',
   recipient_decline_notification: 'לא יקבל את התשובה אם לא תגידי לו',
+  recipient_decline_regret: 'התחרטתי',
 
   // Invalid link
   invalid_link_title: 'קישור לא תקין',

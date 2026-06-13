@@ -9,6 +9,7 @@ import {
   shouldShowRareBonus,
 } from '@/config/easterEggMessages';
 import { useLanguage } from '@/hooks/useLanguage';
+import { playEggCrack } from '@/lib/soundEffects';
 import { Sparkles } from 'lucide-react';
 
 interface EasterEggProps {
@@ -118,6 +119,7 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
   }, [showMessage]);
 
   const handleTap = () => {
+    playEggCrack();
     if (isRevealed || isTapping) return;
 
     setIsTapping(true);

@@ -2,10 +2,11 @@ import { useState, useRef, useEffect, type PointerEvent } from 'react';
 import { ChevronDown, Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
-import type { InviteConfig } from '@/types';
+import type { InviteConfig, RecipientGender } from '@/types';
 import type { YesButtonCopy } from '@/types';
 import { getYesButtonLabel, YES_BUTTON_OPTIONS } from '@/config/yesButtonConfig';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
+import { heByGender } from '@/lib/hebrewGender';
 import {
   Card,
   SecondaryButton,
@@ -29,9 +30,10 @@ interface MainQuestionScreenProps {
   onYes: () => void;
   onNo: () => void;
   onDecline: () => void;
+  recipientGender?: RecipientGender | null;
 }
 
-export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuestionScreenProps) {
+export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGender }: MainQuestionScreenProps) {
   const { t, language } = useLanguage();
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
   const defaultYesCopy = config.yesButtonCopy && inviteTypeConfig.yesCopyOptions.includes(config.yesButtonCopy)
@@ -179,6 +181,14 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
     const labels = inviteTypeConfig.noCopyOptions[language];
     return labels[Math.min(escapeCount, labels.length - 1)];
   };
+
+  const notificationText = language === 'he'
+    ? `${heByGender(recipientGender, {
+        male: 'לא יקבל את התשובה אם לא תגיד לו',
+        female: 'לא יקבל את התשובה אם לא תגידי לו',
+        private: 'לא יקבל את התשובה אם לא תספרו לו',
+      })} ${config.senderName}`
+    : `${config.senderName} ${t('recipient_question_notification')}`;
 
   // Position the button for final stable state
   useEffect(() => {
@@ -396,9 +406,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
           {/* Notification text */}
           <div className="mt-4 text-center">
             <p className="text-helper text-stone-500">
-              {language === 'he'
-                ? `${t('recipient_question_notification')} ${config.senderName}`
-                : `${config.senderName} ${t('recipient_question_notification')}`}
+              {notificationText}
             </p>
           </div>
         </Card>

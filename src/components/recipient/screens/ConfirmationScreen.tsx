@@ -19,6 +19,7 @@ import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { generateCompatibilityScore, getScoreDisclaimer } from '@/config/compatibilityConfig';
 import { pageTransition, scaleIn, fadeInUp, staggerContainer } from '@/lib/animations';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
+import { heByGender } from '@/lib/hebrewGender';
 import {
   buildRecipientConfirmationWhatsAppUrl,
   buildRecipientConfirmationMessage,
@@ -53,12 +54,31 @@ export function ConfirmationScreen({
   );
 
   const arrivalPreferenceLabel = response.arrivalPreference
-    ? t(
-        response.arrivalPreference === 'pickup'
-          ? 'recipient_confirmation_arrival_pickup'
-          : 'recipient_confirmation_arrival_self'
-      )
+    ? language === 'he'
+      ? response.arrivalPreference === 'pickup'
+        ? heByGender(response.recipientGender, {
+            male: 'אני צריך איסוף',
+            female: 'אני צריכה איסוף',
+            private: t('recipient_confirmation_arrival_pickup'),
+          })
+        : heByGender(response.recipientGender, {
+            male: 'אני אגיע בעצמי',
+            female: 'אני אגיע בעצמי',
+            private: t('recipient_confirmation_arrival_self'),
+          })
+      : t(
+          response.arrivalPreference === 'pickup'
+            ? 'recipient_confirmation_arrival_pickup'
+            : 'recipient_confirmation_arrival_self'
+        )
     : '';
+  const arrivalPreferenceHeader = language === 'he'
+    ? heByGender(response.recipientGender, {
+        male: 'איך מגיע',
+        female: 'איך מגיעה',
+        private: t('recipient_confirmation_arrival_preference'),
+      })
+    : t('recipient_confirmation_arrival_preference');
 
   const selectedTimeLabel = response.selectedSlot
     ? language === 'he'
@@ -90,6 +110,7 @@ export function ConfirmationScreen({
     selectedSlot: response.selectedSlot ?? undefined,
     coordinateLater: !response.selectedSlot,
     arrivalPreference: response.arrivalPreference,
+    recipientGender: response.recipientGender,
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
     foundEasterEgg: response.foundEasterEgg,
@@ -104,6 +125,7 @@ export function ConfirmationScreen({
     selectedSlot: response.selectedSlot ?? undefined,
     coordinateLater: !response.selectedSlot,
     arrivalPreference: response.arrivalPreference,
+    recipientGender: response.recipientGender,
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
     foundEasterEgg: response.foundEasterEgg,
@@ -265,7 +287,7 @@ export function ConfirmationScreen({
 
                 <div>
                   <p className="mb-1 text-sm font-semibold text-stone-500">
-                    {t('recipient_confirmation_arrival_preference')}
+                    {arrivalPreferenceHeader}
                   </p>
                   <p className="text-lg font-bold text-stone-900">
                     {arrivalPreferenceLabel}
@@ -573,7 +595,7 @@ export function ConfirmationScreen({
 
                 <div>
                   <p className="mb-1 text-sm font-semibold text-stone-500">
-                    {t('recipient_confirmation_arrival_preference')}
+                    {arrivalPreferenceHeader}
                   </p>
                   <p className="text-lg font-bold text-stone-900">
                     {arrivalPreferenceLabel}
@@ -858,7 +880,7 @@ export function ConfirmationScreen({
 
           <div>
             <p className="mb-1 text-sm font-semibold text-stone-500">
-              {t('recipient_confirmation_arrival_preference')}
+              {arrivalPreferenceHeader}
             </p>
             <p className="text-lg font-bold text-stone-900">
               {arrivalPreferenceLabel}

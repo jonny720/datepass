@@ -198,6 +198,11 @@ export const en: TranslationDictionary = {
   recipient_mission_success_rate: 'Success Rate: To Be Determined',
 
   // Recipient Screen 2: Intro Cards
+  recipient_gender_title: 'Before we continue',
+  recipient_gender_subtitle: 'Choose how the wording should address you.',
+  recipient_gender_male: 'Male',
+  recipient_gender_female: 'Female',
+  recipient_gender_private: 'This is not your business',
   recipient_cards_eyebrow: 'Before we continue...',
   recipient_cards_title: 'A few things you should probably know',
   recipient_cards_subtitle: 'Important information. Probably.',
@@ -277,6 +282,7 @@ export const en: TranslationDictionary = {
   recipient_decline_title: 'All good',
   recipient_decline_subtitle: 'At least the effects were cool',
   recipient_decline_notification: 'will not get your answer if you will not tell him',
+  recipient_decline_regret: 'I regret this decision',
 
   // Invalid link
   invalid_link_title: 'Invalid Link',

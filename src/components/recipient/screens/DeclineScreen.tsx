@@ -1,7 +1,8 @@
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
-import type { InviteConfig } from '@/types';
+import type { InviteConfig, RecipientGender } from '@/types';
+import { heByGender } from '@/lib/hebrewGender';
 import {
   Card,
   SecondaryButton,
@@ -12,10 +13,19 @@ import { pageTransition, scaleIn, fadeInUp } from '@/lib/animations';
 interface DeclineScreenProps {
   config: InviteConfig;
   onCreateOwn: () => void;
+  onRegret?: () => void;
+  recipientGender?: RecipientGender | null;
 }
 
-export function DeclineScreen({ config, onCreateOwn }: DeclineScreenProps) {
+export function DeclineScreen({ config, onCreateOwn, onRegret, recipientGender }: DeclineScreenProps) {
   const { t, language } = useLanguage();
+  const notificationText = language === 'he'
+    ? `${heByGender(recipientGender, {
+        male: 'לא יקבל את התשובה אם לא תגיד לו',
+        female: 'לא יקבל את התשובה אם לא תגידי לו',
+        private: 'לא יקבל את התשובה אם לא תספרו לו',
+      })} ${config.senderName}`
+    : `${config.senderName} ${t('recipient_decline_notification')}`;
 
   return (
     <motion.div 
@@ -50,6 +60,15 @@ export function DeclineScreen({ config, onCreateOwn }: DeclineScreenProps) {
           </div>
 
           <div className="space-y-3">
+            {onRegret && (
+              <button
+                type="button"
+                onClick={onRegret}
+                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-pink-600 px-5 py-3 text-button-label-lg font-semibold text-white shadow-md transition-all duration-200 hover:from-pink-600 hover:to-pink-700 active:from-pink-700 active:to-pink-800"
+              >
+                {t('recipient_decline_regret')}
+              </button>
+            )}
             <SecondaryButton onClick={onCreateOwn} fullWidth>
               {t('recipient_confirmation_create_own')}
             </SecondaryButton>
@@ -57,9 +76,7 @@ export function DeclineScreen({ config, onCreateOwn }: DeclineScreenProps) {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-stone-500">
-              {language === 'he'
-                ? `${t('recipient_decline_notification')} ${config.senderName}`
-                : `${config.senderName} ${t('recipient_decline_notification')}`}
+              {notificationText}
             </p>
           </div>
         </Card>

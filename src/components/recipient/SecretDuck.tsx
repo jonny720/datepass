@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getRandomDuckMessage } from '@/config/duckConfig';
+import { playDuckQuack } from '@/lib/soundEffects';
 
 interface SecretDuckProps {
   onReveal?: () => void;
@@ -11,6 +12,7 @@ interface SecretDuckProps {
 export function SecretDuck({ onReveal }: SecretDuckProps) {
   const { language } = useLanguage();
   const [message, setMessage] = useState<string>('');
+  const [position, setPosition] = useState({ x: 12, y: 78 });
   const timeoutRef = useRef<number>();
   const tapGuardRef = useRef(false);
   const prefersReducedMotion = useRef(
@@ -56,8 +58,10 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
   const handleDuckClick = () => {
     // Haptic feedback
     navigator.vibrate?.(15);
+    playDuckQuack();
 
     setMessage((previousMessage) => getRandomDuckMessage(language, previousMessage));
+    setPosition((currentPosition) => getNextDuckPosition(currentPosition));
     onReveal?.();
   };
 
@@ -71,13 +75,15 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
       {/* Duck in bottom corner */}
       <motion.button
         onClick={handleDuckClick}
-        className="fixed bottom-20 left-4 z-[70] flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-amber-200 bg-white/95 p-1 shadow-lg backdrop-blur-sm"
+        className="fixed z-[70] flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-amber-200 bg-white/95 p-1 shadow-lg backdrop-blur-sm"
+        style={{ left: `${position.x}%`, top: `${position.y}%` }}
         animate={
           !prefersReducedMotion.current
             ? {
-                y: [0, -4, 0],
+                x: '-50%',
+                y: ['-50%', 'calc(-50% - 4px)', '-50%'],
               }
-            : {}
+            : { x: '-50%', y: '-50%' }
         }
         transition={{
           duration: 2,
@@ -136,4 +142,19 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
         )}
     </>
   );
+}
+
+function getNextDuckPosition(currentPosition: { x: number; y: number }) {
+  const positions = [
+    { x: 12, y: 78 },
+    { x: 84, y: 22 },
+    { x: 18, y: 28 },
+    { x: 78, y: 72 },
+    { x: 48, y: 18 },
+    { x: 50, y: 82 },
+  ];
+  const availablePositions = positions.filter(
+    (position) => position.x !== currentPosition.x || position.y !== currentPosition.y
+  );
+  return availablePositions[Math.floor(Math.random() * availablePositions.length)];
 }

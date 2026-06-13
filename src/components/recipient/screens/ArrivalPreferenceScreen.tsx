@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Car, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
-import type { ArrivalPreference, InviteConfig } from '@/types';
+import type { ArrivalPreference, InviteConfig, RecipientGender } from '@/types';
 import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import {
   Card,
@@ -13,20 +13,51 @@ import {
 import { EasterEgg } from '@/components/recipient/EasterEgg';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, staggerContainer } from '@/lib/animations';
+import { heByGender } from '@/lib/hebrewGender';
 
 interface ArrivalPreferenceScreenProps {
   config: InviteConfig;
   onSelect: (preference: ArrivalPreference) => void;
   easterEggState: ReturnType<typeof useEasterEggState>;
+  recipientGender?: RecipientGender | null;
 }
 
 export function ArrivalPreferenceScreen({
   config,
   onSelect,
   easterEggState,
+  recipientGender,
 }: ArrivalPreferenceScreenProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedPreference, setSelectedPreference] = useState<ArrivalPreference | null>(null);
+  const title = language === 'he'
+    ? heByGender(recipientGender, {
+        male: 'איך אתה מגיע?',
+        female: 'איך את מגיעה?',
+        private: t('recipient_arrival_preference_title'),
+      })
+    : t('recipient_arrival_preference_title');
+  const pickupTitle = language === 'he'
+    ? heByGender(recipientGender, {
+        male: 'אני צריך איסוף',
+        female: 'אני צריכה איסוף',
+        private: t('recipient_arrival_preference_pickup'),
+      })
+    : t('recipient_arrival_preference_pickup');
+  const pickupDescription = language === 'he'
+    ? heByGender(recipientGender, {
+        male: 'תבוא לאסוף אותי',
+        female: 'תבוא לאסוף אותי',
+        private: t('recipient_arrival_preference_pickup_desc'),
+      })
+    : t('recipient_arrival_preference_pickup_desc');
+  const selfTitle = language === 'he'
+    ? heByGender(recipientGender, {
+        male: 'אני אגיע בעצמי',
+        female: 'אני אגיע בעצמי',
+        private: t('recipient_arrival_preference_self'),
+      })
+    : t('recipient_arrival_preference_self');
 
   const handleContinue = () => {
     if (selectedPreference) {
@@ -46,7 +77,7 @@ export function ArrivalPreferenceScreen({
       <motion.div variants={fadeInUp} transition={{ delay: 0.1 }}>
         <Card>
           <StepHeader
-            title={t('recipient_arrival_preference_title')}
+            title={title}
             subtitle={t('recipient_arrival_preference_subtitle')}
           />
 
@@ -61,8 +92,8 @@ export function ArrivalPreferenceScreen({
                 selected={selectedPreference === 'pickup'}
                 onClick={() => setSelectedPreference('pickup')}
                 icon={<Car className="h-6 w-6" />}
-                title={t('recipient_arrival_preference_pickup')}
-                description={t('recipient_arrival_preference_pickup_desc')}
+                title={pickupTitle}
+                description={pickupDescription}
               />
             </motion.div>
 
@@ -71,7 +102,7 @@ export function ArrivalPreferenceScreen({
                 selected={selectedPreference === 'self'}
                 onClick={() => setSelectedPreference('self')}
                 icon={<MapPin className="h-6 w-6" />}
-                title={t('recipient_arrival_preference_self')}
+                title={selfTitle}
                 description={t('recipient_arrival_preference_self_desc')}
               />
             </motion.div>

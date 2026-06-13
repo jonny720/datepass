@@ -1,9 +1,11 @@
 import type { ActivityId, DateSlot } from './invite';
 
 export type ArrivalPreference = 'pickup' | 'self';
+export type RecipientGender = 'male' | 'female' | 'private';
 
 export interface RecipientResponse {
   step: number;
+  recipientGender: RecipientGender | null;
   wantsDate: boolean | null;
   arrivalPreference: ArrivalPreference | null;
   selectedActivity: ActivityId | null;
@@ -17,6 +19,7 @@ export interface RecipientResponse {
 
 export const INITIAL_RESPONSE: RecipientResponse = {
   step: 1,
+  recipientGender: null,
   wantsDate: null,
   arrivalPreference: null,
   selectedActivity: null,
@@ -30,10 +33,11 @@ export const INITIAL_RESPONSE: RecipientResponse = {
 
 export const RECIPIENT_STEPS = {
   ARRIVAL: 1,
-  INTRO_CARDS: 2,
-  MAIN_QUESTION: 3,
-  ARRIVAL_PREFERENCE: 4,
-  ACTIVITY_CHOICE: 5,
-  SLOT_CHOICE: 6,
-  CONFIRMATION: 7,
+  GENDER: 2,
+  INTRO_CARDS: 3,
+  MAIN_QUESTION: 4,
+  ARRIVAL_PREFERENCE: 5,
+  ACTIVITY_CHOICE: 6,
+  SLOT_CHOICE: 7,
+  CONFIRMATION: 8,
 } as const;

@@ -1,5 +1,6 @@
-import type { ArrivalPreference, Language, DateSlot, InviteType } from '@/types';
+import type { ArrivalPreference, Language, DateSlot, InviteType, RecipientGender } from '@/types';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
+import { heByGender } from '@/lib/hebrewGender';
 
 /**
  * Parameters for building the recipient confirmation message
@@ -12,6 +13,7 @@ export interface RecipientConfirmationParams {
   selectedSlot?: DateSlot;
   coordinateLater: boolean;
   arrivalPreference?: ArrivalPreference | null;
+  recipientGender?: RecipientGender | null;
   personalNote?: string;
   noteHeader?: string;
   foundEasterEgg?: boolean;
@@ -54,7 +56,7 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { inviteType = 'date', language, activityName, selectedSlot, coordinateLater, arrivalPreference, personalNote, noteHeader, foundEasterEgg } = params;
+  const { inviteType = 'date', language, activityName, selectedSlot, coordinateLater, arrivalPreference, recipientGender, personalNote, noteHeader, foundEasterEgg } = params;
   const typeConfig = getInviteTypeConfig(inviteType);
   
   if (language === 'he') {
@@ -70,7 +72,17 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
 
     if (arrivalPreference) {
       message += `\nאיך אני מגיעה: ${
-        arrivalPreference === 'pickup' ? 'אני צריכה איסוף' : 'אני אגיע בעצמי'
+        arrivalPreference === 'pickup'
+          ? heByGender(recipientGender, {
+              male: 'אני צריך איסוף',
+              female: 'אני צריכה איסוף',
+              private: 'צריך לתאם איסוף',
+            })
+          : heByGender(recipientGender, {
+              male: 'אני אגיע בעצמי',
+              female: 'אני אגיע בעצמי',
+              private: 'אגיע באופן עצמאי',
+            })
       }`;
     }
     
