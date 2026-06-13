@@ -1,14 +1,24 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { useLayoutEffect } from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, beforeEach } from 'vitest';
-import { LanguageProvider } from '@/hooks/useLanguage';
+import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
 import { createInviteUrl } from '@/hooks/useNavigation';
-import type { InviteConfig } from '@/types';
+import type { InviteConfig, Language } from '@/types';
 import App from './App';
+
+function InitialLanguage({ language }: { language: Language }) {
+  const { setLanguage } = useLanguage();
+
+  useLayoutEffect(() => {
+    setLanguage(language);
+  }, [language, setLanguage]);
+
+  return null;
+}
 
 describe('App', () => {
   beforeEach(() => {
-    // Reset URL hash before each test
-    window.location.hash = '';
+    window.history.pushState(null, '', '/');
   });
 
   it('renders the landing screen by default', () => {
@@ -85,5 +95,33 @@ describe('App', () => {
 
     expect(screen.getByText('פתיחת ההזמנה')).toBeInTheDocument();
     expect(container.querySelector('[dir="rtl"]')).toBeInTheDocument();
+  });
+
+  it('uses each invite language as the recipient starting language', async () => {
+    const englishInvite: InviteConfig = {
+      version: 1,
+      language: 'en',
+      senderName: 'Alex',
+      recipientName: 'Jordan',
+      theme: 'party',
+      introTone: 'light',
+      introCards: [],
+      activityIds: ['coffee'],
+      dateSlots: [],
+    };
+    const inviteUrl = createInviteUrl(englishInvite);
+    window.history.pushState(null, '', `/${new URL(inviteUrl).search}`);
+
+    const { container } = render(
+      <LanguageProvider>
+        <InitialLanguage language="he" />
+        <App />
+      </LanguageProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Open Invitation')).toBeInTheDocument();
+    });
+    expect(container.querySelector('[dir="ltr"]')).toBeInTheDocument();
   });
 });
