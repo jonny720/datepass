@@ -97,13 +97,36 @@
     padding-right: max(1rem, env(safe-area-inset-right));
   }
 
-  /* Date and time input fixes for mobile */
+  /* Date and time input fixes for mobile - iPhone Safari safe */
   input[type="date"],
   input[type="time"] {
-    width: 100%;
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  /* Ensure native iOS controls respect container width */
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value {
+    text-align: start;
     min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
+  }
+
+  /* iOS Safari date/time inner controls */
+  input[type="date"]::-webkit-datetime-edit,
+  input[type="time"]::-webkit-datetime-edit {
+    display: block;
+    padding: 0;
+  }
+
+  input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+  input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
   }
 
   /* Dynamic viewport height support */
