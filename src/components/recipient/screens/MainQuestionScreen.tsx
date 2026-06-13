@@ -1,0 +1,331 @@
+import { useState, useRef, useEffect, type PointerEvent } from 'react';
+import { Heart, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useLanguage } from '@/hooks/useLanguage';
+import type { InviteConfig } from '@/types';
+import {
+  Card,
+  PrimaryButton,
+  SecondaryButton,
+  IconBadge,
+  Confetti,
+} from '@/components/ui';
+import { pageTransition, scaleIn, fadeInUp, springs } from '@/lib/animations';
+import {
+  getNextSafeButtonTransform,
+  getFinalStableTransform,
+  ESCAPE_LIMIT,
+  ESCAPE_COOLDOWN_MS,
+  SAFE_EDGE_PADDING,
+  MIN_TOUCH_TARGET_HEIGHT,
+  type SafeZone,
+} from '@/lib/buttonEscape';
+
+interface MainQuestionScreenProps {
+  config: InviteConfig;
+  onYes: () => void;
+  onNo: () => void;
+  onDecline: () => void;
+}
+
+export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuestionScreenProps) {
+  const { t } = useLanguage();
+  const [escapeCount, setEscapeCount] = useState(0);
+  const [buttonTransform, setButtonTransform] = useState({ x: 0, y: 0, scale: 1, rotate: 0, borderRadius: '0.75rem' });
+  const [currentZone, setCurrentZone] = useState<SafeZone | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+  const [isPointerInside, setIsPointerInside] = useState(false);
+  const lastEscapeTime = useRef(0);
+  const playAreaRef = useRef<HTMLDivElement>(null);
+  const escapingButtonRef = useRef<HTMLButtonElement>(null);
+  const prefersReducedMotion = useRef(
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  // Reset state when config changes (new invitation)
+  useEffect(() => {
+    setEscapeCount(0);
+    setButtonTransform({ x: 0, y: 0, scale: 1, rotate: 0, borderRadius: '0.75rem' });
+    setCurrentZone(null);
+    setShowConfetti(false);
+    setCelebrating(false);
+    setIsPointerInside(false);
+    lastEscapeTime.current = 0;
+  }, [config]);
+
+  const handleYesClick = () => {
+    if (celebrating) return;
+    
+    setCelebrating(true);
+    setShowConfetti(true);
+    
+    // Short celebration before continuing
+    setTimeout(() => {
+      onYes();
+    }, 1200);
+  };
+
+  const handleEscape = () => {
+    const now = Date.now();
+    
+    // Enforce cooldown
+    if (now - lastEscapeTime.current < ESCAPE_COOLDOWN_MS) {
+      return;
+    }
+    
+    // Stop escaping after max attempts
+    if (escapeCount >= ESCAPE_LIMIT - 1) {
+      return;
+    }
+
+    // Get container dimensions
+    const playArea = playAreaRef.current;
+    if (!playArea) return;
+
+    const containerRect = playArea.getBoundingClientRect();
+    
+    // For first escape, use estimated button dimensions
+    // After that, measure actual button
+    let buttonWidth = 160;
+    let buttonHeight = 48;
+    
+    if (escapingButtonRef.current) {
+      const buttonRect = escapingButtonRef.current.getBoundingClientRect();
+      buttonWidth = buttonRect.width;
+      buttonHeight = buttonRect.height;
+    }
+
+    // Calculate next safe position with transform
+    const transform = getNextSafeButtonTransform(
+      {
+        containerWidth: containerRect.width,
+        containerHeight: containerRect.height,
+        buttonWidth: buttonWidth,
+        buttonHeight: buttonHeight,
+        edgePadding: SAFE_EDGE_PADDING,
+        reduceMotion: prefersReducedMotion.current,
+      },
+      currentZone,
+      escapeCount
+    );
+
+    lastEscapeTime.current = now;
+    setEscapeCount((prev) => prev + 1);
+    setButtonTransform(transform);
+    setCurrentZone(transform.zone);
+    setIsPointerInside(false);
+  };
+
+  // Desktop: trigger on pointer enter (only once per hover)
+  const handlePointerEnter = (e: PointerEvent<HTMLButtonElement>) => {
+    // Only escape on mouse/pen, not touch
+    if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+      if (!isPointerInside && escapeCount < ESCAPE_LIMIT - 1) {
+        setIsPointerInside(true);
+        handleEscape();
+      }
+    }
+  };
+
+  // Reset pointer tracking when it leaves
+  const handlePointerLeave = () => {
+    setIsPointerInside(false);
+  };
+
+  // Mobile: trigger on pointer down (touch)
+  const handlePointerDown = (e: PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType === 'touch' && escapeCount < ESCAPE_LIMIT - 1) {
+      e.preventDefault();
+      handleEscape();
+    }
+  };
+
+  const handleNoClick = () => {
+    // If still escaping, trigger an escape on click
+    if (escapeCount < ESCAPE_LIMIT - 1) {
+      handleEscape();
+    } else {
+      // After all escapes, actually call onNo
+      onNo();
+    }
+  };
+
+  const getNoButtonLabel = () => {
+    switch (escapeCount) {
+      case 0:
+        return t('recipient_question_maybe_later');
+      case 1:
+        return t('recipient_question_no_escape_1');
+      case 2:
+        return t('recipient_question_no_escape_2');
+      case 3:
+        return t('recipient_question_no_escape_3');
+      case 4:
+        return t('recipient_question_no_escape_4');
+      case 5:
+        return t('recipient_question_no_escape_5');
+      case 6:
+      default:
+        return t('recipient_question_no_escape_6');
+    }
+  };
+
+  // Position the button for final stable state
+  useEffect(() => {
+    if (escapeCount === ESCAPE_LIMIT - 1 && playAreaRef.current && escapingButtonRef.current) {
+      const playArea = playAreaRef.current;
+      const button = escapingButtonRef.current;
+      
+      const containerRect = playArea.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+
+      const finalTransform = getFinalStableTransform({
+        containerWidth: containerRect.width,
+        containerHeight: containerRect.height,
+        buttonWidth: buttonRect.width,
+        buttonHeight: buttonRect.height,
+        edgePadding: SAFE_EDGE_PADDING,
+      });
+
+      setButtonTransform(finalTransform);
+    }
+  }, [escapeCount]);
+
+  return (
+    <motion.div 
+      key="main-question"
+      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 px-4 py-12"
+      variants={pageTransition}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
+      {showConfetti && <Confetti />}
+      
+      <motion.div 
+        className="mb-6 flex justify-center"
+        variants={scaleIn}
+      >
+        <IconBadge variant="primary" size="lg">
+          <Heart className="h-12 w-12" fill="currentColor" />
+        </IconBadge>
+      </motion.div>
+
+      <motion.div
+        variants={fadeInUp}
+        transition={{ delay: 0.1 }}
+      >
+        <Card className="w-full max-w-sm">
+          <div className="mb-8 text-center">
+            <h1 className="text-screen-title mb-3 text-stone-900">
+              {t('recipient_question_title')}
+            </h1>
+            <p className="text-body text-stone-600">
+              {t('recipient_question_subtitle')}
+            </p>
+          </div>
+
+          {/* Yes Button - Always stable */}
+          <div className="mb-3">
+            <motion.div
+              whileTap={!celebrating ? { scale: 0.95 } : undefined}
+              transition={springs.gentle}
+            >
+              <PrimaryButton onClick={handleYesClick} fullWidth size="lg" disabled={celebrating}>
+                <Heart className="h-5 w-5 flex-shrink-0" fill="currentColor" />
+                {t('recipient_question_yes')}
+              </PrimaryButton>
+            </motion.div>
+          </div>
+
+          {/* Play Area for Escaping No Button */}
+          <div
+            ref={playAreaRef}
+            className="relative mb-6"
+            style={{
+              minHeight: '180px', // Reserve space for button movement on mobile
+              height: 'auto',
+            }}
+          >
+            {/* Static placeholder when button hasn't started escaping */}
+            {escapeCount === 0 && (
+              <SecondaryButton 
+                onClick={handleNoClick}
+                onPointerEnter={handlePointerEnter}
+                onPointerLeave={handlePointerLeave}
+                onPointerDown={handlePointerDown}
+                fullWidth 
+                size="lg"
+                style={{ minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px` }}
+              >
+                <X className="h-5 w-5 flex-shrink-0" />
+                {getNoButtonLabel()}
+              </SecondaryButton>
+            )}
+
+            {/* Escaping button with absolute positioning */}
+            {escapeCount > 0 && (
+              <motion.div
+                className="absolute left-0 top-0"
+                animate={{
+                  x: buttonTransform.x,
+                  y: buttonTransform.y,
+                  scale: buttonTransform.scale,
+                  rotate: buttonTransform.rotate,
+                }}
+                transition={
+                  !prefersReducedMotion.current 
+                    ? { ...springs.bouncy, duration: 0.4 }
+                    : { duration: 0.15 }
+                }
+                style={{
+                  willChange: 'transform',
+                }}
+              >
+                <SecondaryButton 
+                  ref={escapingButtonRef}
+                  onClick={handleNoClick}
+                  onPointerEnter={escapeCount < ESCAPE_LIMIT - 1 ? handlePointerEnter : undefined}
+                  onPointerLeave={escapeCount < ESCAPE_LIMIT - 1 ? handlePointerLeave : undefined}
+                  onPointerDown={escapeCount < ESCAPE_LIMIT - 1 ? handlePointerDown : undefined}
+                  size="lg"
+                  aria-label={getNoButtonLabel()}
+                  style={{
+                    borderRadius: buttonTransform.borderRadius,
+                    minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px`,
+                    maxWidth: '90vw',
+                    whiteSpace: 'nowrap',
+                    cursor: escapeCount >= ESCAPE_LIMIT - 1 ? 'pointer' : 'default',
+                  }}
+                >
+                  <X className="h-5 w-5 flex-shrink-0" />
+                  {getNoButtonLabel()}
+                </SecondaryButton>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Serious Decline Link - Always below play area */}
+          <div className="mt-2 text-center">
+            <button
+              onClick={onDecline}
+              className="text-helper text-stone-500 underline-offset-2 hover:text-stone-700 hover:underline focus:underline"
+              type="button"
+              aria-label={t('recipient_question_decline_serious')}
+            >
+              {t('recipient_question_decline_serious')}
+            </button>
+          </div>
+
+          {/* Notification text */}
+          <div className="mt-4 text-center">
+            <p className="text-helper text-stone-500">
+              {config.senderName} {t('recipient_question_notification')}
+            </p>
+          </div>
+        </Card>
+      </motion.div>
+    </motion.div>
+  );
+}
