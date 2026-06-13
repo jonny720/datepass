@@ -19,8 +19,8 @@ interface EasterEggProps {
 }
 
 const PLACEMENT_STYLES: Record<EasterEggPlacement, string> = {
-  'top-left': 'top-4 left-4',
-  'top-right': 'top-4 right-4',
+  'top-left': 'top-16 left-4',
+  'top-right': 'top-16 right-4',
   'bottom-left': 'bottom-4 left-4',
   'bottom-right': 'bottom-4 right-4',
 };
@@ -145,7 +145,7 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
   return (
     <>
       {/* Egg button - in original position */}
-      <div className={`fixed z-50 ${placementClass}`}>
+      <div className={`fixed z-40 ${placementClass}`}>
         <AnimatePresence mode="wait">
           {!isRevealed && !hasBeenRevealed && (
             <motion.button

@@ -29,6 +29,12 @@ describe('AppHeader', () => {
     expect(hebrewButton).toBeInTheDocument();
   });
 
+  it('stays above recipient floating elements', () => {
+    const { container } = renderHeader();
+
+    expect(container.querySelector('header')).toHaveClass('z-[10000]');
+  });
+
   it('renders Start over button when showStartOver is true', () => {
     renderHeader();
     

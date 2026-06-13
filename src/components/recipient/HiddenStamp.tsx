@@ -88,7 +88,7 @@ export function HiddenStamp({ theme, onReveal, hasBeenRevealed = false }: Hidden
       {/* Stamp partially peeking from edge */}
       <motion.button
         onClick={handleStampClick}
-        className={`absolute -right-4 top-1/2 z-10 flex h-20 w-20 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-4 ${stampConfig.borderColor} bg-white/90 backdrop-blur-sm transition-all ${
+        className={`absolute -right-4 top-1/2 z-0 flex h-20 w-20 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-4 ${stampConfig.borderColor} bg-white/90 backdrop-blur-sm transition-all ${
           isRevealed ? 'opacity-40' : 'opacity-60 hover:opacity-90'
         }`}
         style={{

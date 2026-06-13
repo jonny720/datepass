@@ -33,7 +33,7 @@ export function AppHeader({ onStartOver, showStartOver = true }: AppHeaderProps)
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur-sm">
+    <header className="fixed left-0 right-0 top-0 z-[10000] border-b border-stone-200 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex h-12 max-w-4xl items-center justify-between px-4">
         {/* Language Switcher */}
         <div className="flex gap-1">
