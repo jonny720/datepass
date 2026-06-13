@@ -306,6 +306,20 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
             )}
           </div>
 
+          {/* Persistence Easter Egg Message */}
+          {escapeCount >= 4 && escapeCount < ESCAPE_LIMIT - 1 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mb-4 text-center"
+            >
+              <p className="text-xs italic text-stone-600">
+                {t('easter_egg_no_persistence')}
+              </p>
+            </motion.div>
+          )}
+
           {/* Serious Decline Link - Always below play area */}
           <div className="mt-2 text-center">
             <button

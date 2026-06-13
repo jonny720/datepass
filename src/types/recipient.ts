@@ -6,6 +6,7 @@ export interface RecipientResponse {
   selectedActivity: ActivityId | null;
   selectedSlot: DateSlot | null;
   prefersWhatsappCoordination: boolean;
+  personalNote: string;
 }
 
 export const INITIAL_RESPONSE: RecipientResponse = {
@@ -14,6 +15,7 @@ export const INITIAL_RESPONSE: RecipientResponse = {
   selectedActivity: null,
   selectedSlot: null,
   prefersWhatsappCoordination: false,
+  personalNote: '',
 };
 
 export const RECIPIENT_STEPS = {

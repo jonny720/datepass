@@ -206,6 +206,24 @@ export interface TranslationDictionary {
   recipient_confirmation_share: string;
   recipient_confirmation_no_whatsapp_message: string;
   recipient_confirmation_create_own: string;
+  recipient_confirmation_note_label: string;
+  recipient_confirmation_note_helper: string;
+  recipient_confirmation_note_placeholder: string;
+  recipient_confirmation_note_header: string;
+
+  // Yes button variants
+  recipient_yes_lets_do_it: string;
+  recipient_yes_im_in: string;
+  recipient_yes_convinced: string;
+  recipient_yes_okay_worked: string;
+  recipient_yes_fine_cute: string;
+
+  // Easter eggs
+  easter_egg_logo_tap: string;
+  easter_egg_no_persistence: string;
+  easter_egg_score_1: string;
+  easter_egg_score_2: string;
+  easter_egg_score_3: string;
 
   // Decline screen
   recipient_decline_title: string;

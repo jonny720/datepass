@@ -9,6 +9,8 @@ export interface RecipientConfirmationParams {
   activityName: string;
   selectedSlot?: DateSlot;
   coordinateLater: boolean;
+  personalNote?: string;
+  noteHeader?: string;
 }
 
 /**
@@ -48,7 +50,7 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { language, activityName, selectedSlot, coordinateLater } = params;
+  const { language, activityName, selectedSlot, coordinateLater, personalNote, noteHeader } = params;
   
   if (language === 'he') {
     let message = 'אישרתי את ההזמנה 😌\n\n';
@@ -61,6 +63,11 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
       message += `המועד שמתאים לי: ${formattedDate} בשעה ${selectedSlot.time}`;
     }
     
+    // Append personal note if provided
+    if (personalNote && personalNote.trim()) {
+      message += `\n\n${noteHeader || 'הודעה ממני:'}\n${personalNote.trim()}`;
+    }
+    
     return message;
   } else {
     let message = 'I accepted the invitation 😌\n\n';
@@ -71,6 +78,11 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
     } else if (selectedSlot) {
       const formattedDate = formatDate(selectedSlot.date, language);
       message += `Preferred time: ${formattedDate} at ${selectedSlot.time}`;
+    }
+    
+    // Append personal note if provided
+    if (personalNote && personalNote.trim()) {
+      message += `\n\n${noteHeader || 'My note:'}\n${personalNote.trim()}`;
     }
     
     return message;

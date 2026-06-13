@@ -126,19 +126,19 @@ export const he: TranslationDictionary = {
   activity_coffee: 'קפה',
   activity_coffee_subtitle: 'אווירת קפה נעימה',
   activity_drinks: 'משקאות',
-  activity_drinks_subtitle: 'קוקטיילים בערב',
+  activity_drinks_subtitle: 'מקום שקט מספיק כדי באמת לדבר.',
   activity_restaurant: 'מסעדה',
-  activity_restaurant_subtitle: 'ארוחת ערב ביחד',
+  activity_restaurant_subtitle: 'בחירה בטוחה עם פוטנציאל גבוה לקינוח.',
   activity_sunset_walk: 'טיול בשקיעה',
-  activity_sunset_walk_subtitle: 'הליכה בשעת הזהב',
+  activity_sunset_walk_subtitle: 'מעט לחץ. הרבה פוטנציאל.',
   activity_movie: 'סרט',
-  activity_movie_subtitle: 'קולנוע או בבית',
+  activity_movie_subtitle: 'תירוץ מקובל לחלוק פופקורן.',
   activity_competitive: 'תחרותי',
-  activity_competitive_subtitle: 'משחקים או ספורט',
+  activity_competitive_subtitle: 'דרך טובה לגלות מי לא יודע להפסיד.',
   activity_creative: 'יצירתי',
   activity_creative_subtitle: 'אומנות, מוזיקה או יצירה',
   activity_surprise_me: 'הפתיעו אותי',
-  activity_surprise_me_subtitle: 'אתם בוחרים!',
+  activity_surprise_me_subtitle: 'בחירה אמיצה. אנחנו מעריכים את זה.',
 
   // Recipient flow
   recipient_title: 'הזמנה לדייט',
@@ -206,6 +206,24 @@ export const he: TranslationDictionary = {
   recipient_confirmation_share: 'שיתוף האישור',
   recipient_confirmation_no_whatsapp_message: 'העתיקו את האישור ושלחו אותו למי שהזמין אתכם.',
   recipient_confirmation_create_own: 'צרו הזמנה משלכם',
+  recipient_confirmation_note_label: 'רוצה להוסיף הודעה?',
+  recipient_confirmation_note_helper: 'לא חובה — אפשר להוסיף משהו אישי לפני שליחת האישור.',
+  recipient_confirmation_note_placeholder: 'זה היה חמוד. מאשרת.',
+  recipient_confirmation_note_header: 'הודעה ממני:',
+
+  // Yes button variants
+  recipient_yes_lets_do_it: 'יאללה, אני בפנים',
+  recipient_yes_im_in: 'אני בפנים',
+  recipient_yes_convinced: 'שכנעת אותי',
+  recipient_yes_okay_worked: 'טוב, זה עבד',
+  recipient_yes_fine_cute: 'בסדר, זה היה חמוד',
+
+  // Easter eggs
+  easter_egg_logo_tap: 'מצאת סוד קטן. סקרנות היא דגל ירוק.',
+  easter_egg_no_persistence: 'מכבדים את ההתמדה.',
+  easter_egg_score_1: 'מקור: סמכו עלינו.',
+  easter_egg_score_2: 'מדעית מפוקפק. רגשית משכנע.',
+  easter_egg_score_3: 'חושב באמצעות ניחוש מתקדם.',
 
   // Decline screen
   recipient_decline_title: 'הכול בסדר',

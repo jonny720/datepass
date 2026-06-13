@@ -127,19 +127,19 @@ export const en: TranslationDictionary = {
   activity_coffee: 'Coffee',
   activity_coffee_subtitle: 'Cozy café vibes',
   activity_drinks: 'Drinks',
-  activity_drinks_subtitle: 'Evening cocktails',
+  activity_drinks_subtitle: 'Somewhere quiet enough to actually talk.',
   activity_restaurant: 'Restaurant',
-  activity_restaurant_subtitle: 'Dinner together',
+  activity_restaurant_subtitle: 'A safe choice with strong dessert potential.',
   activity_sunset_walk: 'Sunset Walk',
-  activity_sunset_walk_subtitle: 'Stroll at golden hour',
+  activity_sunset_walk_subtitle: 'Low pressure. High potential.',
   activity_movie: 'Movie',
-  activity_movie_subtitle: 'Cinema or streaming',
+  activity_movie_subtitle: 'A socially acceptable excuse to share popcorn.',
   activity_competitive: 'Competitive',
-  activity_competitive_subtitle: 'Game night or sports',
+  activity_competitive_subtitle: 'Useful for discovering who cannot handle losing.',
   activity_creative: 'Creative',
   activity_creative_subtitle: 'Art, music, or crafts',
   activity_surprise_me: 'Surprise Me',
-  activity_surprise_me_subtitle: 'You choose!',
+  activity_surprise_me_subtitle: 'A bold choice. We respect it.',
 
   // Recipient flow
   recipient_title: 'Date Invitation',
@@ -207,6 +207,24 @@ export const en: TranslationDictionary = {
   recipient_confirmation_share: 'Share confirmation',
   recipient_confirmation_no_whatsapp_message: 'Copy the confirmation and send it to the person who invited you.',
   recipient_confirmation_create_own: 'Create your own invitation',
+  recipient_confirmation_note_label: 'Want to add a message?',
+  recipient_confirmation_note_helper: 'Optional — add something personal before sending your answer.',
+  recipient_confirmation_note_placeholder: 'This was cute. I approve.',
+  recipient_confirmation_note_header: 'My note:',
+
+  // Yes button variants
+  recipient_yes_lets_do_it: 'Yes, let\'s do it',
+  recipient_yes_im_in: 'I\'m in',
+  recipient_yes_convinced: 'You convinced me',
+  recipient_yes_okay_worked: 'Okay, that worked',
+  recipient_yes_fine_cute: 'Fine, this was cute',
+
+  // Easter eggs
+  easter_egg_logo_tap: 'You found a secret. Curiosity is a green flag.',
+  easter_egg_no_persistence: 'Respect for the persistence.',
+  easter_egg_score_1: 'Source: trust me.',
+  easter_egg_score_2: 'Scientifically questionable. Emotionally convincing.',
+  easter_egg_score_3: 'Calculated using advanced guessing.',
 
   // Decline screen
   recipient_decline_title: 'All good',

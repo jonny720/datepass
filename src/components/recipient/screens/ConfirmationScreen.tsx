@@ -31,6 +31,9 @@ export function ConfirmationScreen({
 }: ConfirmationScreenProps) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [personalNote, setPersonalNote] = useState('');
+  const [scoreDisclaimerIndex, setScoreDisclaimerIndex] = useState(0);
+  const MAX_NOTE_LENGTH = 160;
 
   const isCruiseTheme = config.theme === 'cruise';
   const isMissionTheme = config.theme === 'secret_mission';
@@ -43,6 +46,18 @@ export function ConfirmationScreen({
     ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
     : '';
 
+  // Cycle through playful score disclaimers
+  const scoreDisclaimers = [
+    t('recipient_confirmation_score_disclaimer'),
+    t('easter_egg_score_1'),
+    t('easter_egg_score_2'),
+    t('easter_egg_score_3'),
+  ];
+
+  const handleScoreTap = () => {
+    setScoreDisclaimerIndex((prev) => (prev + 1) % scoreDisclaimers.length);
+  };
+
   // Build confirmation message (same for all actions)
   const confirmationMessage = buildRecipientConfirmationMessage({
     creatorPhone: config.whatsappNumber,
@@ -50,6 +65,8 @@ export function ConfirmationScreen({
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
     coordinateLater: !response.selectedSlot,
+    personalNote: personalNote.trim(),
+    noteHeader: t('recipient_confirmation_note_header'),
   });
 
   // Build WhatsApp URL (returns null if no valid phone)
@@ -59,6 +76,8 @@ export function ConfirmationScreen({
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
     coordinateLater: !response.selectedSlot,
+    personalNote: personalNote.trim(),
+    noteHeader: t('recipient_confirmation_note_header'),
   });
 
   // Development diagnostics
@@ -196,10 +215,52 @@ export function ConfirmationScreen({
             </Card>
           </motion.div>
 
+          {/* Optional Personal Note */}
+          <motion.div variants={fadeInUp}>
+            <Card className="bg-white/90 backdrop-blur-sm">
+              <div className="space-y-2">
+                <label htmlFor="personal-note-cruise" className="text-sm font-semibold text-stone-700">
+                  {t('recipient_confirmation_note_label')}
+                </label>
+                <p className="text-xs text-stone-500">
+                  {t('recipient_confirmation_note_helper')}
+                </p>
+                <textarea
+                  id="personal-note-cruise"
+                  value={personalNote}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length <= MAX_NOTE_LENGTH) {
+                      setPersonalNote(value);
+                    }
+                  }}
+                  placeholder={t('recipient_confirmation_note_placeholder')}
+                  rows={3}
+                  maxLength={MAX_NOTE_LENGTH}
+                  className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/20"
+                />
+                <div className="flex justify-end">
+                  <span className={`text-xs ${personalNote.length >= MAX_NOTE_LENGTH ? 'text-pink-600 font-semibold' : 'text-stone-400'}`}>
+                    {personalNote.length} / {MAX_NOTE_LENGTH}
+                  </span>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+
           {/* Compatibility Score */}
           <motion.div 
-            className="rounded-xl bg-white/80 p-4 text-center backdrop-blur-sm"
+            className="cursor-pointer rounded-xl bg-white/80 p-4 text-center backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
             variants={fadeInUp}
+            onClick={handleScoreTap}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleScoreTap();
+              }
+            }}
           >
             <div className="mb-2 flex items-center justify-center gap-2">
               <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
@@ -209,7 +270,7 @@ export function ConfirmationScreen({
               <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
             </div>
             <p className="text-xs italic text-stone-600">
-              {t('recipient_confirmation_score_disclaimer')}
+              {scoreDisclaimers[scoreDisclaimerIndex]}
             </p>
           </motion.div>
 
@@ -365,10 +426,52 @@ export function ConfirmationScreen({
             </Card>
           </motion.div>
 
+          {/* Optional Personal Note */}
+          <motion.div variants={fadeInUp}>
+            <Card className="bg-white/90 backdrop-blur-sm">
+              <div className="space-y-2">
+                <label htmlFor="personal-note-mission" className="text-sm font-semibold text-stone-700">
+                  {t('recipient_confirmation_note_label')}
+                </label>
+                <p className="text-xs text-stone-500">
+                  {t('recipient_confirmation_note_helper')}
+                </p>
+                <textarea
+                  id="personal-note-mission"
+                  value={personalNote}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length <= MAX_NOTE_LENGTH) {
+                      setPersonalNote(value);
+                    }
+                  }}
+                  placeholder={t('recipient_confirmation_note_placeholder')}
+                  rows={3}
+                  maxLength={MAX_NOTE_LENGTH}
+                  className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/20"
+                />
+                <div className="flex justify-end">
+                  <span className={`text-xs ${personalNote.length >= MAX_NOTE_LENGTH ? 'text-pink-600 font-semibold' : 'text-stone-400'}`}>
+                    {personalNote.length} / {MAX_NOTE_LENGTH}
+                  </span>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+
           {/* Compatibility Score */}
           <motion.div 
-            className="rounded-xl bg-white/80 p-4 text-center backdrop-blur-sm"
+            className="cursor-pointer rounded-xl bg-white/80 p-4 text-center backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
             variants={fadeInUp}
+            onClick={handleScoreTap}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleScoreTap();
+              }
+            }}
           >
             <div className="mb-2 flex items-center justify-center gap-2">
               <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
@@ -378,7 +481,7 @@ export function ConfirmationScreen({
               <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
             </div>
             <p className="text-xs italic text-stone-600">
-              {t('recipient_confirmation_score_disclaimer')}
+              {scoreDisclaimers[scoreDisclaimerIndex]}
             </p>
           </motion.div>
 

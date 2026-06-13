@@ -44,6 +44,7 @@ const mockResponse: RecipientResponse = {
   selectedActivity: 'coffee',
   selectedSlot: mockConfigCruise.dateSlots[0],
   prefersWhatsappCoordination: false,
+  personalNote: '',
 };
 
 const screens = [
