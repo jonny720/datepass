@@ -208,7 +208,7 @@ export const he: TranslationDictionary = {
   // Recipient Screen 5: Slot Choice
   recipient_slot_title: 'מתי מתאים לך?',
   recipient_slot_subtitle: 'בחרו את הזמן המועדף',
-  recipient_slot_coordinate_whatsapp: 'תיאום בווטסאפ',
+  recipient_slot_coordinate_whatsapp: 'נתאם בווטסאפ',
   recipient_slot_choose_one: 'בחרו זמן',
 
   // Recipient Screen 6: Confirmation

@@ -29,10 +29,13 @@ export function SlotChoiceScreen({
 }: SlotChoiceScreenProps) {
   const { t } = useLanguage();
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
+  const validDateSlots = config.dateSlots.filter(
+    (slot) => slot.date.trim() && slot.time.trim()
+  );
 
   const handleSelect = () => {
     if (selectedSlotId) {
-      const slot = config.dateSlots.find((s) => s.id === selectedSlotId);
+      const slot = validDateSlots.find((s) => s.id === selectedSlotId);
       if (slot) {
         onSelectSlot(slot);
       }
@@ -64,7 +67,7 @@ export function SlotChoiceScreen({
             initial="initial"
             animate="animate"
           >
-            {config.dateSlots.map((slot, index) => (
+            {validDateSlots.map((slot, index) => (
               <motion.div
                 key={slot.id}
                 variants={fadeInUp}
@@ -85,7 +88,7 @@ export function SlotChoiceScreen({
             {/* Always include WhatsApp coordination option */}
             <motion.div
               variants={fadeInUp}
-              transition={{ delay: config.dateSlots.length * 0.08 }}
+              transition={{ delay: validDateSlots.length * 0.08 }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -94,7 +97,6 @@ export function SlotChoiceScreen({
                 onClick={() => setSelectedSlotId('whatsapp-coordinate')}
                 icon={<MessageCircle className="h-6 w-6" />}
                 title={t('recipient_slot_coordinate_whatsapp')}
-                description={t('recipient_confirmation_coordinate')}
               />
             </motion.div>
           </motion.div>

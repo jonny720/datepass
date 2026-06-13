@@ -209,7 +209,7 @@ export const en: TranslationDictionary = {
   // Recipient Screen 5: Slot Choice
   recipient_slot_title: 'When works for you?',
   recipient_slot_subtitle: 'Pick your preferred time',
-  recipient_slot_coordinate_whatsapp: 'Coordinate on WhatsApp',
+  recipient_slot_coordinate_whatsapp: 'We\'ll coordinate on WhatsApp',
   recipient_slot_choose_one: 'Choose a time',
 
   // Recipient Screen 6: Confirmation
