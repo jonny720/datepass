@@ -32,6 +32,7 @@ export function useEasterEggState(options?: UseEasterEggStateOptions): EasterEgg
     options?.onFound?.();
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shouldShowOnScreen = (_screen: EasterEggScreen) => {
     // Show on ALL screens until revealed (more discoverable)
     return !hasBeenRevealed;
