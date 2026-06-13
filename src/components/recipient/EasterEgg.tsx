@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ThemeId } from '@/types';
 import type { EasterEggPlacement } from '@/config/easterEggPlacements';
@@ -73,30 +74,6 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
     message: message.en 
   });
 
-  // Show message when egg is revealed
-  useEffect(() => {
-    if (isRevealed) {
-      console.log('🥚 useEffect: Showing message');
-      setShowMessage(true);
-      
-      // Check for rare bonus
-      if (shouldShowRareBonus()) {
-        setTimeout(() => {
-          console.log('🥚 useEffect: Showing rare bonus');
-          setShowRareBonus(true);
-        }, 600);
-      }
-      
-      // Hide message after delay
-      const hideTimer = setTimeout(() => {
-        console.log('🥚 useEffect: Hiding message');
-        setShowMessage(false);
-      }, 8000);
-      
-      return () => clearTimeout(hideTimer);
-    }
-  }, [isRevealed]);
-
   const themeColors = THEME_COLORS[theme];
   const placementClass = PLACEMENT_STYLES[placement];
 
@@ -106,11 +83,26 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
     console.log('🥚 Easter egg tapped!');
     setIsTapping(true);
     
-    // Crack animation then reveal (useEffect will handle showing message)
+    // Crack animation then reveal and show message
     setTimeout(() => {
-      console.log('🥚 Setting isRevealed to true');
+      console.log('🥚 Revealing egg and showing message');
       setIsRevealed(true);
+      setShowMessage(true);
       onReveal?.();
+      
+      // Check for rare bonus
+      if (shouldShowRareBonus()) {
+        setTimeout(() => {
+          console.log('🥚 Showing rare bonus');
+          setShowRareBonus(true);
+        }, 600);
+      }
+      
+      // Hide message after delay
+      setTimeout(() => {
+        console.log('🥚 Hiding message');
+        setShowMessage(false);
+      }, 8000);
     }, 400);
   };
 
@@ -268,24 +260,21 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
       </div>
 
       {/* Message card - SEPARATE PORTAL-LIKE FIXED ELEMENT */}
-      <AnimatePresence>
-        {showMessage && (
+      {showMessage && createPortal(
+        <motion.div
+          className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <motion.div
-            className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
-            style={{ pointerEvents: 'none' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className="w-full max-w-md"
+            initial={{ scale: 0.5, y: -100 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.8, y: 20 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
           >
-            <motion.div
-              className="w-full max-w-md"
-              style={{ pointerEvents: 'auto' }}
-              initial={{ scale: 0.5, y: -100 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.8, y: 20 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-            >
               <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${themeColors.shell} p-6 shadow-2xl ring-4 ring-white/50`}>
                 {/* Sparkle decorations */}
                 <motion.div
@@ -337,9 +326,9 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
                 </motion.p>
               </div>
             </motion.div>
-          </motion.div>
+          </motion.div>,
+          document.body
         )}
-      </AnimatePresence>
     </>
   );
 }

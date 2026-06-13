@@ -69,7 +69,7 @@ export function DevMode() {
     targetScreen: 'arrival' as const,
     hasBeenRevealed: false,
     markAsRevealed: () => console.log('Easter egg revealed'),
-    shouldShowOnScreen: () => false, // Don't show in DevMode to avoid distraction
+    shouldShowOnScreen: () => false, // Don't show in DevMode
   };
 
   const renderScreen = () => {
