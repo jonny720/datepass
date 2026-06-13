@@ -10,9 +10,11 @@ import type { InviteConfig } from '@/types';
 describe('compactPayload', () => {
   const baseConfig: InviteConfig = {
     version: 1,
+    inviteType: 'date',
     language: 'en',
     senderName: 'Alice',
     recipientName: 'Bob',
+    recipientGender: 'female',
     theme: 'cruise',
     introTone: 'light',
     introCards: [],
@@ -27,6 +29,8 @@ describe('compactPayload', () => {
 
       expect(compact).toEqual({
         v: 2,
+        y: 'd',
+        g: 'f',
         l: 'e',
         s: 'Alice',
         r: 'Bob',
@@ -51,12 +55,13 @@ describe('compactPayload', () => {
     });
 
     it('maps theme to compact code', () => {
-      const themes: Array<{ theme: 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark'; code: string }> = [
+      const themes: Array<{ theme: 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark' | 'temptation'; code: string }> = [
         { theme: 'cruise', code: 'c' },
         { theme: 'secret_mission', code: 'm' },
         { theme: 'nature', code: 'n' },
         { theme: 'party', code: 'p' },
         { theme: 'after_dark', code: 'd' },
+        { theme: 'temptation', code: 't' },
       ];
 
       themes.forEach(({ theme, code }) => {
@@ -212,6 +217,8 @@ describe('compactPayload', () => {
         recipientName: 'Bob',
         theme: 'cruise',
         introTone: 'light',
+        inviteType: 'date',
+        recipientGender: 'female',
         whatsappNumber: '',
       });
       expect(config.introCards).toEqual([]);
@@ -243,6 +250,7 @@ describe('compactPayload', () => {
         { code: 'n', theme: 'nature' },
         { code: 'p', theme: 'party' },
         { code: 'd', theme: 'after_dark' },
+        { code: 't', theme: 'temptation' },
       ];
 
       themes.forEach(({ code, theme }) => {
@@ -372,9 +380,11 @@ describe('compactPayload', () => {
     it('round-trips complete config correctly', () => {
       const original: InviteConfig = {
         version: 1,
+        inviteType: 'date',
         language: 'he',
         senderName: 'שרה',
         recipientName: 'דוד',
+        recipientGender: 'female',
         theme: 'secret_mission',
         introTone: 'flirty',
         introCards: [

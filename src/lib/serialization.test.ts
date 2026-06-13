@@ -10,9 +10,11 @@ import type { InviteConfig } from '@/types';
 describe('serialization', () => {
   const validConfig: InviteConfig = {
     version: 1,
+    inviteType: 'date',
     language: 'en',
     senderName: 'Alice',
     recipientName: 'Bob',
+    recipientGender: 'female',
     theme: 'cruise',
     introTone: 'light',
     introCards: [
@@ -195,7 +197,10 @@ describe('serialization', () => {
       };
       const encoded = encodeInvite(configWithoutWhatsapp);
       const decoded = decodeInvite(encoded);
-      expect(decoded).toEqual(configWithoutWhatsapp);
+      const expectedWithoutWhatsapp = { ...configWithoutWhatsapp };
+      delete expectedWithoutWhatsapp.whatsappNumber;
+      expect(decoded).toEqual(expectedWithoutWhatsapp);
+      expect(decoded.whatsappNumber).toBeUndefined();
     });
 
     it('handles multiple intro cards', () => {

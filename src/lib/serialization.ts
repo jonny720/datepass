@@ -85,7 +85,7 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
   }
 
   if (c.recipientGender === undefined) {
-    c.recipientGender = 'private';
+    c.recipientGender = 'female';
   } else if (!['male', 'female', 'private'].includes(c.recipientGender)) {
     throw new InviteValidationError('Invalid recipient gender');
   }

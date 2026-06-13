@@ -135,7 +135,7 @@ export function toCompactPayload(config: InviteConfig): CompactInvitePayloadV2 {
   const payload: CompactInvitePayloadV2 = {
     v: 2,
     y: INVITE_TYPE_TO_CODE[config.inviteType || 'date'],
-    g: RECIPIENT_GENDER_TO_CODE[config.recipientGender || 'private'],
+    g: RECIPIENT_GENDER_TO_CODE[config.recipientGender || 'female'],
     l: config.language === 'he' ? 'h' : 'e',
     s: config.senderName,
     r: config.recipientName,
@@ -182,7 +182,7 @@ export function fromCompactPayload(
   const config: InviteConfig = {
     version: 1,
     inviteType: CODE_TO_INVITE_TYPE[payload.y as keyof typeof CODE_TO_INVITE_TYPE] || 'date',
-    recipientGender: CODE_TO_RECIPIENT_GENDER[payload.g as keyof typeof CODE_TO_RECIPIENT_GENDER] || 'private',
+    recipientGender: CODE_TO_RECIPIENT_GENDER[payload.g as keyof typeof CODE_TO_RECIPIENT_GENDER] || 'female',
     language: payload.l === 'h' ? 'he' : 'en',
     senderName: payload.s,
     recipientName: payload.r,

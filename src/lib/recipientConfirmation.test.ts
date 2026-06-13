@@ -19,6 +19,7 @@ describe('buildRecipientConfirmationMessage', () => {
       activityName: 'קפה',
       coordinateLater: true,
       arrivalPreference: 'self',
+      recipientGender: 'female',
     });
 
     expect(message).toContain('איך אני מגיעה: אני אגיע בעצמי');

@@ -53,8 +53,8 @@ describe('i18n', () => {
       const enResult = translate('en', 'landing_subtitle');
       const heResult = translate('he', 'landing_subtitle');
       
-      expect(enResult).toBe('Create playful date invitations');
-      expect(heResult).toBe('צור הזמנות דייט מקוריות');
+      expect(enResult).toBe('Create playful invitations');
+      expect(heResult).toBe('צרו הזמנות אינטראקטיביות מקוריות');
     });
 
     it('translates all keys without errors', () => {

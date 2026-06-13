@@ -18,7 +18,7 @@ export interface RecipientResponse {
 
 export const INITIAL_RESPONSE: RecipientResponse = {
   step: 1,
-  recipientGender: null,
+  recipientGender: 'female',
   wantsDate: null,
   arrivalPreference: null,
   selectedActivity: null,

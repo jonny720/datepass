@@ -5,6 +5,6 @@ export function heByGender(
   options: { male: string; female: string; private: string }
 ) {
   if (gender === 'male') return options.male;
-  if (gender === 'female') return options.female;
+  if (gender === 'female' || gender === null || gender === undefined) return options.female;
   return options.private;
 }

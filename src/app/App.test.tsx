@@ -29,7 +29,7 @@ describe('App', () => {
     );
     expect(screen.getByText('DatePass')).toBeInTheDocument();
     expect(
-      screen.getByText('Create playful date invitations')
+      screen.getByText('Create playful invitations')
     ).toBeInTheDocument();
     expect(
       screen.getByText('Static app for fun only. No data is saved or stored.')

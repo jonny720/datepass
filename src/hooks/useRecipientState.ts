@@ -5,7 +5,7 @@ import { INITIAL_RESPONSE, RECIPIENT_STEPS } from '@/types';
 export function useRecipientState(config: InviteConfig) {
   const [response, setResponse] = useState<RecipientResponse>({
     ...INITIAL_RESPONSE,
-    recipientGender: config.recipientGender || 'private',
+    recipientGender: config.recipientGender || 'female',
   });
 
   // Check if intro cards should be shown
