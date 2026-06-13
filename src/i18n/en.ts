@@ -9,6 +9,7 @@ export const en: TranslationDictionary = {
   app_start_over_description: 'This will clear the invitation you are currently creating.',
   app_start_over_confirm: 'Start over',
   app_start_over_cancel: 'Cancel',
+  app_static_disclaimer: 'Static app for fun only. No data is saved or stored.',
   app_not_found_title: 'Page not found',
   app_not_found_subtitle: "The page you're looking for doesn't exist.",
   app_go_home: 'Go to Home',
@@ -191,7 +192,7 @@ export const en: TranslationDictionary = {
   recipient_question_no_escape_5: 'Persistent, huh?',
   recipient_question_no_escape_6: 'Fine, you can click me now',
   recipient_question_decline_serious: 'No thanks, seriously',
-  recipient_question_notification: 'will get your answer',
+  recipient_question_notification: 'will not get your answer if you will not tell him',
 
   // Recipient Screen 4: Arrival Preference
   recipient_arrival_preference_title: 'How are you getting there?',
@@ -250,7 +251,7 @@ export const en: TranslationDictionary = {
   // Decline screen
   recipient_decline_title: 'All good',
   recipient_decline_subtitle: 'At least the effects were cool',
-  recipient_decline_notification: 'will know',
+  recipient_decline_notification: 'will not get your answer if you will not tell him',
 
   // Invalid link
   invalid_link_title: 'Invalid Link',

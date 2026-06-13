@@ -8,7 +8,7 @@ import { DevMode } from '@/components/DevMode';
 import { AppShell, AppHeader } from '@/components/ui';
 
 function App() {
-  const { config, language, setLanguage } = useLanguage();
+  const { config, language, setLanguage, t } = useLanguage();
   const { route, navigate } = useNavigation();
   const syncedInviteConfigRef = useRef<unknown>(null);
 
@@ -60,9 +60,14 @@ function App() {
         <AppHeader onStartOver={handleStartOver} showStartOver={showStartOver} />
         <div
           dir={config.direction}
-          className="pt-12"
+          className="pb-10 pt-12"
         >
           {renderRoute()}
+        </div>
+        <div className="pointer-events-none fixed inset-x-0 bottom-2 z-30 flex justify-center px-4">
+          <p className="rounded-full bg-white/85 px-3 py-1 text-center text-[11px] font-medium text-stone-500 shadow-sm backdrop-blur-sm">
+            {t('app_static_disclaimer')}
+          </p>
         </div>
       </AppShell>
     </ErrorBoundary>

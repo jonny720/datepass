@@ -404,7 +404,9 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
           {/* Notification text */}
           <div className="mt-4 text-center">
             <p className="text-helper text-stone-500">
-              {config.senderName} {t('recipient_question_notification')}
+              {language === 'he'
+                ? `${t('recipient_question_notification')} ${config.senderName}`
+                : `${config.senderName} ${t('recipient_question_notification')}`}
             </p>
           </div>
         </Card>

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { LanguageProvider } from '@/hooks/useLanguage';
 import { INITIAL_DRAFT } from '@/types';
@@ -31,5 +31,28 @@ describe('ReviewStep', () => {
     expect(firstPreset).toHaveClass('text-stone-950');
     expect(secondPreset).toHaveClass('text-stone-800');
     expect(secondPreset).not.toHaveClass('text-white');
+  });
+
+  it('positions preview mode below the main top bar', () => {
+    const { container } = render(
+      <LanguageProvider>
+        <ReviewStep
+          draft={{
+            ...INITIAL_DRAFT,
+            senderName: 'Alex',
+            recipientName: 'Jordan',
+            theme: 'party',
+            activityIds: ['coffee'],
+          }}
+          onBack={() => {}}
+          onReset={() => {}}
+        />
+      </LanguageProvider>
+    );
+
+    fireEvent.click(screen.getByText('Preview full experience'));
+
+    expect(screen.getByText('Preview mode')).toBeInTheDocument();
+    expect(container.querySelector('.top-12')).toBeInTheDocument();
   });
 });

@@ -196,7 +196,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
     <>
       {/* Preview Mode */}
       {showPreview && previewConfig && (
-        <div className="fixed inset-0 z-50 flex flex-col">
+        <div className="fixed inset-x-0 bottom-0 top-12 z-50 flex flex-col">
           {/* Sticky Exit Bar */}
           <div className="sticky top-0 z-50 flex items-center justify-between border-b border-stone-300 bg-amber-100 px-4 py-3 shadow-md">
             <div className="flex items-center gap-2">

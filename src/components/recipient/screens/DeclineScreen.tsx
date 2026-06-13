@@ -15,7 +15,7 @@ interface DeclineScreenProps {
 }
 
 export function DeclineScreen({ config, onCreateOwn }: DeclineScreenProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <motion.div 
@@ -57,7 +57,9 @@ export function DeclineScreen({ config, onCreateOwn }: DeclineScreenProps) {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-stone-500">
-              {config.senderName} {t('recipient_decline_notification')}
+              {language === 'he'
+                ? `${t('recipient_decline_notification')} ${config.senderName}`
+                : `${config.senderName} ${t('recipient_decline_notification')}`}
             </p>
           </div>
         </Card>

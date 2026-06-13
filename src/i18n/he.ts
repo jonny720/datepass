@@ -9,6 +9,7 @@ export const he: TranslationDictionary = {
   app_start_over_description: 'הפעולה תמחק את ההזמנה שבנית עד עכשיו.',
   app_start_over_confirm: 'להתחיל מחדש',
   app_start_over_cancel: 'ביטול',
+  app_static_disclaimer: 'אפליקציה סטטית לכיף בלבד. לא נשמרים או מאוחסנים נתונים.',
   app_not_found_title: 'הדף לא נמצא',
   app_not_found_subtitle: 'הדף שחיפשת לא קיים.',
   app_go_home: 'חזרה לדף הבית',
@@ -190,7 +191,7 @@ export const he: TranslationDictionary = {
   recipient_question_no_escape_5: 'עקשנית, אה?',
   recipient_question_no_escape_6: 'טוב, עכשיו באמת אפשר ללחוץ',
   recipient_question_decline_serious: 'לא תודה, ברצינות',
-  recipient_question_notification: 'יקבל את התשובה',
+  recipient_question_notification: 'לא יקבל את התשובה אם לא תגידי לו',
 
   // Recipient Screen 4: Arrival Preference
   recipient_arrival_preference_title: 'איך את מגיעה?',
@@ -249,7 +250,7 @@ export const he: TranslationDictionary = {
   // Decline screen
   recipient_decline_title: 'הכול בסדר',
   recipient_decline_subtitle: 'לפחות האפקטים היו מגניבים',
-  recipient_decline_notification: 'יקבל הודעה',
+  recipient_decline_notification: 'לא יקבל את התשובה אם לא תגידי לו',
 
   // Invalid link
   invalid_link_title: 'קישור לא תקין',

@@ -95,6 +95,23 @@ describe('MainQuestionScreen - Escaping No Button', () => {
     expect(screen.getByText(/No thanks, seriously/i)).toBeInTheDocument();
   });
 
+  it('renders the updated notification message', () => {
+    render(
+      <LanguageProvider>
+        <MainQuestionScreen
+          config={mockConfig}
+          onYes={() => {}}
+          onNo={() => {}}
+          onDecline={() => {}}
+        />
+      </LanguageProvider>
+    );
+
+    expect(
+      screen.getByText('Test Sender will not get your answer if you will not tell him')
+    ).toBeInTheDocument();
+  });
+
   it('calls onDecline when serious decline link is clicked', () => {
     const onYes = vi.fn();
     const onNo = vi.fn();

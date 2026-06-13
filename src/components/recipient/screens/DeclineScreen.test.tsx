@@ -31,7 +31,7 @@ describe('DeclineScreen', () => {
     expect(screen.getByText(/At least the effects were cool/i)).toBeInTheDocument();
   });
 
-  it('shows sender name in notification', () => {
+  it('shows updated notification copy', () => {
     const onCreateOwn = vi.fn();
 
     render(
@@ -40,7 +40,9 @@ describe('DeclineScreen', () => {
       </LanguageProvider>
     );
 
-    expect(screen.getByText(/Test Sender/i)).toBeInTheDocument();
+    expect(
+      screen.getByText('Test Sender will not get your answer if you will not tell him')
+    ).toBeInTheDocument();
   });
 
   it('calls onCreateOwn when create own button is clicked', () => {

@@ -9,6 +9,7 @@ export interface TranslationDictionary {
   app_start_over_description: string;
   app_start_over_confirm: string;
   app_start_over_cancel: string;
+  app_static_disclaimer: string;
   app_not_found_title: string;
   app_not_found_subtitle: string;
   app_go_home: string;

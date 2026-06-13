@@ -31,6 +31,9 @@ describe('App', () => {
     expect(
       screen.getByText('Create playful date invitations')
     ).toBeInTheDocument();
+    expect(
+      screen.getByText('Static app for fun only. No data is saved or stored.')
+    ).toBeInTheDocument();
   });
 
   it('renders the landing screen for root hash', () => {
