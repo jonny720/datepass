@@ -21,7 +21,8 @@ function isCreatorDraft(data: unknown): data is CreatorDraft {
 
 function loadDraft(): CreatorDraft {
   const draft = safeLocalStorageGet<CreatorDraft>(STORAGE_KEY, isCreatorDraft);
-  return draft || { ...INITIAL_DRAFT };
+  // Merge with INITIAL_DRAFT to ensure all properties exist (handles old drafts)
+  return draft ? { ...INITIAL_DRAFT, ...draft } : { ...INITIAL_DRAFT };
 }
 
 function saveDraft(draft: CreatorDraft): void {

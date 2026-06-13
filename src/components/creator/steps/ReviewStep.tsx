@@ -39,7 +39,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
   useEffect(() => {
     // Build international WhatsApp number if provided
     let whatsappNumber: string | undefined;
-    if (draft.localPhoneNumber.trim()) {
+    if ((draft.localPhoneNumber || '').trim()) {
       const country = findCountryByIso2(draft.selectedCountryIso2);
       if (country) {
         whatsappNumber = buildInternationalWhatsAppNumber({
@@ -112,7 +112,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
   const handlePreview = () => {
     // Build international WhatsApp number if provided
     let whatsappNumber: string | undefined;
-    if (draft.localPhoneNumber.trim()) {
+    if ((draft.localPhoneNumber || '').trim()) {
       const country = findCountryByIso2(draft.selectedCountryIso2);
       if (country) {
         whatsappNumber = buildInternationalWhatsAppNumber({

@@ -47,7 +47,7 @@ export function WhatsAppStep({ draft, updateDraft, onNext, onBack }: WhatsAppSte
   };
 
   const handleContinue = () => {
-    const trimmedValue = draft.localPhoneNumber.trim();
+    const trimmedValue = (draft.localPhoneNumber || '').trim();
     
     // If empty, allow skipping
     if (!trimmedValue) {
@@ -88,7 +88,7 @@ export function WhatsAppStep({ draft, updateDraft, onNext, onBack }: WhatsAppSte
       <div className="mb-6 space-y-4">
         <div className="space-y-3">
           <CountryDialCodeSelect
-            value={draft.selectedCountryIso2}
+            value={draft.selectedCountryIso2 || 'IL'}
             onChange={handleCountryChange}
             label={t('creator_whatsapp_country_label')}
           />
@@ -96,7 +96,7 @@ export function WhatsAppStep({ draft, updateDraft, onNext, onBack }: WhatsAppSte
           <div>
             <TextInput
               label={t('creator_whatsapp_phone_label')}
-              value={draft.localPhoneNumber}
+              value={draft.localPhoneNumber || ''}
               onChange={handlePhoneChange}
               placeholder={t('creator_whatsapp_placeholder')}
               type="tel"
@@ -132,7 +132,7 @@ export function WhatsAppStep({ draft, updateDraft, onNext, onBack }: WhatsAppSte
         <SecondaryButton onClick={onBack} size="lg">
           {t('back')}
         </SecondaryButton>
-        {draft.localPhoneNumber.trim() ? (
+        {(draft.localPhoneNumber || '').trim() ? (
           <PrimaryButton onClick={handleContinue} fullWidth size="lg">
             {t('next')}
           </PrimaryButton>
