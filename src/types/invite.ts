@@ -1,6 +1,7 @@
 export type Language = 'he' | 'en';
 
 export type InviteType = 'date' | 'birthday' | 'friends-night';
+export type RecipientGender = 'male' | 'female' | 'private';
 
 export type ThemeId = 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark';
 
@@ -57,6 +58,7 @@ export interface InviteConfig {
   language: Language;
   senderName: string;
   recipientName: string;
+  recipientGender?: RecipientGender;
   theme: ThemeId;
   introTone: IntroTone;
   introCards: IntroCard[];

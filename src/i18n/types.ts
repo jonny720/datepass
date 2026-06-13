@@ -41,6 +41,10 @@ export interface TranslationDictionary {
   creator_names_subtitle: string;
   creator_your_name: string;
   creator_recipient_name: string;
+  creator_recipient_gender_label: string;
+  creator_recipient_gender_male: string;
+  creator_recipient_gender_female: string;
+  creator_recipient_gender_private: string;
   creator_name_required: string;
   creator_name_placeholder_sender: string;
   creator_name_placeholder_recipient: string;

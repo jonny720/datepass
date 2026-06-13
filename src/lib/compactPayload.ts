@@ -11,6 +11,7 @@ import type { InviteConfig, IntroCard, DateSlot } from '@/types';
 export type CompactInvitePayloadV2 = {
   v: 2; // version
   y?: 'd' | 'b' | 'f'; // invite type: d=date, b=birthday, f=friends-night
+  g?: 'm' | 'f' | 'p'; // recipient gender: m=male, f=female, p=private
   l: 'h' | 'e'; // language: h=Hebrew, e=English
   s: string; // sender name
   r: string; // recipient name
@@ -49,6 +50,18 @@ const CODE_TO_INVITE_TYPE = {
   d: 'date',
   b: 'birthday',
   f: 'friends-night',
+} as const;
+
+const RECIPIENT_GENDER_TO_CODE = {
+  male: 'm',
+  female: 'f',
+  private: 'p',
+} as const;
+
+const CODE_TO_RECIPIENT_GENDER = {
+  m: 'male',
+  f: 'female',
+  p: 'private',
 } as const;
 
 // Intro tone code mappings
@@ -120,6 +133,7 @@ export function toCompactPayload(config: InviteConfig): CompactInvitePayloadV2 {
   const payload: CompactInvitePayloadV2 = {
     v: 2,
     y: INVITE_TYPE_TO_CODE[config.inviteType || 'date'],
+    g: RECIPIENT_GENDER_TO_CODE[config.recipientGender || 'private'],
     l: config.language === 'he' ? 'h' : 'e',
     s: config.senderName,
     r: config.recipientName,
@@ -166,6 +180,7 @@ export function fromCompactPayload(
   const config: InviteConfig = {
     version: 1,
     inviteType: CODE_TO_INVITE_TYPE[payload.y as keyof typeof CODE_TO_INVITE_TYPE] || 'date',
+    recipientGender: CODE_TO_RECIPIENT_GENDER[payload.g as keyof typeof CODE_TO_RECIPIENT_GENDER] || 'private',
     language: payload.l === 'h' ? 'he' : 'en',
     senderName: payload.s,
     recipientName: payload.r,
@@ -237,6 +252,10 @@ export function validateCompactPayload(
   }
 
   if (p.y !== undefined && typeof p.y !== 'string') {
+    return false;
+  }
+
+  if (p.g !== undefined && typeof p.g !== 'string') {
     return false;
   }
 

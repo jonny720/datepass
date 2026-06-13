@@ -106,6 +106,35 @@ Format code:
 npm run format
 ```
 
+## Easter egg sounds
+
+Easter egg sounds are generated locally with the Web Audio API.
+
+To change the sound, edit:
+
+```text
+src/config/soundConfig.ts
+```
+
+Available sounds:
+- off
+- soft-pop
+- tiny-boop
+- sparkle
+- soft-quack
+
+Example:
+
+```ts
+export const EASTER_EGG_SOUND = "sparkle";
+```
+
+To disable all Easter egg sounds:
+
+```ts
+export const ENABLE_EASTER_EGG_SOUNDS = false;
+```
+
 ## Deployment
 
 ### GitHub Pages Deployment

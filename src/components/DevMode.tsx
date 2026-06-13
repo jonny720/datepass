@@ -18,6 +18,7 @@ const mockConfigCruise: InviteConfig = {
   language: 'en',
   senderName: 'Alex',
   recipientName: 'Jordan',
+  recipientGender: 'private',
   theme: 'cruise',
   introTone: 'light',
   introCards: [

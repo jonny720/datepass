@@ -9,7 +9,11 @@ import {
   shouldShowRareBonus,
 } from '@/config/easterEggMessages';
 import { useLanguage } from '@/hooks/useLanguage';
-import { playEggCrack } from '@/lib/soundEffects';
+import {
+  ENABLE_EASTER_EGG_SOUNDS,
+  EASTER_EGG_SOUND,
+} from '@/config/soundConfig';
+import { playSoundEffect } from '@/lib/soundEffects';
 import { Sparkles } from 'lucide-react';
 
 interface EasterEggProps {
@@ -119,7 +123,9 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
   }, [showMessage]);
 
   const handleTap = () => {
-    playEggCrack();
+    if (ENABLE_EASTER_EGG_SOUNDS) {
+      playSoundEffect(EASTER_EGG_SOUND);
+    }
     if (isRevealed || isTapping) return;
 
     setIsTapping(true);

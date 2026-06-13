@@ -1,4 +1,4 @@
-import type { Language, InviteType, ThemeId, IntroTone, IntroCard, ActivityId, DateSlot, YesButtonCopy } from './invite';
+import type { Language, InviteType, ThemeId, IntroTone, IntroCard, ActivityId, DateSlot, YesButtonCopy, RecipientGender } from './invite';
 
 export interface CreatorDraft {
   step: number;
@@ -6,6 +6,7 @@ export interface CreatorDraft {
   language: Language;
   senderName: string;
   recipientName: string;
+  recipientGender: RecipientGender;
   theme: ThemeId;
   introTone: IntroTone;
   introCards: IntroCard[];
@@ -23,6 +24,7 @@ export const INITIAL_DRAFT: CreatorDraft = {
   language: 'en',
   senderName: '',
   recipientName: '',
+  recipientGender: 'private',
   theme: 'cruise',
   introTone: 'light',
   introCards: [],

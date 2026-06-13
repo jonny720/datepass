@@ -1,9 +1,12 @@
 import { useState, useCallback } from 'react';
-import type { RecipientResponse, ActivityId, DateSlot, InviteConfig, ArrivalPreference, RecipientGender } from '@/types';
+import type { RecipientResponse, ActivityId, DateSlot, InviteConfig, ArrivalPreference } from '@/types';
 import { INITIAL_RESPONSE, RECIPIENT_STEPS } from '@/types';
 
 export function useRecipientState(config: InviteConfig) {
-  const [response, setResponse] = useState<RecipientResponse>(INITIAL_RESPONSE);
+  const [response, setResponse] = useState<RecipientResponse>({
+    ...INITIAL_RESPONSE,
+    recipientGender: config.recipientGender || 'private',
+  });
 
   // Check if intro cards should be shown
   const hasValidIntroCards = config.introCards.some(
@@ -54,10 +57,6 @@ export function useRecipientState(config: InviteConfig) {
     setResponse((prev) => ({ ...prev, wantsDate: wants }));
   }, []);
 
-  const setRecipientGender = useCallback((recipientGender: RecipientGender) => {
-    setResponse((prev) => ({ ...prev, recipientGender }));
-  }, []);
-
   const setSelectedActivity = useCallback((activity: ActivityId) => {
     setResponse((prev) => ({ ...prev, selectedActivity: activity }));
   }, []);
@@ -92,7 +91,6 @@ export function useRecipientState(config: InviteConfig) {
     updateResponse,
     nextStep,
     prevStep,
-    setRecipientGender,
     setWantsDate,
     setArrivalPreference,
     setSelectedActivity,

@@ -4,11 +4,10 @@ import { useNavigation } from '@/hooks/useNavigation';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useRecipientState } from '@/hooks/useRecipientState';
 import { useEasterEggState } from '@/hooks/useEasterEggState';
-import type { InviteConfig, RecipientGender } from '@/types';
+import type { InviteConfig } from '@/types';
 import { RECIPIENT_STEPS } from '@/types';
 import {
   ArrivalScreen,
-  GenderChoiceScreen,
   IntroCardsScreen,
   MainQuestionScreen,
   ArrivalPreferenceScreen,
@@ -29,7 +28,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     response,
     setResponse,
     nextStep,
-    setRecipientGender,
     setWantsDate,
     setArrivalPreference,
     setSelectedActivity,
@@ -75,11 +73,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setResponse((prev) => ({ ...prev, step: RECIPIENT_STEPS.MAIN_QUESTION }));
   };
 
-  const handleGenderSelect = (gender: RecipientGender) => {
-    setRecipientGender(gender);
-    nextStep();
-  };
-
   const handleActivitySelect = (activity: typeof config.activityIds[number]) => {
     setSelectedActivity(activity);
     nextStep();
@@ -110,9 +103,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     switch (response.step) {
       case RECIPIENT_STEPS.ARRIVAL:
         return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} stampState={stampState} />;
-
-      case RECIPIENT_STEPS.GENDER:
-        return <GenderChoiceScreen onSelect={handleGenderSelect} />;
 
       case RECIPIENT_STEPS.INTRO_CARDS:
         return <IntroCardsScreen config={config} onNext={nextStep} easterEggState={easterEggState} duckState={duckState} />;

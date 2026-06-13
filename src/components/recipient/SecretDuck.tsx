@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getRandomDuckMessage } from '@/config/duckConfig';
-import { playDuckQuack } from '@/lib/soundEffects';
+import {
+  ENABLE_EASTER_EGG_SOUNDS,
+  EASTER_EGG_SOUND,
+} from '@/config/soundConfig';
+import { playSoundEffect } from '@/lib/soundEffects';
 
 interface SecretDuckProps {
   onReveal?: () => void;
@@ -58,7 +62,9 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
   const handleDuckClick = () => {
     // Haptic feedback
     navigator.vibrate?.(15);
-    playDuckQuack();
+    if (ENABLE_EASTER_EGG_SOUNDS) {
+      playSoundEffect(EASTER_EGG_SOUND);
+    }
 
     setMessage((previousMessage) => getRandomDuckMessage(language, previousMessage));
     setPosition((currentPosition) => getNextDuckPosition(currentPosition));
