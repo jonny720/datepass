@@ -1,7 +1,6 @@
 import { useLanguage } from '@/hooks/useLanguage';
-import type { CreatorDraft, ThemeId, YesButtonCopy } from '@/types';
+import type { CreatorDraft, ThemeId } from '@/types';
 import { THEME_CONFIGS, THEME_IDS } from '@/config/themes';
-import { YES_BUTTON_OPTIONS } from '@/config/yesButtonConfig';
 import {
   Card,
   StepHeader,
@@ -27,10 +26,6 @@ export function ThemeStep({ draft, updateDraft, onNext, onBack }: ThemeStepProps
   const handleOpeningMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value.slice(0, 100); // Enforce max length
     updateDraft({ openingMessage: value });
-  };
-
-  const handleYesButtonCopySelect = (copy: YesButtonCopy) => {
-    updateDraft({ yesButtonCopy: copy });
   };
 
   const remainingChars = 100 - (draft.openingMessage?.length || 0);
@@ -77,33 +72,6 @@ export function ThemeStep({ draft, updateDraft, onNext, onBack }: ThemeStepProps
           className="w-full rounded-lg border border-stone-300 px-4 py-3 text-sm transition-colors focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/20"
         />
         <div className={`mt-1 text-right text-xs ${remainingChars < 20 ? 'text-orange-600' : 'text-stone-500'}`}>
-      {/* Yes button copy selector */}
-      <div className="mb-6">
-        <label className="mb-2 block text-sm font-medium text-stone-700">
-          {t('creator_yes_button_label')}
-          <span className="ml-1 text-xs text-stone-500">({t('optional')})</span>
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {YES_BUTTON_OPTIONS.map((option) => {
-            const isSelected = (draft.yesButtonCopy || 'yes_lets_do') === option.id;
-            return (
-              <button
-                key={option.id}
-                type="button"
-                onClick={() => handleYesButtonCopySelect(option.id)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                  isSelected
-                    ? 'bg-purple-600 text-white shadow-md'
-                    : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
-                }`}
-              >
-                {option.label[language]}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
           {remainingChars} {language === 'en' ? 'characters left' : 'תווים נותרו'}
         </div>
       </div>

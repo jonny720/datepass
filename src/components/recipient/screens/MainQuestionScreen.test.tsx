@@ -53,6 +53,29 @@ describe('MainQuestionScreen - Escaping No Button', () => {
     expect(screen.getByText(/Maybe another time/i)).toBeInTheDocument();
   });
 
+  it('lets the recipient choose acceptance wording from the yes button menu', () => {
+    const onYes = vi.fn();
+    const onNo = vi.fn();
+    const onDecline = vi.fn();
+
+    render(
+      <LanguageProvider>
+        <MainQuestionScreen
+          config={mockConfig}
+          onYes={onYes}
+          onNo={onNo}
+          onDecline={onDecline}
+        />
+      </LanguageProvider>
+    );
+
+    fireEvent.click(screen.getByLabelText('Choose acceptance message'));
+    fireEvent.click(screen.getByRole('button', { name: /You convinced me/i }));
+
+    expect(screen.getByRole('button', { name: /You convinced me/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Yes, let's do it/i })).not.toBeInTheDocument();
+  });
+
   it('renders the serious decline link', () => {
     const onYes = vi.fn();
     const onNo = vi.fn();

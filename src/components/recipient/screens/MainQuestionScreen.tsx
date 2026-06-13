@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect, type PointerEvent } from 'react';
-import { Heart, X } from 'lucide-react';
+import { ChevronDown, Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig } from '@/types';
-import { getYesButtonLabel } from '@/config/yesButtonConfig';
+import type { YesButtonCopy } from '@/types';
+import { getYesButtonLabel, YES_BUTTON_OPTIONS } from '@/config/yesButtonConfig';
 import {
   Card,
-  PrimaryButton,
   SecondaryButton,
   IconBadge,
   Confetti,
@@ -38,6 +38,10 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
   const [showConfetti, setShowConfetti] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const [showYesConfirmation, setShowYesConfirmation] = useState(false);
+  const [selectedYesCopy, setSelectedYesCopy] = useState<YesButtonCopy>(
+    config.yesButtonCopy || 'yes_lets_do'
+  );
+  const [showYesOptions, setShowYesOptions] = useState(false);
   const [isPointerInside, setIsPointerInside] = useState(false);
   const lastEscapeTime = useRef(0);
   const playAreaRef = useRef<HTMLDivElement>(null);
@@ -53,6 +57,8 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
     setCurrentZone(null);
     setShowConfetti(false);
     setCelebrating(false);
+    setSelectedYesCopy(config.yesButtonCopy || 'yes_lets_do');
+    setShowYesOptions(false);
     setIsPointerInside(false);
     lastEscapeTime.current = 0;
   }, [config]);
@@ -69,6 +75,11 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
     
     // Confetti celebration is longer, confirmation animation is shorter
     // Confetti stays visible while confirmation plays
+  };
+
+  const handleYesOptionSelect = (copy: YesButtonCopy) => {
+    setSelectedYesCopy(copy);
+    setShowYesOptions(false);
   };
 
   const handleEscape = () => {
@@ -244,16 +255,57 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
           </div>
 
           {/* Yes Button - Always stable */}
-          <div className="mb-3">
+          <div className="relative mb-3">
             <motion.div
               whileTap={!celebrating ? { scale: 0.95 } : undefined}
               transition={springs.gentle}
             >
-              <PrimaryButton onClick={handleYesClick} fullWidth size="lg" disabled={celebrating}>
-                <Heart className="h-5 w-5 flex-shrink-0" fill="currentColor" />
-                {getYesButtonLabel(config.yesButtonCopy, language)}
-              </PrimaryButton>
+              <div className="flex w-full overflow-hidden rounded-xl shadow-md">
+                <button
+                  type="button"
+                  onClick={handleYesClick}
+                  disabled={celebrating}
+                  className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-pink-600 px-5 py-3 text-button-label-lg font-semibold text-white transition-all duration-200 hover:from-pink-600 hover:to-pink-700 active:from-pink-700 active:to-pink-800 disabled:cursor-not-allowed disabled:from-stone-300 disabled:to-stone-300 disabled:text-stone-500"
+                >
+                  <Heart className="h-5 w-5 flex-shrink-0" fill="currentColor" />
+                  {getYesButtonLabel(selectedYesCopy, language)}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowYesOptions((isOpen) => !isOpen)}
+                  disabled={celebrating}
+                  className="inline-flex min-h-[48px] w-12 items-center justify-center border-s border-white/30 bg-pink-600 text-white transition-all duration-200 hover:bg-pink-700 active:bg-pink-800 disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-500"
+                  aria-label={language === 'en' ? 'Choose acceptance message' : 'בחירת ניסוח לאישור'}
+                  aria-expanded={showYesOptions}
+                >
+                  <ChevronDown
+                    className={`h-5 w-5 transition-transform ${showYesOptions ? 'rotate-180' : ''}`}
+                  />
+                </button>
+              </div>
             </motion.div>
+
+            {showYesOptions && (
+              <div className="absolute inset-x-0 top-full z-20 mt-2 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-xl">
+                {YES_BUTTON_OPTIONS.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => handleYesOptionSelect(option.id)}
+                    className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors ${
+                      selectedYesCopy === option.id
+                        ? 'bg-pink-50 text-pink-700'
+                        : 'bg-white text-stone-800 hover:bg-stone-50'
+                    }`}
+                  >
+                    <span>{option.label[language]}</span>
+                    {selectedYesCopy === option.id && (
+                      <Heart className="h-4 w-4 text-pink-500" fill="currentColor" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Play Area for Escaping No Button */}

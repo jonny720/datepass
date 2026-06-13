@@ -63,7 +63,6 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       dateSlots: draft.dateSlots,
       whatsappNumber,
       ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
-      ...(draft.yesButtonCopy && { yesButtonCopy: draft.yesButtonCopy }),
     };
 
     const url = createInviteUrl(inviteConfig);
@@ -142,7 +141,6 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       dateSlots: draft.dateSlots,
       whatsappNumber,
       ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
-      ...(draft.yesButtonCopy && { yesButtonCopy: draft.yesButtonCopy }),
     };
 
     setPreviewConfig(config);
