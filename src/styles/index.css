@@ -93,55 +93,65 @@
   .safe-area-insets {
     padding-top: max(1rem, env(safe-area-inset-top));
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
-    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-left: max(1rem, env(safe-area-inset-right));
     padding-right: max(1rem, env(safe-area-inset-right));
   }
 
-  /* Date and time input styling - native iPhone picker preserved */
-  .datepass-native-input {
-    /* Width constraints - use logical properties for RTL */
+  /* Cross-browser DateTimeField component styling */
+  
+  /* Wrapper controls visual presentation */
+  .datepass-datetime-field-wrapper {
+    position: relative;
     display: block;
-    inline-size: 100%;
     width: 100%;
-    min-inline-size: 0;
     min-width: 0;
-    max-inline-size: 100%;
     max-width: 100%;
-    box-sizing: border-box;
-    
-    /* Compact height - comfortable but not oversized */
     height: 48px;
-    min-height: 48px;
-    
-    /* Internal padding */
-    padding-inline: 12px;
-    padding-block: 8px;
-    
-    /* Visual styling */
     border: 1px solid var(--color-border);
     border-radius: 12px;
     background: var(--color-surface);
-    
-    /* Typography */
+    transition: border-color 0.2s ease;
+  }
+
+  .datepass-datetime-field-wrapper:focus-within {
+    border-color: var(--color-primary);
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 0;
+  }
+
+  /* Input is transparent and fills wrapper */
+  .datepass-date-time-input {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    box-sizing: border-box;
+    height: 48px;
+    min-height: 48px;
+    padding-inline-start: 12px;
+    padding-inline-end: 44px;
+    border: 0;
+    background: transparent;
     font-size: 16px;
     line-height: 1.2;
     color: var(--color-text-primary);
-    
-    /* DO NOT set appearance: none - preserves native iOS picker */
-    /* Native appearance shows date/time picker indicators */
   }
-  
-  /* Focus state for native inputs */
-  .datepass-native-input:focus {
+
+  .datepass-date-time-input:focus {
     outline: none;
-    border-color: var(--color-primary);
-    ring: 2px;
-    ring-color: var(--color-primary-light);
   }
-  
-  /* Muted background variant */
-  .datepass-native-input--muted {
-    background: var(--color-background);
+
+  /* Hide native browser calendar/clock icon to avoid duplication with custom icon */
+  .datepass-date-time-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
   }
 
   /* Dynamic viewport height support */

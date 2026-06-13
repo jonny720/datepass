@@ -11,6 +11,7 @@ export { Card } from './Card';
 export { TicketCard } from './TicketCard';
 export { OptionCard } from './OptionCard';
 export { TextInput } from './TextInput';
+export { DateTimeField } from './DateTimeField';
 export { SegmentedControl } from './SegmentedControl';
 export { StepHeader } from './StepHeader';
 export { InlineNotice } from './InlineNotice';

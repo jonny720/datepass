@@ -6,6 +6,7 @@ import {
   StepHeader,
   PrimaryButton,
   SecondaryButton,
+  DateTimeField,
 } from '@/components/ui';
 
 interface DateSlotsStepProps {
@@ -78,27 +79,21 @@ export function DateSlotsStep({ draft, updateDraft, onNext, onBack }: DateSlotsS
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 w-full min-w-0">
-              <div className="min-w-0 w-full">
-                <label className="mb-1.5 block text-xs font-medium text-stone-600">
-                  {t('creator_slots_date')}
-                </label>
-                <input
+              <div className="min-w-0 w-full max-w-full">
+                <DateTimeField
                   type="date"
+                  label={t('creator_slots_date')}
                   value={slot.date}
-                  onChange={(e) => handleSlotChange(slot.id, 'date', e.target.value)}
-                  className="datepass-native-input"
+                  onChange={(value) => handleSlotChange(slot.id, 'date', value)}
                 />
               </div>
 
-              <div className="min-w-0 w-full">
-                <label className="mb-1.5 block text-xs font-medium text-stone-600">
-                  {t('creator_slots_time')}
-                </label>
-                <input
+              <div className="min-w-0 w-full max-w-full">
+                <DateTimeField
                   type="time"
+                  label={t('creator_slots_time')}
                   value={slot.time}
-                  onChange={(e) => handleSlotChange(slot.id, 'time', e.target.value)}
-                  className="datepass-native-input"
+                  onChange={(value) => handleSlotChange(slot.id, 'time', value)}
                 />
               </div>
             </div>
