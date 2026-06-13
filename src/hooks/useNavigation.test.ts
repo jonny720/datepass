@@ -12,11 +12,11 @@ describe('useNavigation', () => {
   describe('createInviteUrl', () => {
     it('creates a valid invite URL', () => {
       const url = createInviteUrl(SAMPLE_INVITE);
-      expect(url).toContain('?invite=');
+      expect(url).toContain('?i=');
       expect(url).toMatch(/^https?:\/\//);
     });
 
-    it('creates URL with encoded config', () => {
+    it('creates URL with compressed config', () => {
       const config: InviteConfig = {
         version: 1,
         language: 'en',
@@ -30,13 +30,13 @@ describe('useNavigation', () => {
       };
 
       const url = createInviteUrl(config);
-      expect(url).toContain('?invite=');
+      expect(url).toContain('?i=');
       
-      // Extract encoded part from query parameter
+      // Extract compressed part from query parameter
       const urlObj = new URL(url);
-      const encoded = urlObj.searchParams.get('invite');
-      expect(encoded).toBeTypeOf('string');
-      expect(encoded!.length).toBeGreaterThan(0);
+      const compressed = urlObj.searchParams.get('i');
+      expect(compressed).toBeTypeOf('string');
+      expect(compressed!.length).toBeGreaterThan(0);
     });
 
     it('handles Hebrew config correctly', () => {
@@ -55,7 +55,7 @@ describe('useNavigation', () => {
       };
 
       const url = createInviteUrl(hebrewConfig);
-      expect(url).toContain('?invite=');
+      expect(url).toContain('?i=');
       expect(url).toBeTypeOf('string');
     });
   });

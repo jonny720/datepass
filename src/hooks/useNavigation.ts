@@ -1,26 +1,48 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { InviteConfig, Route } from '@/types';
 import { decodeInvite, encodeInvite } from '@/lib/serialization';
+import {
+  encodeInviteConfigV2,
+  decodeInviteConfigV2,
+  validateGeneratedInviteUrl,
+} from '@/lib/compression';
 
 /**
  * Parse the current URL into a Route.
- * Priority: query parameter (?invite=) > hash (#/invite/) > regular routes
+ * Priority: ?i= (compressed) > ?invite= (verbose) > #/invite/ (legacy) > regular routes
  */
 function parseRoute(): Route {
-  // Check for query parameter invite first (new format)
   const searchParams = new URLSearchParams(window.location.search);
-  const inviteParam = searchParams.get('invite');
   
+  // 1. Check for compressed invite parameter (new format)
+  const compactParam = searchParams.get('i');
+  if (compactParam) {
+    try {
+      const config = decodeInviteConfigV2(compactParam);
+      return { type: 'invite', config };
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to decode compressed invite:', error);
+      }
+      return { type: 'invalid' };
+    }
+  }
+  
+  // 2. Check for verbose query parameter invite (backward compatibility)
+  const inviteParam = searchParams.get('invite');
   if (inviteParam) {
     try {
       const config = decodeInvite(inviteParam);
       return { type: 'invite', config };
-    } catch {
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to decode verbose invite:', error);
+      }
       return { type: 'invalid' };
     }
   }
 
-  // Fall back to hash-based routing (backward compatibility)
+  // 3. Fall back to hash-based routing (backward compatibility)
   const hash = window.location.hash.slice(1); // Remove the '#'
 
   if (!hash || hash === '/') {
@@ -35,13 +57,16 @@ function parseRoute(): Route {
     return { type: 'dev' };
   }
 
-  // Legacy hash-based invite URLs (backward compatibility)
+  // 4. Legacy hash-based invite URLs (backward compatibility)
   if (hash.startsWith('/invite/')) {
     const encoded = hash.slice(8); // Remove '/invite/'
     try {
       const config = decodeInvite(encoded);
       return { type: 'invite', config };
-    } catch {
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to decode legacy hash invite:', error);
+      }
       return { type: 'invalid' };
     }
   }
@@ -107,25 +132,73 @@ function buildBaseUrl(): URL {
 }
 
 /**
- * Generate a shareable invite URL using query parameters.
- * This format is more reliable for sharing through WhatsApp and messaging apps.
+ * Generate a shareable invite URL using compressed payload and short query parameter.
+ * This format is optimized for sharing through WhatsApp and messaging apps.
+ * 
+ * Format: https://jonny720.github.io/datepass/?i=<compressed-payload>
  */
 export function createInviteUrl(config: InviteConfig): string {
-  const encoded = encodeInvite(config);
+  const encodedPayload = encodeInviteConfigV2(config);
+  
   const url = buildBaseUrl();
-  url.searchParams.set('invite', encoded);
+  url.hash = '';
+  url.search = '';
+  url.searchParams.set('i', encodedPayload);
+  
+  const result = url.toString();
+  
+  // Validate the generated URL
+  try {
+    validateGeneratedInviteUrl(result);
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.error('Generated URL validation failed:', error);
+    }
+  }
   
   // Debug logging in development
   if (import.meta.env.DEV) {
-    console.debug('DatePass invite URL generated:', {
-      origin: window.location.origin,
-      pathname: window.location.pathname,
-      baseUrl: import.meta.env.BASE_URL,
-      finalUrl: url.toString(),
-      payloadLength: encoded.length,
-      hasQueryParam: url.searchParams.has('invite'),
+    // Compare with old format for metrics
+    const oldEncoded = encodeInvite(config);
+    const oldUrl = buildBaseUrl();
+    oldUrl.searchParams.set('invite', oldEncoded);
+    const oldLength = oldUrl.toString().length;
+    const newLength = result.length;
+    const reduction = Math.round((1 - newLength / oldLength) * 100);
+    
+    console.debug('DatePass compact invite URL:', {
+      raw: JSON.stringify(result),
+      urlLength: result.length,
+      payloadLength: encodedPayload.length,
+      containsWhitespace: /\s/.test(result),
+      containsContinuousCompactParam: result.includes('?i='),
+      payloadIsUrlSafe: !/\s/.test(encodedPayload),
     });
+    
+    console.debug('DatePass compression result:', {
+      oldLength,
+      newLength,
+      reductionPercent: reduction + '%',
+    });
+    
+    // Warn if URL is unexpectedly long
+    if (newLength > 1000) {
+      console.warn('DatePass: Generated URL is over 1000 characters:', newLength);
+    }
   }
   
+  return result;
+}
+
+/**
+ * Legacy function for backward compatibility.
+ * New code should use createInviteUrl which generates compressed URLs.
+ * 
+ * @deprecated Use createInviteUrl instead
+ */
+export function createVerboseInviteUrl(config: InviteConfig): string {
+  const encoded = encodeInvite(config);
+  const url = buildBaseUrl();
+  url.searchParams.set('invite', encoded);
   return url.toString();
 }
