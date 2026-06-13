@@ -1,10 +1,12 @@
-import type { ArrivalPreference, Language, DateSlot } from '@/types';
+import type { ArrivalPreference, Language, DateSlot, InviteType } from '@/types';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 
 /**
  * Parameters for building the recipient confirmation message
  */
 export interface RecipientConfirmationParams {
   creatorPhone?: string;
+  inviteType?: InviteType;
   language: Language;
   activityName: string;
   selectedSlot?: DateSlot;
@@ -52,10 +54,11 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { language, activityName, selectedSlot, coordinateLater, arrivalPreference, personalNote, noteHeader, foundEasterEgg } = params;
+  const { inviteType = 'date', language, activityName, selectedSlot, coordinateLater, arrivalPreference, personalNote, noteHeader, foundEasterEgg } = params;
+  const typeConfig = getInviteTypeConfig(inviteType);
   
   if (language === 'he') {
-    let message = 'אישרתי את ההזמנה 😌\n\n';
+    let message = `${typeConfig.confirmationIntro.he}\n\n`;
     message += `בחרתי: ${activityName}\n`;
     
     if (coordinateLater) {
@@ -83,7 +86,7 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
     
     return message;
   } else {
-    let message = 'I accepted the invitation 😌\n\n';
+    let message = `${typeConfig.confirmationIntro.en}\n\n`;
     message += `My choice: ${activityName}\n`;
     
     if (coordinateLater) {

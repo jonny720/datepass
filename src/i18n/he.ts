@@ -3,7 +3,7 @@ import type { TranslationDictionary } from './types';
 export const he: TranslationDictionary = {
   // Navigation
   app_title: 'DatePass',
-  app_description: 'צור הזמנות דייט מקוריות',
+  app_description: 'צרו הזמנות מקוריות',
   app_start_over: 'להתחיל מחדש',
   app_start_over_title: 'להתחיל מחדש?',
   app_start_over_description: 'הפעולה תמחק את ההזמנה שבנית עד עכשיו.',
@@ -17,11 +17,18 @@ export const he: TranslationDictionary = {
 
   // Landing
   landing_title: 'DatePass',
-  landing_subtitle: 'צור הזמנות דייט מקוריות',
-  landing_create_button: 'צור הזמנה',
-  landing_tagline: 'הפכו אולי לדייט',
+  landing_subtitle: 'צרו הזמנות אינטראקטיביות מקוריות',
+  landing_create_button: 'יצירת הזמנה',
+  landing_tagline: 'הפכו אולי לתוכנית',
 
   // Creator flow - Step 1: Welcome
+  creator_type_title: 'מה בא לך ליצור?',
+  creator_type_date: 'הזמנה לדייט',
+  creator_type_date_desc: 'להציע לצאת בצורה קלילה ומצחיקה.',
+  creator_type_birthday: 'הזמנה ליום הולדת',
+  creator_type_birthday_desc: 'להזמין אנשים לחגוג איתך.',
+  creator_type_friends_night: 'ערב חברים',
+  creator_type_friends_night_desc: 'לתכנן ערב קליל עם חברים.',
   creator_welcome_title: 'צרו הזמנה',
   creator_welcome_subtitle: 'בחרו שפה כדי להתחיל',
   creator_choose_language: 'שפה',
@@ -51,7 +58,7 @@ export const he: TranslationDictionary = {
   creator_theme_after_dark: 'אחרי החשכה',
   creator_theme_after_dark_desc: 'מתגרה ומסתורי',
   creator_opening_message_label: 'הוסיפו משפט פתיחה קצר',
-  creator_opening_message_placeholder: 'חשבתי שלהציע לך לצאת בוואטסאפ זה קצת משעמם מדי.',
+  creator_opening_message_placeholder: 'הזמנה קטנה הרגישה יותר כיפית מהודעה רגילה.',
   creator_yes_button_label: 'התאימו את כפתור הכן',
 
   // Creator flow - Step 4: Tone
@@ -119,7 +126,7 @@ export const he: TranslationDictionary = {
   creator_review_ticket_duration: 'משך',
   creator_review_ticket_duration_value: 'ערב אחד',
   creator_review_summary_cards: 'כרטיסי היכרות',
-  creator_review_summary_activities: 'רעיונות לדייט',
+  creator_review_summary_activities: 'אפשרויות',
   creator_review_summary_slots: 'מועדים מוצעים',
   creator_review_summary_coordinate: 'נתאם אחר כך',
   creator_review_share_message_label: 'בחרו את המשפט לשליחה',
@@ -148,11 +155,29 @@ export const he: TranslationDictionary = {
   activity_competitive_subtitle: 'דרך טובה לגלות מי לא יודע להפסיד.',
   activity_creative: 'יצירתי',
   activity_creative_subtitle: 'אומנות, מוזיקה או יצירה',
+  activity_cake: 'עוגה',
+  activity_cake_subtitle: 'חובה חגיגית',
+  activity_food: 'אוכל',
+  activity_food_subtitle: 'משהו טוב לאכול',
+  activity_music: 'מוזיקה',
+  activity_music_subtitle: 'לכוון את הווייב',
+  activity_games: 'משחקים',
+  activity_games_subtitle: 'לשחק משהו ביחד',
+  activity_playstation: 'פלייסטיישן',
+  activity_playstation_subtitle: 'שלטים מוכנים',
+  activity_board_games: 'משחקי קופסה',
+  activity_board_games_subtitle: 'תחרות ידידותית',
+  activity_pizza: 'פיצה',
+  activity_pizza_subtitle: 'תמיד תוכנית תקפה',
+  activity_bbq: 'על האש',
+  activity_bbq_subtitle: 'אש, אוכל וחברים',
+  activity_karaoke: 'קריוקי',
+  activity_karaoke_subtitle: 'זיופים מתקבלים בברכה',
   activity_surprise_me: 'הפתיעו אותי',
   activity_surprise_me_subtitle: 'בחירה אמיצה. אנחנו מעריכים את זה.',
 
   // Recipient flow
-  recipient_title: 'הזמנה לדייט',
+  recipient_title: 'הזמנה',
   recipient_invitation_from: 'הזמנה מ',
   recipient_intro_section: 'עליי',
   recipient_activities_section: 'מה נוכל לעשות',
@@ -180,7 +205,7 @@ export const he: TranslationDictionary = {
 
   // Recipient Screen 3: Main Question
   recipient_question_title: 'אז מה דעתך?',
-  recipient_question_subtitle: 'רוצה לצאת לדייט הזה?',
+  recipient_question_subtitle: 'מוכנים לענות?',
   recipient_question_yes: 'כן, בואו נעשה את זה!',
   recipient_question_no: 'לא כרגע',
   recipient_question_maybe_later: 'אולי בפעם אחרת',

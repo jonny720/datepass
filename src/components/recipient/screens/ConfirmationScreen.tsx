@@ -18,6 +18,7 @@ import { CompatibilityCalculation } from '@/components/recipient/CompatibilityCa
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { generateCompatibilityScore, getScoreDisclaimer } from '@/config/compatibilityConfig';
 import { pageTransition, scaleIn, fadeInUp, staggerContainer } from '@/lib/animations';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import {
   buildRecipientConfirmationWhatsAppUrl,
   buildRecipientConfirmationMessage,
@@ -42,6 +43,7 @@ export function ConfirmationScreen({
   const [scoreDisclaimerIndex, setScoreDisclaimerIndex] = useState(0);
   const [showCalculation, setShowCalculation] = useState(true);
   const MAX_NOTE_LENGTH = 160;
+  const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
 
   const isCruiseTheme = config.theme === 'cruise';
   const isMissionTheme = config.theme === 'secret_mission';
@@ -82,6 +84,7 @@ export function ConfirmationScreen({
   // Build confirmation message (same for all actions)
   const confirmationMessage = buildRecipientConfirmationMessage({
     creatorPhone: config.whatsappNumber,
+    inviteType: config.inviteType,
     language,
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
@@ -95,6 +98,7 @@ export function ConfirmationScreen({
   // Build WhatsApp URL (returns null if no valid phone)
   const whatsappUrl = buildRecipientConfirmationWhatsAppUrl({
     creatorPhone: config.whatsappNumber,
+    inviteType: config.inviteType,
     language,
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
@@ -169,6 +173,7 @@ export function ConfirmationScreen({
         <AnimatePresence>
           {showCalculation && (
             <CompatibilityCalculation
+              inviteType={config.inviteType}
               onComplete={handleCalculationComplete}
             />
           )}
@@ -372,6 +377,9 @@ export function ConfirmationScreen({
                 <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
               </motion.div>
             </div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">
+              {inviteTypeConfig.scoreLabel[language]}
+            </p>
             <motion.p 
               className="text-sm font-medium italic text-stone-700"
               key={`disclaimer-${scoreDisclaimerIndex}`}
@@ -475,6 +483,7 @@ export function ConfirmationScreen({
         <AnimatePresence>
           {showCalculation && (
             <CompatibilityCalculation
+              inviteType={config.inviteType}
               onComplete={handleCalculationComplete}
             />
           )}
@@ -676,6 +685,9 @@ export function ConfirmationScreen({
                 <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
               </motion.div>
             </div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">
+              {inviteTypeConfig.scoreLabel[language]}
+            </p>
             <motion.p 
               className="text-sm font-medium italic text-stone-700"
               key={`disclaimer-mission-${scoreDisclaimerIndex}`}
@@ -778,6 +790,7 @@ export function ConfirmationScreen({
       <AnimatePresence>
         {showCalculation && (
           <CompatibilityCalculation
+            inviteType={config.inviteType}
             onComplete={handleCalculationComplete}
           />
         )}
@@ -855,6 +868,9 @@ export function ConfirmationScreen({
 
         {/* Compatibility Score Disclaimer */}
         <div className="mb-6 rounded-xl bg-pink-50 p-4 text-center">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">
+            {inviteTypeConfig.scoreLabel[language]}
+          </p>
           <div className="mb-2 flex items-center justify-center gap-2">
             <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
             <span className="text-2xl font-bold text-pink-600">

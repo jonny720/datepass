@@ -5,6 +5,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig } from '@/types';
 import type { YesButtonCopy } from '@/types';
 import { getYesButtonLabel, YES_BUTTON_OPTIONS } from '@/config/yesButtonConfig';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import {
   Card,
   SecondaryButton,
@@ -32,6 +33,10 @@ interface MainQuestionScreenProps {
 
 export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuestionScreenProps) {
   const { t, language } = useLanguage();
+  const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
+  const defaultYesCopy = config.yesButtonCopy && inviteTypeConfig.yesCopyOptions.includes(config.yesButtonCopy)
+    ? config.yesButtonCopy
+    : inviteTypeConfig.yesCopyOptions[0];
   const [escapeCount, setEscapeCount] = useState(0);
   const [buttonTransform, setButtonTransform] = useState({ x: 0, y: 0, scale: 1, rotate: 0, borderRadius: '0.75rem' });
   const [currentZone, setCurrentZone] = useState<SafeZone | null>(null);
@@ -39,7 +44,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
   const [celebrating, setCelebrating] = useState(false);
   const [showYesConfirmation, setShowYesConfirmation] = useState(false);
   const [selectedYesCopy, setSelectedYesCopy] = useState<YesButtonCopy>(
-    config.yesButtonCopy || 'yes_lets_do'
+    defaultYesCopy
   );
   const [showYesOptions, setShowYesOptions] = useState(false);
   const [isPointerInside, setIsPointerInside] = useState(false);
@@ -57,11 +62,11 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
     setCurrentZone(null);
     setShowConfetti(false);
     setCelebrating(false);
-    setSelectedYesCopy(config.yesButtonCopy || 'yes_lets_do');
+    setSelectedYesCopy(defaultYesCopy);
     setShowYesOptions(false);
     setIsPointerInside(false);
     lastEscapeTime.current = 0;
-  }, [config]);
+  }, [config, defaultYesCopy]);
 
   const handleYesClick = () => {
     if (celebrating) return;
@@ -171,23 +176,8 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
   };
 
   const getNoButtonLabel = () => {
-    switch (escapeCount) {
-      case 0:
-        return t('recipient_question_maybe_later');
-      case 1:
-        return t('recipient_question_no_escape_1');
-      case 2:
-        return t('recipient_question_no_escape_2');
-      case 3:
-        return t('recipient_question_no_escape_3');
-      case 4:
-        return t('recipient_question_no_escape_4');
-      case 5:
-        return t('recipient_question_no_escape_5');
-      case 6:
-      default:
-        return t('recipient_question_no_escape_6');
-    }
+    const labels = inviteTypeConfig.noCopyOptions[language];
+    return labels[Math.min(escapeCount, labels.length - 1)];
   };
 
   // Position the button for final stable state
@@ -247,10 +237,10 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
         <Card className="w-full max-w-sm">
           <div className="mb-8 text-center">
             <h1 className="text-screen-title mb-3 text-stone-900">
-              {t('recipient_question_title')}
+              {inviteTypeConfig.mainQuestion[language]}
             </h1>
             <p className="text-body text-stone-600">
-              {t('recipient_question_subtitle')}
+              {inviteTypeConfig.questionSubtitle[language]}
             </p>
           </div>
 
@@ -287,7 +277,9 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
 
             {showYesOptions && (
               <div className="absolute inset-x-0 top-full z-20 mt-2 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-xl">
-                {YES_BUTTON_OPTIONS.map((option) => (
+                {YES_BUTTON_OPTIONS.filter((option) =>
+                  inviteTypeConfig.yesCopyOptions.includes(option.id)
+                ).map((option) => (
                   <button
                     key={option.id}
                     type="button"

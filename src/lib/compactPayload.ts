@@ -10,6 +10,7 @@ import type { InviteConfig, IntroCard, DateSlot } from '@/types';
 // Compact payload version 2
 export type CompactInvitePayloadV2 = {
   v: 2; // version
+  y?: 'd' | 'b' | 'f'; // invite type: d=date, b=birthday, f=friends-night
   l: 'h' | 'e'; // language: h=Hebrew, e=English
   s: string; // sender name
   r: string; // recipient name
@@ -36,6 +37,18 @@ const CODE_TO_THEME = {
   n: 'nature',
   p: 'party',
   d: 'after_dark',
+} as const;
+
+const INVITE_TYPE_TO_CODE = {
+  date: 'd',
+  birthday: 'b',
+  'friends-night': 'f',
+} as const;
+
+const CODE_TO_INVITE_TYPE = {
+  d: 'date',
+  b: 'birthday',
+  f: 'friends-night',
 } as const;
 
 // Intro tone code mappings
@@ -68,6 +81,15 @@ const ACTIVITY_TO_CODE = {
   movie: 'm',
   competitive: 'g',
   creative: 'a',
+  cake: 'ck',
+  food: 'fo',
+  music: 'mu',
+  games: 'ga',
+  playstation: 'ps',
+  'board-games': 'bg',
+  pizza: 'pz',
+  bbq: 'bb',
+  karaoke: 'kr',
   'surprise-me': 'x',
 } as const;
 
@@ -79,6 +101,15 @@ const CODE_TO_ACTIVITY = {
   m: 'movie',
   g: 'competitive',
   a: 'creative',
+  ck: 'cake',
+  fo: 'food',
+  mu: 'music',
+  ga: 'games',
+  ps: 'playstation',
+  bg: 'board-games',
+  pz: 'pizza',
+  bb: 'bbq',
+  kr: 'karaoke',
   x: 'surprise-me',
 } as const;
 
@@ -88,6 +119,7 @@ const CODE_TO_ACTIVITY = {
 export function toCompactPayload(config: InviteConfig): CompactInvitePayloadV2 {
   const payload: CompactInvitePayloadV2 = {
     v: 2,
+    y: INVITE_TYPE_TO_CODE[config.inviteType || 'date'],
     l: config.language === 'he' ? 'h' : 'e',
     s: config.senderName,
     r: config.recipientName,
@@ -133,6 +165,7 @@ export function fromCompactPayload(
 
   const config: InviteConfig = {
     version: 1,
+    inviteType: CODE_TO_INVITE_TYPE[payload.y as keyof typeof CODE_TO_INVITE_TYPE] || 'date',
     language: payload.l === 'h' ? 'he' : 'en',
     senderName: payload.s,
     recipientName: payload.r,
@@ -200,6 +233,10 @@ export function validateCompactPayload(
 
   // Optional fields must have correct types if present
   if (p.n !== undefined && typeof p.n !== 'string') {
+    return false;
+  }
+
+  if (p.y !== undefined && typeof p.y !== 'string') {
     return false;
   }
 

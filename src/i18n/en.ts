@@ -3,7 +3,7 @@ import type { TranslationDictionary } from './types';
 export const en: TranslationDictionary = {
   // Navigation
   app_title: 'DatePass',
-  app_description: 'Create playful date invitations',
+  app_description: 'Create playful invitations',
   app_start_over: 'Start over',
   app_start_over_title: 'Start over?',
   app_start_over_description: 'This will clear the invitation you are currently creating.',
@@ -17,11 +17,18 @@ export const en: TranslationDictionary = {
 
   // Landing
   landing_title: 'DatePass',
-  landing_subtitle: 'Create playful date invitations',
-  landing_create_button: 'Create Invitation',
-  landing_tagline: 'Turn a maybe into a date',
+  landing_subtitle: 'Create playful invitations',
+  landing_create_button: 'Create invitation',
+  landing_tagline: 'Turn a maybe into a plan',
 
   // Creator flow - Step 1: Welcome
+  creator_type_title: 'What do you want to create?',
+  creator_type_date: 'Date invite',
+  creator_type_date_desc: 'Ask someone out in a playful way.',
+  creator_type_birthday: 'Birthday invite',
+  creator_type_birthday_desc: 'Invite people to celebrate with you.',
+  creator_type_friends_night: 'Friends night',
+  creator_type_friends_night_desc: 'Plan a casual night with friends.',
   creator_welcome_title: 'Create an invitation',
   creator_welcome_subtitle: 'Pick your language to start',
   creator_choose_language: 'Language',
@@ -52,7 +59,7 @@ export const en: TranslationDictionary = {
   creator_theme_after_dark: 'After Dark',
   creator_theme_after_dark_desc: 'Daring and mysterious',
   creator_opening_message_label: 'Add a short opening line',
-  creator_opening_message_placeholder: 'I thought asking you out on WhatsApp was too boring.',
+  creator_opening_message_placeholder: 'A tiny invitation seemed more fun than a regular message.',
   creator_yes_button_label: 'Customize the Yes button',
 
   // Creator flow - Step 4: Tone
@@ -120,7 +127,7 @@ export const en: TranslationDictionary = {
   creator_review_ticket_duration: 'Duration',
   creator_review_ticket_duration_value: 'One evening',
   creator_review_summary_cards: 'personal cards',
-  creator_review_summary_activities: 'date ideas',
+  creator_review_summary_activities: 'options',
   creator_review_summary_slots: 'suggested times',
   creator_review_summary_coordinate: 'Coordinate later',
   creator_review_share_message_label: 'Choose your opening message',
@@ -149,11 +156,29 @@ export const en: TranslationDictionary = {
   activity_competitive_subtitle: 'Useful for discovering who cannot handle losing.',
   activity_creative: 'Creative',
   activity_creative_subtitle: 'Art, music, or crafts',
+  activity_cake: 'Cake',
+  activity_cake_subtitle: 'A celebration essential',
+  activity_food: 'Food',
+  activity_food_subtitle: 'Something good to eat',
+  activity_music: 'Music',
+  activity_music_subtitle: 'Set the mood',
+  activity_games: 'Games',
+  activity_games_subtitle: 'Play something together',
+  activity_playstation: 'PlayStation',
+  activity_playstation_subtitle: 'Controllers ready',
+  activity_board_games: 'Board games',
+  activity_board_games_subtitle: 'Friendly competition',
+  activity_pizza: 'Pizza',
+  activity_pizza_subtitle: 'Always a valid plan',
+  activity_bbq: 'BBQ',
+  activity_bbq_subtitle: 'Fire, food, friends',
+  activity_karaoke: 'Karaoke',
+  activity_karaoke_subtitle: 'Questionable vocals welcome',
   activity_surprise_me: 'Surprise Me',
   activity_surprise_me_subtitle: 'A bold choice. We respect it.',
 
   // Recipient flow
-  recipient_title: 'Date Invitation',
+  recipient_title: 'Invitation',
   recipient_invitation_from: 'Invitation from',
   recipient_intro_section: 'About me',
   recipient_activities_section: 'What we could do',
@@ -180,8 +205,8 @@ export const en: TranslationDictionary = {
   recipient_cards_fallback_prompt: 'A question about me',
 
   // Recipient Screen 3: Main Question
-  recipient_question_title: 'So, what do you think?',
-  recipient_question_subtitle: 'Would you like to go on this date?',
+  recipient_question_title: 'What do you think?',
+  recipient_question_subtitle: 'Ready to answer?',
   recipient_question_yes: 'Yes, let\'s do it!',
   recipient_question_no: 'Not right now',
   recipient_question_maybe_later: 'Maybe another time',

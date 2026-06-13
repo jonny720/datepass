@@ -4,6 +4,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, ActivityId } from '@/types';
 import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { ACTIVITIES } from '@/data';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import {
   Card,
   StepHeader,
@@ -23,9 +24,11 @@ interface ActivityChoiceScreenProps {
 export function ActivityChoiceScreen({ config, onSelect, easterEggState }: ActivityChoiceScreenProps) {
   const { t } = useLanguage();
   const [selectedActivity, setSelectedActivity] = useState<ActivityId | null>(null);
+  const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
+  const activityIds = config.activityIds.length > 0 ? config.activityIds : inviteTypeConfig.activityOptions;
 
   const availableActivities = ACTIVITIES.filter((activity) =>
-    config.activityIds.includes(activity.id)
+    activityIds.includes(activity.id)
   );
 
   const handleSelect = () => {

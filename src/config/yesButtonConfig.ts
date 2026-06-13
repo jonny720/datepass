@@ -44,6 +44,55 @@ export const YES_BUTTON_OPTIONS: YesButtonOption[] = [
       he: 'בסדר, זה היה חמוד',
     },
   },
+  {
+    id: 'im_coming',
+    label: {
+      en: "I'm coming",
+      he: 'אני מגיע/ה',
+    },
+  },
+  {
+    id: 'wouldnt_miss_it',
+    label: {
+      en: "Wouldn't miss it",
+      he: 'לא אפספס',
+    },
+  },
+  {
+    id: 'count_me_in',
+    label: {
+      en: 'Count me in',
+      he: 'תספרו אותי',
+    },
+  },
+  {
+    id: 'obviously_yes',
+    label: {
+      en: 'Obviously yes',
+      he: 'ברור שכן',
+    },
+  },
+  {
+    id: 'say_less',
+    label: {
+      en: 'Say less',
+      he: 'לא צריך לשכנע',
+    },
+  },
+  {
+    id: 'obviously',
+    label: {
+      en: 'Obviously',
+      he: 'ברור',
+    },
+  },
+  {
+    id: 'dangerous_im_in',
+    label: {
+      en: "This sounds dangerous, I'm in",
+      he: 'זה נשמע מסוכן, אני בפנים',
+    },
+  },
 ];
 
 export function getYesButtonLabel(

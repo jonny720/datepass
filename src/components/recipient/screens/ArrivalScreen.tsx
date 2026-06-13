@@ -13,6 +13,7 @@ import { EasterEgg } from '@/components/recipient/EasterEgg';
 import { HiddenStamp } from '@/components/recipient/HiddenStamp';
 import { OpeningAnimation } from '@/components/recipient/OpeningAnimation';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import { pageTransition, fadeInUp, scaleIn, gentlePulse, float, prefersReducedMotion } from '@/lib/animations';
 
 interface ArrivalScreenProps {
@@ -23,9 +24,10 @@ interface ArrivalScreenProps {
 }
 
 export function ArrivalScreen({ config, onNext, easterEggState, stampState }: ArrivalScreenProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const reduceMotion = prefersReducedMotion();
   const [showOpening, setShowOpening] = useState(true);
+  const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
 
   // Theme-specific rendering components
   const renderThemeContent = () => {
@@ -83,7 +85,7 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
           <OpeningAnimation
             theme={config.theme}
             recipientName={config.recipientName}
-            openingMessage={config.openingMessage}
+            openingMessage={config.openingMessage || inviteTypeConfig.openingSubtitle[language]}
             onComplete={() => setShowOpening(false)}
           />
         )}

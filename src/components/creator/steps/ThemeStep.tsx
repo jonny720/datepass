@@ -1,6 +1,7 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import type { CreatorDraft, ThemeId } from '@/types';
 import { THEME_CONFIGS, THEME_IDS } from '@/config/themes';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import {
   Card,
   StepHeader,
@@ -18,6 +19,11 @@ interface ThemeStepProps {
 
 export function ThemeStep({ draft, updateDraft, onNext, onBack }: ThemeStepProps) {
   const { t, language } = useLanguage();
+  const inviteTypeConfig = getInviteTypeConfig(draft.inviteType);
+  const orderedThemeIds = [
+    ...inviteTypeConfig.recommendedThemes,
+    ...THEME_IDS.filter((themeId) => !inviteTypeConfig.recommendedThemes.includes(themeId)),
+  ];
 
   const handleThemeSelect = (themeId: ThemeId) => {
     updateDraft({ theme: themeId });
@@ -38,7 +44,7 @@ export function ThemeStep({ draft, updateDraft, onNext, onBack }: ThemeStepProps
       />
 
       <div className="mb-6 space-y-3">
-        {THEME_IDS.map((themeId) => {
+        {orderedThemeIds.map((themeId) => {
           const theme = THEME_CONFIGS[themeId];
           const Icon = theme.icon;
           const titleKey = `creator_theme_${themeId}`;

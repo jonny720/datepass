@@ -78,6 +78,12 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
     );
   }
 
+  if (c.inviteType === undefined) {
+    c.inviteType = 'date';
+  } else if (!['date', 'birthday', 'friends-night'].includes(c.inviteType)) {
+    throw new InviteValidationError('Invalid invite type');
+  }
+
   // Check required string fields
   if (
     typeof c.language !== 'string' ||

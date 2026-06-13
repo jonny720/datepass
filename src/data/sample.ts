@@ -2,6 +2,7 @@ import type { InviteConfig } from '@/types';
 
 export const SAMPLE_INVITE: InviteConfig = {
   version: 1,
+  inviteType: 'date',
   language: 'en',
   senderName: 'Alex',
   recipientName: 'Jordan',

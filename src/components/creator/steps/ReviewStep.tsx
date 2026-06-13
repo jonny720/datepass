@@ -8,7 +8,7 @@ import { RecipientScreen } from '@/components/recipient/RecipientScreen';
 import type { CreatorDraft, InviteConfig } from '@/types';
 import { buildInternationalWhatsAppNumber } from '@/lib/phoneUtils';
 import { findCountryByIso2 } from '@/data/countryDialingCodes';
-import { SHARE_MESSAGE_PRESETS } from '@/config/shareMessagePresets';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import {
   PrimaryButton,
   SecondaryButton,
@@ -35,7 +35,12 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
   const [copied, setCopied] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewConfig, setPreviewConfig] = useState<InviteConfig | null>(null);
-  const [selectedSharePreset, setSelectedSharePreset] = useState('preset_1');
+  const inviteTypeConfig = getInviteTypeConfig(draft.inviteType);
+  const [selectedSharePreset, setSelectedSharePreset] = useState(inviteTypeConfig.shareCopyPresets[0].id);
+
+  useEffect(() => {
+    setSelectedSharePreset(inviteTypeConfig.shareCopyPresets[0].id);
+  }, [draft.inviteType, inviteTypeConfig.shareCopyPresets]);
 
   // Auto-generate invite URL on mount
   useEffect(() => {
@@ -53,6 +58,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
 
     const inviteConfig: InviteConfig = {
       version: 1,
+      inviteType: draft.inviteType || 'date',
       language: draft.language,
       senderName: draft.senderName,
       recipientName: draft.recipientName,
@@ -106,8 +112,8 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
     if (!inviteUrl) return;
 
     // Get the selected preset message
-    const preset = SHARE_MESSAGE_PRESETS.find((p) => p.id === selectedSharePreset);
-    const presetMessage = preset ? preset.message[language] : SHARE_MESSAGE_PRESETS[0].message[language];
+    const preset = inviteTypeConfig.shareCopyPresets.find((p) => p.id === selectedSharePreset);
+    const presetMessage = preset ? preset.message[language] : inviteTypeConfig.shareCopyPresets[0].message[language];
 
     // Build WhatsApp message with preset + invite URL
     const message = `${presetMessage}\n\n${inviteUrl}`;
@@ -131,6 +137,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
 
     const config: InviteConfig = {
       version: 1,
+      inviteType: draft.inviteType || 'date',
       language: draft.language,
       senderName: draft.senderName,
       recipientName: draft.recipientName,
@@ -288,7 +295,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
                   {t('creator_review_share_message_label')}
                 </label>
                 <div className="flex flex-col gap-2">
-                  {SHARE_MESSAGE_PRESETS.map((preset) => {
+                  {inviteTypeConfig.shareCopyPresets.map((preset) => {
                     const isSelected = selectedSharePreset === preset.id;
                     return (
                       <button

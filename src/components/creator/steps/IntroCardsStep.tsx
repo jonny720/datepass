@@ -22,7 +22,7 @@ const MAX_CHAR_LIMIT = 120;
 
 export function IntroCardsStep({ draft, updateDraft, onNext, onBack }: IntroCardsStepProps) {
   const { t, language } = useLanguage();
-  const allPrompts = getIntroPrompts(language, draft.introTone);
+  const allPrompts = getIntroPrompts(language, draft.introTone, draft.inviteType);
   
   const [showPrompts, setShowPrompts] = useState(draft.introCards.length > 0);
   const [replacingCardId, setReplacingCardId] = useState<string | null>(null);
@@ -31,7 +31,7 @@ export function IntroCardsStep({ draft, updateDraft, onNext, onBack }: IntroCard
   // Initialize with default prompts if empty
   useEffect(() => {
     if (draft.introCards.length === 0 && showPrompts) {
-      const defaultPrompts = getDefaultPrompts(language, draft.introTone);
+      const defaultPrompts = getDefaultPrompts(language, draft.introTone, draft.inviteType);
       const cards: IntroCard[] = defaultPrompts.map((prompt) => ({
         id: prompt.id,
         promptKey: prompt.id,
@@ -39,7 +39,7 @@ export function IntroCardsStep({ draft, updateDraft, onNext, onBack }: IntroCard
       }));
       updateDraft({ introCards: cards });
     }
-  }, [showPrompts, draft.introCards.length, language, draft.introTone, updateDraft]);
+  }, [showPrompts, draft.introCards.length, language, draft.introTone, draft.inviteType, updateDraft]);
 
   const handleAnswerChange = (promptId: string, answer: string) => {
     const updatedCards = draft.introCards.map((card) =>

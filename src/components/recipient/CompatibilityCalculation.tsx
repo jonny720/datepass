@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CALCULATION_STEPS } from '@/config/compatibilityConfig';
 import { useLanguage } from '@/hooks/useLanguage';
+import type { InviteType } from '@/types';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 
 interface CompatibilityCalculationProps {
+  inviteType?: InviteType;
   onComplete: () => void;
 }
 
-export function CompatibilityCalculation({ onComplete }: CompatibilityCalculationProps) {
+export function CompatibilityCalculation({ inviteType = 'date', onComplete }: CompatibilityCalculationProps) {
   const { language } = useLanguage();
+  const steps = getInviteTypeConfig(inviteType).calculationSteps[language];
   const [currentStep, setCurrentStep] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
   const prefersReducedMotion = useRef(
@@ -30,7 +33,7 @@ export function CompatibilityCalculation({ onComplete }: CompatibilityCalculatio
 
     const interval = setInterval(() => {
       setCurrentStep((prev) => {
-        if (prev >= CALCULATION_STEPS.length - 1) {
+        if (prev >= steps.length - 1) {
           clearInterval(interval);
           setTimeout(() => {
             onComplete();
@@ -42,7 +45,7 @@ export function CompatibilityCalculation({ onComplete }: CompatibilityCalculatio
     }, stepDuration);
 
     return () => clearInterval(interval);
-  }, [stepDuration, onComplete, isSkipped]);
+  }, [stepDuration, onComplete, isSkipped, steps.length]);
 
   const handleSkip = () => {
     setIsSkipped(true);
@@ -68,13 +71,13 @@ export function CompatibilityCalculation({ onComplete }: CompatibilityCalculatio
             transition={{ duration: 0.2 }}
             className="text-lg font-medium text-stone-700"
           >
-            {CALCULATION_STEPS[currentStep][language]}
+            {steps[currentStep]}
           </motion.div>
         </AnimatePresence>
 
         {/* Progress dots */}
         <div className="flex justify-center gap-2">
-          {CALCULATION_STEPS.map((_, index) => (
+          {steps.map((_, index) => (
             <div
               key={index}
               className={`h-2 w-2 rounded-full transition-colors ${

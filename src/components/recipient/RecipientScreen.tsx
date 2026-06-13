@@ -1,5 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 import { useNavigation } from '@/hooks/useNavigation';
+import { useLanguage } from '@/hooks/useLanguage';
 import { useRecipientState } from '@/hooks/useRecipientState';
 import { useEasterEggState } from '@/hooks/useEasterEggState';
 import type { InviteConfig } from '@/types';
@@ -21,6 +23,7 @@ interface RecipientScreenProps {
 
 export function RecipientScreen({ config }: RecipientScreenProps) {
   const { navigate } = useNavigation();
+  const { setLanguage } = useLanguage();
   const {
     response,
     setResponse,
@@ -43,6 +46,10 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
   const duckState = useEasterEggState({
     onFound: () => setFoundDuck(true),
   });
+
+  useEffect(() => {
+    setLanguage(config.language);
+  }, [config.language, setLanguage]);
 
   const handleYes = () => {
     setWantsDate(true);

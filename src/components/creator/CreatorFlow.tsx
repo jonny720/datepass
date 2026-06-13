@@ -6,6 +6,7 @@ import { ScreenContainer, ProgressIndicator } from '@/components/ui';
 import { TOTAL_STEPS } from '@/types';
 
 // Step components
+import { InviteTypeStep } from './steps/InviteTypeStep';
 import { NamesStep } from './steps/NamesStep';
 import { ThemeStep } from './steps/ThemeStep';
 import { ToneStep } from './steps/ToneStep';
@@ -35,29 +36,31 @@ export function CreatorFlow() {
 
     switch (draft.step) {
       case 1:
-        return <NamesStep {...props} />;
+        return <InviteTypeStep {...props} />;
       case 2:
-        return <ThemeStep {...props} />;
+        return <NamesStep {...props} />;
       case 3:
-        return <ToneStep {...props} />;
+        return <ThemeStep {...props} />;
       case 4:
-        return <IntroCardsStep {...props} />;
+        return <ToneStep {...props} />;
       case 5:
-        return <ActivitiesStep {...props} />;
+        return <IntroCardsStep {...props} />;
       case 6:
-        return <DateSlotsStep {...props} />;
+        return <ActivitiesStep {...props} />;
       case 7:
-        return <WhatsAppStep {...props} />;
+        return <DateSlotsStep {...props} />;
       case 8:
+        return <WhatsAppStep {...props} />;
+      case 9:
         return <ReviewStep {...props} />;
       default:
-        return <NamesStep {...props} />;
+        return <InviteTypeStep {...props} />;
     }
   };
 
   return (
     <CreatorProvider onReset={resetDraft}>
-      {draft.step === 8 ? (
+      {draft.step === TOTAL_STEPS ? (
         // ReviewStep renders full-bleed without container padding
         <>
           <ReviewStep {...{ draft, updateDraft, onNext: nextStep, onBack: prevStep, onReset: resetDraft }} />
@@ -66,7 +69,7 @@ export function CreatorFlow() {
         // All other steps use the standard padded container
         <ScreenContainer>
           {draft.step > 1 && (
-            <ProgressIndicator currentStep={draft.step} totalSteps={TOTAL_STEPS - 1} />
+            <ProgressIndicator currentStep={draft.step - 1} totalSteps={TOTAL_STEPS - 1} />
           )}
           {renderStep()}
         </ScreenContainer>

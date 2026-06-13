@@ -1,6 +1,7 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import type { CreatorDraft, ActivityId } from '@/types';
 import { ACTIVITIES } from '@/data';
+import { getInviteTypeConfig } from '@/config/inviteTypes';
 import {
   Card,
   StepHeader,
@@ -22,6 +23,11 @@ const MAX_ACTIVITIES = 4;
 
 export function ActivitiesStep({ draft, updateDraft, onNext, onBack }: ActivitiesStepProps) {
   const { t } = useLanguage();
+  const inviteTypeConfig = getInviteTypeConfig(draft.inviteType);
+  const activityById = new Map(ACTIVITIES.map((activity) => [activity.id, activity]));
+  const visibleActivities = inviteTypeConfig.activityOptions
+    .map((activityId) => activityById.get(activityId))
+    .filter((activity): activity is (typeof ACTIVITIES)[number] => Boolean(activity));
 
   const handleActivityToggle = (activityId: ActivityId) => {
     const isSelected = draft.activityIds.includes(activityId);
@@ -55,7 +61,7 @@ export function ActivitiesStep({ draft, updateDraft, onNext, onBack }: Activitie
       )}
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2">
-        {ACTIVITIES.map((activity) => {
+        {visibleActivities.map((activity) => {
           const Icon = activity.icon;
           const isSelected = draft.activityIds.includes(activity.id);
 

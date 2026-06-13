@@ -2,6 +2,7 @@
 export type { Language, Direction, LanguageConfig } from './language';
 export type {
   ThemeId,
+  InviteType,
   IntroTone,
   YesButtonCopy,
   IntroCard,

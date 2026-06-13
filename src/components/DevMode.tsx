@@ -14,6 +14,7 @@ import { DeclineScreen } from './recipient/screens/DeclineScreen';
 // Mock configuration
 const mockConfigCruise: InviteConfig = {
   version: 1,
+  inviteType: 'date',
   language: 'en',
   senderName: 'Alex',
   recipientName: 'Jordan',

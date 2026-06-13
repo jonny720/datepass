@@ -22,6 +22,13 @@ export interface TranslationDictionary {
   landing_tagline: string;
 
   // Creator flow - Step 1: Welcome
+  creator_type_title: string;
+  creator_type_date: string;
+  creator_type_date_desc: string;
+  creator_type_birthday: string;
+  creator_type_birthday_desc: string;
+  creator_type_friends_night: string;
+  creator_type_friends_night_desc: string;
   creator_welcome_title: string;
   creator_welcome_subtitle: string;
   creator_choose_language: string;
@@ -149,6 +156,24 @@ export interface TranslationDictionary {
   activity_competitive_subtitle: string;
   activity_creative: string;
   activity_creative_subtitle: string;
+  activity_cake: string;
+  activity_cake_subtitle: string;
+  activity_food: string;
+  activity_food_subtitle: string;
+  activity_music: string;
+  activity_music_subtitle: string;
+  activity_games: string;
+  activity_games_subtitle: string;
+  activity_playstation: string;
+  activity_playstation_subtitle: string;
+  activity_board_games: string;
+  activity_board_games_subtitle: string;
+  activity_pizza: string;
+  activity_pizza_subtitle: string;
+  activity_bbq: string;
+  activity_bbq_subtitle: string;
+  activity_karaoke: string;
+  activity_karaoke_subtitle: string;
   activity_surprise_me: string;
   activity_surprise_me_subtitle: string;
 
