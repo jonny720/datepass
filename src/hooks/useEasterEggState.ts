@@ -34,8 +34,9 @@ export function useEasterEggState(options?: UseEasterEggStateOptions): EasterEgg
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shouldShowOnScreen = (_screen: EasterEggScreen) => {
-    // Show on ALL screens until revealed (more discoverable)
-    return !hasBeenRevealed;
+    // Always return true - the EasterEgg component handles its own visibility
+    // This prevents unmounting the component while the message is displaying
+    return true;
   };
 
   return {

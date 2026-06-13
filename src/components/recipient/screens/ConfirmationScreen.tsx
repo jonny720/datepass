@@ -155,14 +155,13 @@ export function ConfirmationScreen({
         {/* Floating decorative elements */}
         <FloatingElements />
 
-        {/* Easter egg */}
-        {easterEggState.shouldShowOnScreen('confirmation') && (
-          <EasterEgg
-            theme={config.theme}
-            placement={getRandomPlacementForScreen('confirmation')}
-            onReveal={easterEggState.markAsRevealed}
-          />
-        )}
+        {/* Easter egg - always render to keep Portal alive */}
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('confirmation')}
+          onReveal={easterEggState.markAsRevealed}
+          hasBeenRevealed={easterEggState.hasBeenRevealed}
+        />
 
         {/* Success badge */}
         <motion.div 
@@ -434,14 +433,11 @@ export function ConfirmationScreen({
         {/* Radar decorative elements */}
         <RadarElements />
 
-        {/* Easter egg */}
-        {easterEggState.shouldShowOnScreen('confirmation') && (
-          <EasterEgg
-            theme={config.theme}
-            placement={getRandomPlacementForScreen('confirmation')}
-            onReveal={easterEggState.markAsRevealed}
-          />
-        )}
+        {/* Easter egg - always render to keep Portal alive */}
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('confirmation')}
+          onReveal={easterEggState.markAsRevealed}          hasBeenRevealed={easterEggState.hasBeenRevealed}        />
 
         {/* Success badge */}
         <motion.div 
@@ -706,14 +702,13 @@ export function ConfirmationScreen({
       animate="animate"
       exit="exit"
     >
-      {/* Easter egg */}
-      {easterEggState.shouldShowOnScreen('confirmation') && (
-        <EasterEgg
-          theme={config.theme}
-          placement={getRandomPlacementForScreen('confirmation')}
-          onReveal={easterEggState.markAsRevealed}
-        />
-      )}
+      {/* Easter egg - always render to keep Portal alive */}
+      <EasterEgg
+        theme={config.theme}
+        placement={getRandomPlacementForScreen('confirmation')}
+        onReveal={easterEggState.markAsRevealed}
+        hasBeenRevealed={easterEggState.hasBeenRevealed}
+      />
 
       <motion.div 
         className="mb-8 flex justify-center"

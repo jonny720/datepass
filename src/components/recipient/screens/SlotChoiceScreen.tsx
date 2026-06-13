@@ -122,14 +122,13 @@ export function SlotChoiceScreen({
         </Card>
       </motion.div>
 
-      {/* Easter egg */}
-      {easterEggState.shouldShowOnScreen('slots') && (
-        <EasterEgg
-          theme={config.theme}
-          placement={getRandomPlacementForScreen('slots')}
-          onReveal={easterEggState.markAsRevealed}
-        />
-      )}
+      {/* Easter egg - always render to keep Portal alive */}
+      <EasterEgg
+        theme={config.theme}
+        placement={getRandomPlacementForScreen('slots')}
+        onReveal={easterEggState.markAsRevealed}
+        hasBeenRevealed={easterEggState.hasBeenRevealed}
+      />
     </motion.div>
   );
 }

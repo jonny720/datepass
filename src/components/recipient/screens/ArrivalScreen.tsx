@@ -83,14 +83,13 @@ export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenP
       {/* Theme decorations */}
       {decorations}
 
-      {/* Easter egg */}
-      {easterEggState.shouldShowOnScreen('arrival') && (
-        <EasterEgg
-          theme={config.theme}
-          placement={getRandomPlacementForScreen('arrival')}
-          onReveal={easterEggState.markAsRevealed}
-        />
-      )}
+      {/* Easter egg - always render to keep Portal alive */}
+      <EasterEgg
+        theme={config.theme}
+        placement={getRandomPlacementForScreen('arrival')}
+        onReveal={easterEggState.markAsRevealed}
+        hasBeenRevealed={easterEggState.hasBeenRevealed}
+      />
 
       {/* Main content */}
       <div className="relative z-10 w-full max-w-md">

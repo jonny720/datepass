@@ -15,6 +15,7 @@ interface EasterEggProps {
   theme: ThemeId;
   placement?: EasterEggPlacement;
   onReveal?: () => void;
+  hasBeenRevealed?: boolean;
 }
 
 const PLACEMENT_STYLES: Record<EasterEggPlacement, string> = {
@@ -52,7 +53,7 @@ const THEME_COLORS: Record<ThemeId, { shell: string; accent: string; glow: strin
   },
 };
 
-export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: EasterEggProps) {
+export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeenRevealed = false }: EasterEggProps) {
   const { config, language } = useLanguage();
   const [isRevealed, setIsRevealed] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -67,11 +68,12 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
   const RareBonusIcon = rareBonus.icon;
 
   console.log('🥚 EasterEgg render:', { 
-    isRevealed, 
-    showMessage, 
+    isRevealed,
+    showMessage,
     showRareBonus,
+    hasBeenRevealed,
     theme,
-    message: message.en 
+    message: message.en,
   });
 
   const themeColors = THEME_COLORS[theme];
@@ -111,7 +113,7 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
       {/* Egg button - in original position */}
       <div className={`fixed z-50 ${placementClass}`}>
         <AnimatePresence mode="wait">
-          {!isRevealed && (
+          {!isRevealed && !hasBeenRevealed && (
             <motion.button
               key="egg"
               onClick={handleTap}

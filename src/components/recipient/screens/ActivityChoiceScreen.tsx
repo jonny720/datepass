@@ -98,14 +98,13 @@ export function ActivityChoiceScreen({ config, onSelect, easterEggState }: Activ
         </Card>
       </motion.div>
 
-      {/* Easter egg */}
-      {easterEggState.shouldShowOnScreen('activities') && (
-        <EasterEgg
-          theme={config.theme}
-          placement={getRandomPlacementForScreen('activities')}
-          onReveal={easterEggState.markAsRevealed}
-        />
-      )}
+      {/* Easter egg - always render to keep Portal alive */}
+      <EasterEgg
+        theme={config.theme}
+        placement={getRandomPlacementForScreen('activities')}
+        onReveal={easterEggState.markAsRevealed}
+        hasBeenRevealed={easterEggState.hasBeenRevealed}
+      />
     </motion.div>
   );
 }

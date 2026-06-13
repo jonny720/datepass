@@ -177,14 +177,13 @@ export function IntroCardsScreen({ config, onNext, easterEggState }: IntroCardsS
         </div>
       </motion.div>
 
-      {/* Easter egg */}
-      {easterEggState.shouldShowOnScreen('personality') && (
-        <EasterEgg
-          theme={config.theme}
-          placement={getRandomPlacementForScreen('personality')}
-          onReveal={easterEggState.markAsRevealed}
-        />
-      )}
+      {/* Easter egg - always render to keep Portal alive */}
+      <EasterEgg
+        theme={config.theme}
+        placement={getRandomPlacementForScreen('personality')}
+        onReveal={easterEggState.markAsRevealed}
+        hasBeenRevealed={easterEggState.hasBeenRevealed}
+      />
 
       {/* Continue Button */}
       <motion.div
