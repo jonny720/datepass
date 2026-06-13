@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ThemeId } from '@/types';
 import type { EasterEggPlacement } from '@/config/easterEggPlacements';
@@ -73,6 +73,30 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
     message: message.en 
   });
 
+  // Show message when egg is revealed
+  useEffect(() => {
+    if (isRevealed) {
+      console.log('🥚 useEffect: Showing message');
+      setShowMessage(true);
+      
+      // Check for rare bonus
+      if (shouldShowRareBonus()) {
+        setTimeout(() => {
+          console.log('🥚 useEffect: Showing rare bonus');
+          setShowRareBonus(true);
+        }, 600);
+      }
+      
+      // Hide message after delay
+      const hideTimer = setTimeout(() => {
+        console.log('🥚 useEffect: Hiding message');
+        setShowMessage(false);
+      }, 8000);
+      
+      return () => clearTimeout(hideTimer);
+    }
+  }, [isRevealed]);
+
   const themeColors = THEME_COLORS[theme];
   const placementClass = PLACEMENT_STYLES[placement];
 
@@ -82,27 +106,12 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal }: Easte
     console.log('🥚 Easter egg tapped!');
     setIsTapping(true);
     
-    // Crack animation
+    // Crack animation then reveal (useEffect will handle showing message)
     setTimeout(() => {
-      console.log('🥚 Revealing egg and showing message');
+      console.log('🥚 Setting isRevealed to true');
       setIsRevealed(true);
-      setShowMessage(true);
       onReveal?.();
-
-      // Check for rare bonus
-      if (shouldShowRareBonus()) {
-        setTimeout(() => {
-          console.log('🥚 Showing rare bonus!');
-          setShowRareBonus(true);
-        }, 600);
-      }
     }, 400);
-
-    // Hide message after delay
-    setTimeout(() => {
-      console.log('🥚 Hiding message');
-      setShowMessage(false);
-    }, 8000); // Longer duration - 8 seconds
   };
 
   return (
