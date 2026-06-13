@@ -103,7 +103,7 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
 
   if (
     typeof c.introTone !== 'string' ||
-    !['playful', 'flirty', 'absurd'].includes(c.introTone)
+    !['light', 'flirty', 'absurd', 'romantic', 'bold', 'dry'].includes(c.introTone)
   ) {
     throw new InviteValidationError('Invalid intro tone');
   }

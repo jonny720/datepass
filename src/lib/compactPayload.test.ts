@@ -31,7 +31,7 @@ describe('compactPayload', () => {
         s: 'Alice',
         r: 'Bob',
         t: 'c',
-        i: 'p',
+        i: 'l',
       });
     });
 
@@ -68,7 +68,7 @@ describe('compactPayload', () => {
 
     it('maps intro tone to compact code', () => {
       const tones: Array<{ tone: 'light' | 'flirty' | 'absurd'; code: string }> = [
-        { tone: 'light', code: 'p' },
+        { tone: 'light', code: 'l' },
         { tone: 'flirty', code: 'f' },
         { tone: 'absurd', code: 'a' },
       ];

@@ -12,9 +12,9 @@ const mockConfig: InviteConfig = {
   theme: 'cruise',
   introTone: 'light',
   introCards: [
-    { id: '1', promptKey: 'playful-1', answer: 'Test answer 1' },
-    { id: '2', promptKey: 'playful-2', answer: 'Test answer 2' },
-    { id: '3', promptKey: 'playful-8', answer: 'Test answer 3' },
+    { id: '1', promptKey: 'light-1', answer: 'Test answer 1' },
+    { id: '2', promptKey: 'light-2', answer: 'Test answer 2' },
+    { id: '3', promptKey: 'light-8', answer: 'Test answer 3' },
   ],
   activityIds: ['drinks'],
   dateSlots: [],
@@ -71,10 +71,10 @@ describe('IntroCardsScreen', () => {
     // Should show the actual prompt label
     expect(screen.getByText(/In my free time/i)).toBeInTheDocument();
     
-    // Should NOT show raw keys like "playful-1"
-    expect(screen.queryByText('playful-1')).not.toBeInTheDocument();
-    expect(screen.queryByText('playful-2')).not.toBeInTheDocument();
-    expect(screen.queryByText('playful-8')).not.toBeInTheDocument();
+    // Should NOT show raw keys like "light-1"
+    expect(screen.queryByText('light-1')).not.toBeInTheDocument();
+    expect(screen.queryByText('light-2')).not.toBeInTheDocument();
+    expect(screen.queryByText('light-8')).not.toBeInTheDocument();
   });
 
   it('shows Continue button', () => {

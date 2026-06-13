@@ -49,7 +49,7 @@ describe('MainQuestionScreen - Escaping No Button', () => {
       </LanguageProvider>
     );
 
-    expect(screen.getByText(/Yes, let's do it!/i)).toBeInTheDocument();
+    expect(screen.getByText(/Yes, let's do it/i)).toBeInTheDocument();
     expect(screen.getByText(/Maybe another time/i)).toBeInTheDocument();
   });
 
@@ -112,7 +112,7 @@ describe('MainQuestionScreen - Escaping No Button', () => {
       </LanguageProvider>
     );
 
-    const yesButton = screen.getByText(/Yes, let's do it!/i);
+    const yesButton = screen.getByText(/Yes, let's do it/i);
     fireEvent.click(yesButton);
 
     // Wait for celebration timeout (1200ms in component)

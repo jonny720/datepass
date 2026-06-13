@@ -3,13 +3,13 @@ import { getPromptLabel, isValidPromptKey } from './promptResolver';
 
 describe('promptResolver', () => {
   describe('getPromptLabel', () => {
-    it('resolves known playful prompt in English', () => {
-      const label = getPromptLabel('playful-1', 'en');
+    it('resolves known light prompt in English', () => {
+      const label = getPromptLabel('light-1', 'en');
       expect(label).toBe('In my free time I like to...');
     });
 
-    it('resolves known playful prompt (playful-8) in English', () => {
-      const label = getPromptLabel('playful-8', 'en');
+    it('resolves known light prompt (light-8) in English', () => {
+      const label = getPromptLabel('light-8', 'en');
       expect(label).toBe('I can probably beat you at...');
     });
 
@@ -26,9 +26,9 @@ describe('promptResolver', () => {
     });
 
     it('resolves known prompt in Hebrew', () => {
-      const label = getPromptLabel('playful-1', 'he');
+      const label = getPromptLabel('light-1', 'he');
       expect(label).toBeTruthy();
-      expect(label).not.toBe('playful-1'); // Should not return raw key
+      expect(label).not.toBe('light-1'); // Should not return raw key
     });
 
     it('returns fallback for unknown prompt in English', () => {
@@ -53,8 +53,8 @@ describe('promptResolver', () => {
   });
 
   describe('isValidPromptKey', () => {
-    it('returns true for valid playful prompt', () => {
-      expect(isValidPromptKey('playful-1', 'en')).toBe(true);
+    it('returns true for valid light prompt', () => {
+      expect(isValidPromptKey('light-1', 'en')).toBe(true);
     });
 
     it('returns true for valid flirty prompt', () => {
@@ -66,7 +66,7 @@ describe('promptResolver', () => {
     });
 
     it('works with Hebrew prompts', () => {
-      expect(isValidPromptKey('playful-1', 'he')).toBe(true);
+      expect(isValidPromptKey('light-1', 'he')).toBe(true);
     });
   });
 });
