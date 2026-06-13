@@ -12,6 +12,7 @@ export const he: TranslationDictionary = {
   app_not_found_title: 'הדף לא נמצא',
   app_not_found_subtitle: 'הדף שחיפשת לא קיים.',
   app_go_home: 'חזרה לדף הבית',
+  or: 'או',
 
   // Landing
   landing_title: 'DatePass',
@@ -23,7 +24,9 @@ export const he: TranslationDictionary = {
   creator_welcome_title: 'צרו הזמנה',
   creator_welcome_subtitle: 'בחרו שפה כדי להתחיל',
   creator_choose_language: 'שפה',
-
+  creator_quick_start: 'התחלה מהירה',
+  creator_quick_start_hint: 'או התאימו אישית הכל בעצמכם',
+  creator_custom_invitation: 'יצירת הזמנה מותאמת אישית',
   // Creator flow - Step 2: Names
   creator_names_title: 'למי ההזמנה?',
   creator_names_subtitle: '',
@@ -59,11 +62,15 @@ export const he: TranslationDictionary = {
 
   // Creator flow - Step 5: Intro Cards
   creator_cards_title: 'ספרו על עצמכם',
-  creator_cards_subtitle: 'בחרו 3 שאלות וכתבו תשובות',
-  creator_cards_instruction: 'בחרו בדיוק 3',
-  creator_cards_regenerate: 'הראו שאלות אחרות',
-  creator_cards_char_limit: 'תווים מקסימום',
-  creator_cards_empty_state: 'בחרו 3 פרומפטים כדי להמשיך',
+  creator_cards_subtitle: 'התאימו אישית את ההזמנה עם שאלות מהנות',
+  creator_cards_try_another: 'תנו לי ניסוח אחר',
+  creator_cards_replace: 'החלפת שאלה',
+  creator_cards_replace_prompt: 'בחרו שאלה אחרת',
+  creator_cards_search_placeholder: 'חיפוש שאלות...',
+  creator_cards_no_prompts_found: 'לא נמצאו שאלות',
+  creator_cards_skip: 'דלגו על כרטיסי ההיכרות',
+  creator_cards_add: 'הוספת כרטיסי היכרות',
+  creator_cards_skipped_message: 'דילוג על כרטיסי היכרות - ההזמנה תעבור ישירות לפעילויות.',
 
   // Creator flow - Step 6: Activities
   creator_activities_title: 'מה תרצו לעשות?',
@@ -112,6 +119,8 @@ export const he: TranslationDictionary = {
   creator_review_preview_button: 'צפייה בחווייה המלאה',
   creator_review_edit_button: 'עריכת ההזמנה',
   creator_review_reset_button: 'להתחיל מחדש',
+  creator_review_preview_mode: 'מצב תצוגה מקדימה',
+  creator_review_exit_preview: 'יציאה מהתצוגה',
 
   // Activities
   activity_coffee: 'קפה',

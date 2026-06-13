@@ -12,6 +12,7 @@ export const en: TranslationDictionary = {
   app_not_found_title: 'Page not found',
   app_not_found_subtitle: "The page you're looking for doesn't exist.",
   app_go_home: 'Go to Home',
+  or: 'or',
 
   // Landing
   landing_title: 'DatePass',
@@ -23,6 +24,9 @@ export const en: TranslationDictionary = {
   creator_welcome_title: 'Create an invitation',
   creator_welcome_subtitle: 'Pick your language to start',
   creator_choose_language: 'Language',
+  creator_quick_start: 'Quick start',
+  creator_quick_start_hint: 'Or customize everything yourself',
+  creator_custom_invitation: 'Create custom invitation',
 
   // Creator flow - Step 2: Names
   creator_names_title: 'Who\'s this for?',
@@ -59,11 +63,15 @@ export const en: TranslationDictionary = {
 
   // Creator flow - Step 5: Intro Cards
   creator_cards_title: 'Tell them about yourself',
-  creator_cards_subtitle: 'Pick 3 prompts and write your answers',
-  creator_cards_instruction: 'Pick exactly 3',
-  creator_cards_regenerate: 'Show different prompts',
-  creator_cards_char_limit: 'chars',
-  creator_cards_empty_state: 'Pick 3 prompts to continue',
+  creator_cards_subtitle: 'Personalize your invitation with fun prompts',
+  creator_cards_try_another: 'Try another answer',
+  creator_cards_replace: 'Replace prompt',
+  creator_cards_replace_prompt: 'Choose a different prompt',
+  creator_cards_search_placeholder: 'Search prompts...',
+  creator_cards_no_prompts_found: 'No prompts found',
+  creator_cards_skip: 'Skip personality cards',
+  creator_cards_add: 'Add personality cards',
+  creator_cards_skipped_message: 'Skipping personality cards - your invitation will go straight to activities.',
 
   // Creator flow - Step 6: Activities
   creator_activities_title: 'What would you like to do?',
@@ -112,6 +120,8 @@ export const en: TranslationDictionary = {
   creator_review_preview_button: 'Preview full experience',
   creator_review_edit_button: 'Edit invitation',
   creator_review_reset_button: 'Start over',
+  creator_review_preview_mode: 'Preview mode',
+  creator_review_exit_preview: 'Exit preview',
 
   // Activities
   activity_coffee: 'Coffee',

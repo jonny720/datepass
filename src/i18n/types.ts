@@ -12,6 +12,7 @@ export interface TranslationDictionary {
   app_not_found_title: string;
   app_not_found_subtitle: string;
   app_go_home: string;
+  or: string;
 
   // Landing
   landing_title: string;
@@ -23,6 +24,9 @@ export interface TranslationDictionary {
   creator_welcome_title: string;
   creator_welcome_subtitle: string;
   creator_choose_language: string;
+  creator_quick_start: string;
+  creator_quick_start_hint: string;
+  creator_custom_invitation: string;
 
   // Creator flow - Step 2: Names
   creator_names_title: string;
@@ -60,10 +64,14 @@ export interface TranslationDictionary {
   // Creator flow - Step 5: Intro Cards
   creator_cards_title: string;
   creator_cards_subtitle: string;
-  creator_cards_instruction: string;
-  creator_cards_regenerate: string;
-  creator_cards_char_limit: string;
-  creator_cards_empty_state: string;
+  creator_cards_try_another: string;
+  creator_cards_replace: string;
+  creator_cards_replace_prompt: string;
+  creator_cards_search_placeholder: string;
+  creator_cards_no_prompts_found: string;
+  creator_cards_skip: string;
+  creator_cards_add: string;
+  creator_cards_skipped_message: string;
 
   // Creator flow - Step 6: Activities
   creator_activities_title: string;
@@ -112,6 +120,8 @@ export interface TranslationDictionary {
   creator_review_preview_button: string;
   creator_review_edit_button: string;
   creator_review_reset_button: string;
+  creator_review_preview_mode: string;
+  creator_review_exit_preview: string;
 
   // Activities
   activity_coffee: string;
