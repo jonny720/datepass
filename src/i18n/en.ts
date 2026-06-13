@@ -82,10 +82,15 @@ export const en: TranslationDictionary = {
   creator_slots_empty_state: '',
 
   // Creator flow - Step 8: WhatsApp
-  creator_whatsapp_title: 'Add your WhatsApp',
-  creator_whatsapp_subtitle: 'Optional – makes follow-up easier',
-  creator_whatsapp_placeholder: '+1 234 567 8900',
+  creator_whatsapp_title: 'Where should the answer go?',
+  creator_whatsapp_subtitle: 'Add your WhatsApp number so the confirmation opens directly in your chat.',
+  creator_whatsapp_label: 'WhatsApp number',
+  creator_whatsapp_placeholder: '972501234567',
+  creator_whatsapp_helper: 'Use your full international number, including country code.',
+  creator_whatsapp_validation_error: 'Enter a full international WhatsApp number, for example 972501234567.',
   creator_whatsapp_skip: 'Skip',
+  creator_whatsapp_privacy_note: 'Your number will be embedded in the shareable link.',
+  creator_whatsapp_no_auto_send: 'Nothing is sent automatically.',
 
   // Creator flow - Step 8: Review
   creator_review_title: 'Your invitation is ready',
@@ -189,6 +194,8 @@ export const en: TranslationDictionary = {
   recipient_confirmation_whatsapp_send: 'Send confirmation on WhatsApp',
   recipient_confirmation_copy: 'Copy confirmation',
   recipient_confirmation_copied: 'Copied',
+  recipient_confirmation_share: 'Share confirmation',
+  recipient_confirmation_no_whatsapp_message: 'Copy the confirmation and send it to the person who invited you.',
   recipient_confirmation_create_own: 'Create your own invitation',
 
   // Decline screen

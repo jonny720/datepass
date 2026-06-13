@@ -97,26 +97,51 @@
     padding-right: max(1rem, env(safe-area-inset-right));
   }
 
-  /* Date and time input fixes for mobile - iPhone Safari safe */
-  input[type="date"],
-  input[type="time"] {
-    /* Width constraints - prevent overflow */
+  /* Date and time input styling - native iPhone picker preserved */
+  .datepass-native-input {
+    /* Width constraints - use logical properties for RTL */
     display: block;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
+    inline-size: 100%;
+    width: 100%;
+    min-inline-size: 0;
+    min-width: 0;
+    max-inline-size: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     
-    /* Height for comfortable touch target */
-    min-height: 56px;
-    height: 56px;
+    /* Compact height - comfortable but not oversized */
+    height: 48px;
+    min-height: 48px;
     
-    /* Prevent iPhone zoom on focus */
+    /* Internal padding */
+    padding-inline: 12px;
+    padding-block: 8px;
+    
+    /* Visual styling */
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+    
+    /* Typography */
     font-size: 16px;
     line-height: 1.2;
+    color: var(--color-text-primary);
     
     /* DO NOT set appearance: none - preserves native iOS picker */
     /* Native appearance shows date/time picker indicators */
+  }
+  
+  /* Focus state for native inputs */
+  .datepass-native-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    ring: 2px;
+    ring-color: var(--color-primary-light);
+  }
+  
+  /* Muted background variant */
+  .datepass-native-input--muted {
+    background: var(--color-background);
   }
 
   /* Dynamic viewport height support */

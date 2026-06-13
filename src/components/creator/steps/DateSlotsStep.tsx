@@ -61,7 +61,7 @@ export function DateSlotsStep({ draft, updateDraft, onNext, onBack }: DateSlotsS
         {draft.dateSlots.map((slot) => (
           <div
             key={slot.id}
-            className="w-full max-w-full rounded-xl border-2 border-stone-200 bg-white p-4 overflow-hidden"
+            className="w-full max-w-full rounded-xl border-2 border-stone-200 bg-white p-4"
           >
             <div className="mb-3 flex items-center justify-between gap-2 min-w-0">
               <span className="text-sm font-medium text-stone-700 truncate">
@@ -78,29 +78,27 @@ export function DateSlotsStep({ draft, updateDraft, onNext, onBack }: DateSlotsS
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 w-full min-w-0">
-              <div className="min-w-0 w-full max-w-full overflow-hidden">
-                <label className="mb-1 block text-xs font-medium text-stone-600">
+              <div className="min-w-0 w-full">
+                <label className="mb-1.5 block text-xs font-medium text-stone-600">
                   {t('creator_slots_date')}
                 </label>
                 <input
                   type="date"
                   value={slot.date}
                   onChange={(e) => handleSlotChange(slot.id, 'date', e.target.value)}
-                  className="w-full max-w-full min-w-0 rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-200 box-border"
-                  style={{ width: '100%', maxWidth: '100%', minWidth: '0' }}
+                  className="datepass-native-input"
                 />
               </div>
 
-              <div className="min-w-0 w-full max-w-full overflow-hidden">
-                <label className="mb-1 block text-xs font-medium text-stone-600">
+              <div className="min-w-0 w-full">
+                <label className="mb-1.5 block text-xs font-medium text-stone-600">
                   {t('creator_slots_time')}
                 </label>
                 <input
                   type="time"
                   value={slot.time}
                   onChange={(e) => handleSlotChange(slot.id, 'time', e.target.value)}
-                  className="w-full max-w-full min-w-0 rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-200 box-border"
-                  style={{ width: '100%', maxWidth: '100%', minWidth: '0' }}
+                  className="datepass-native-input"
                 />
               </div>
             </div>

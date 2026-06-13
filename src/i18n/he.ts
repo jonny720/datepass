@@ -82,10 +82,15 @@ export const he: TranslationDictionary = {
   creator_slots_empty_state: '',
 
   // Creator flow - Step 8: WhatsApp
-  creator_whatsapp_title: 'הוסיפו WhatsApp',
-  creator_whatsapp_subtitle: 'אופציונלי – מקל על המשך',
-  creator_whatsapp_placeholder: '+972 50 123 4567',
+  creator_whatsapp_title: 'לאן לשלוח את התשובה?',
+  creator_whatsapp_subtitle: 'הוסיפו מספר וואטסאפ כדי שהאישור ייפתח ישירות בשיחה איתכם.',
+  creator_whatsapp_label: 'מספר וואטסאפ',
+  creator_whatsapp_placeholder: '972501234567',
+  creator_whatsapp_helper: 'יש להזין מספר מלא עם קידומת מדינה.',
+  creator_whatsapp_validation_error: 'יש להזין מספר וואטסאפ מלא עם קידומת מדינה, לדוגמה 972501234567.',
   creator_whatsapp_skip: 'דלגו',
+  creator_whatsapp_privacy_note: 'המספר יהיה מוטמע בקישור השיתוף.',
+  creator_whatsapp_no_auto_send: 'שום דבר לא נשלח אוטומטית.',
 
   // Creator flow - Step 8: Review
   creator_review_title: 'ההזמנה שלך מוכנה',
@@ -189,6 +194,8 @@ export const he: TranslationDictionary = {
   recipient_confirmation_whatsapp_send: 'שליחת אישור בוואטסאפ',
   recipient_confirmation_copy: 'העתקת הסיכום',
   recipient_confirmation_copied: 'הועתק',
+  recipient_confirmation_share: 'שיתוף האישור',
+  recipient_confirmation_no_whatsapp_message: 'העתיקו את האישור ושלחו אותו למי שהזמין אתכם.',
   recipient_confirmation_create_own: 'צרו הזמנה משלכם',
 
   // Decline screen

@@ -94,17 +94,25 @@ function normalizePhoneNumber(phone: string): string {
 
 /**
  * Build the WhatsApp URL for recipient confirmation
+ * 
+ * Uses the WhatsApp API send endpoint with phone parameter for reliable
+ * direct chat opening on iPhone and other mobile devices.
+ * 
+ * @param params - Confirmation parameters including creator phone
+ * @returns WhatsApp URL with pre-filled message, or null if no valid phone
  */
-export function buildRecipientConfirmationWhatsAppUrl(params: RecipientConfirmationParams): string {
+export function buildRecipientConfirmationWhatsAppUrl(params: RecipientConfirmationParams): string | null {
   const message = buildRecipientConfirmationMessage(params);
   const encodedMessage = encodeURIComponent(message);
   
   if (params.creatorPhone) {
     const normalizedPhone = normalizePhoneNumber(params.creatorPhone);
-    return `https://wa.me/${normalizedPhone}?text=${encodedMessage}`;
-  } else {
-    // Use WhatsApp API fallback for generic composer
-    // More reliable on iPhone than wa.me without number
-    return `https://api.whatsapp.com/send?text=${encodedMessage}`;
+    // Use WhatsApp API with phone parameter for direct chat
+    // More reliable on iPhone than wa.me format
+    return `https://api.whatsapp.com/send?phone=${normalizedPhone}&text=${encodedMessage}`;
   }
+  
+  // No phone number provided - return null instead of generic fallback
+  // Caller should handle this case by showing copy/share options
+  return null;
 }

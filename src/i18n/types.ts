@@ -84,8 +84,13 @@ export interface TranslationDictionary {
   // Creator flow - Step 8: WhatsApp
   creator_whatsapp_title: string;
   creator_whatsapp_subtitle: string;
+  creator_whatsapp_label: string;
   creator_whatsapp_placeholder: string;
+  creator_whatsapp_helper: string;
+  creator_whatsapp_validation_error: string;
   creator_whatsapp_skip: string;
+  creator_whatsapp_privacy_note: string;
+  creator_whatsapp_no_auto_send: string;
 
   // Creator flow - Step 8: Review
   creator_review_title: string;
@@ -188,6 +193,8 @@ export interface TranslationDictionary {
   recipient_confirmation_whatsapp_send: string;
   recipient_confirmation_copy: string;
   recipient_confirmation_copied: string;
+  recipient_confirmation_share: string;
+  recipient_confirmation_no_whatsapp_message: string;
   recipient_confirmation_create_own: string;
 
   // Decline screen

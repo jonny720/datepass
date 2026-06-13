@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MessageCircle, Copy, Check, Heart } from 'lucide-react';
+import { MessageCircle, Copy, Check, Heart, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, RecipientResponse } from '@/types';
@@ -43,37 +43,71 @@ export function ConfirmationScreen({
     ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
     : '';
 
-  const handleWhatsAppConfirmation = () => {
-    const whatsappUrl = buildRecipientConfirmationWhatsAppUrl({
+  // Build confirmation message (same for all actions)
+  const confirmationMessage = buildRecipientConfirmationMessage({
+    creatorPhone: config.whatsappNumber,
+    language: config.language,
+    activityName,
+    selectedSlot: response.selectedSlot ?? undefined,
+    coordinateLater: !response.selectedSlot,
+  });
+
+  // Build WhatsApp URL (returns null if no valid phone)
+  const whatsappUrl = buildRecipientConfirmationWhatsAppUrl({
+    creatorPhone: config.whatsappNumber,
+    language: config.language,
+    activityName,
+    selectedSlot: response.selectedSlot ?? undefined,
+    coordinateLater: !response.selectedSlot,
+  });
+
+  // Development diagnostics
+  if (import.meta.env.DEV) {
+    console.debug('DatePass recipient WhatsApp confirmation', {
       creatorPhone: config.whatsappNumber,
-      language: config.language,
-      activityName,
-      selectedSlot: response.selectedSlot ?? undefined,
-      coordinateLater: !response.selectedSlot,
+      hasValidPhone: whatsappUrl !== null,
+      whatsappUrl,
+      messageLength: confirmationMessage.length,
     });
+  }
+
+  const hasValidCreatorPhone = whatsappUrl !== null;
+
+  const handleWhatsAppConfirmation = () => {
+    if (!whatsappUrl) return;
     
     // Use direct navigation for reliable iPhone behavior
     // Avoids popup blockers and works from WhatsApp webview
     window.location.assign(whatsappUrl);
   };
 
-  const handleCopySummary = async () => {
-    const message = buildRecipientConfirmationMessage({
-      creatorPhone: config.whatsappNumber,
-      language: config.language,
-      activityName,
-      selectedSlot: response.selectedSlot ?? undefined,
-      coordinateLater: !response.selectedSlot,
-    });
-
+  const handleCopyConfirmation = async () => {
     try {
-      await navigator.clipboard.writeText(message);
+      await navigator.clipboard.writeText(confirmationMessage);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
   };
+
+  const handleShareConfirmation = async () => {
+    if (!navigator.share) return;
+    
+    try {
+      await navigator.share({
+        text: confirmationMessage,
+      });
+    } catch (err) {
+      // User cancelled or share failed - ignore
+      if ((err as Error).name !== 'AbortError') {
+        console.error('Share failed:', err);
+      }
+    }
+  };
+
+  // Check if Web Share API is available
+  const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   // Generate a playful compatibility score
   const compatibilityScore = Math.floor(Math.random() * (99 - 85 + 1)) + 85;
@@ -184,28 +218,59 @@ export function ConfirmationScreen({
             className="space-y-3"
             variants={fadeInUp}
           >
-            <PrimaryButton
-              onClick={handleWhatsAppConfirmation}
-              fullWidth
-              size="lg"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              {t('recipient_confirmation_whatsapp_send')}
-            </PrimaryButton>
+            {hasValidCreatorPhone ? (
+              <>
+                <PrimaryButton
+                  onClick={handleWhatsAppConfirmation}
+                  fullWidth
+                  size="lg"
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_whatsapp_send')}
+                </PrimaryButton>
 
-            <SecondaryButton onClick={handleCopySummary} fullWidth size="lg">
-              {copied ? (
-                <>
-                  <Check className="mr-2 h-5 w-5" />
-                  {t('recipient_confirmation_copied')}
-                </>
-              ) : (
-                <>
-                  <Copy className="mr-2 h-5 w-5" />
-                  {t('recipient_confirmation_copy')}
-                </>
-              )}
-            </SecondaryButton>
+                <SecondaryButton onClick={handleCopyConfirmation} fullWidth size="lg">
+                  {copied ? (
+                    <>
+                      <Check className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copied')}
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copy')}
+                    </>
+                  )}
+                </SecondaryButton>
+              </>
+            ) : (
+              <>
+                <PrimaryButton onClick={handleCopyConfirmation} fullWidth size="lg">
+                  {copied ? (
+                    <>
+                      <Check className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copied')}
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copy')}
+                    </>
+                  )}
+                </PrimaryButton>
+
+                <p className="text-center text-sm text-stone-600 py-2">
+                  {t('recipient_confirmation_no_whatsapp_message')}
+                </p>
+
+                {canShare && (
+                  <SecondaryButton onClick={handleShareConfirmation} fullWidth size="lg">
+                    <Share2 className="mr-2 h-5 w-5" />
+                    {t('recipient_confirmation_share')}
+                  </SecondaryButton>
+                )}
+              </>
+            )}
 
             <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
               {t('recipient_confirmation_create_own')}
@@ -322,28 +387,59 @@ export function ConfirmationScreen({
             className="space-y-3"
             variants={fadeInUp}
           >
-            <PrimaryButton
-              onClick={handleWhatsAppConfirmation}
-              fullWidth
-              size="lg"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              {t('recipient_confirmation_whatsapp_send')}
-            </PrimaryButton>
+            {hasValidCreatorPhone ? (
+              <>
+                <PrimaryButton
+                  onClick={handleWhatsAppConfirmation}
+                  fullWidth
+                  size="lg"
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_whatsapp_send')}
+                </PrimaryButton>
 
-            <SecondaryButton onClick={handleCopySummary} fullWidth size="lg">
-              {copied ? (
-                <>
-                  <Check className="mr-2 h-5 w-5" />
-                  {t('recipient_confirmation_copied')}
-                </>
-              ) : (
-                <>
-                  <Copy className="mr-2 h-5 w-5" />
-                  {t('recipient_confirmation_copy')}
-                </>
-              )}
-            </SecondaryButton>
+                <SecondaryButton onClick={handleCopyConfirmation} fullWidth size="lg">
+                  {copied ? (
+                    <>
+                      <Check className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copied')}
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copy')}
+                    </>
+                  )}
+                </SecondaryButton>
+              </>
+            ) : (
+              <>
+                <PrimaryButton onClick={handleCopyConfirmation} fullWidth size="lg">
+                  {copied ? (
+                    <>
+                      <Check className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copied')}
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-5 w-5" />
+                      {t('recipient_confirmation_copy')}
+                    </>
+                  )}
+                </PrimaryButton>
+
+                <p className="text-center text-sm text-stone-600 py-2">
+                  {t('recipient_confirmation_no_whatsapp_message')}
+                </p>
+
+                {canShare && (
+                  <SecondaryButton onClick={handleShareConfirmation} fullWidth size="lg">
+                    <Share2 className="mr-2 h-5 w-5" />
+                    {t('recipient_confirmation_share')}
+                  </SecondaryButton>
+                )}
+              </>
+            )}
 
             <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
               {t('recipient_confirmation_create_own')}
@@ -427,28 +523,59 @@ export function ConfirmationScreen({
 
         {/* Actions */}
         <div className="space-y-3">
-          <PrimaryButton
-            onClick={handleWhatsAppConfirmation}
-            fullWidth
-            size="lg"
-          >
-            <MessageCircle className="mr-2 h-5 w-5" />
-            {t('recipient_confirmation_whatsapp_send')}
-          </PrimaryButton>
+          {hasValidCreatorPhone ? (
+            <>
+              <PrimaryButton
+                onClick={handleWhatsAppConfirmation}
+                fullWidth
+                size="lg"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                {t('recipient_confirmation_whatsapp_send')}
+              </PrimaryButton>
 
-          <SecondaryButton onClick={handleCopySummary} fullWidth size="lg">
-            {copied ? (
-              <>
-                <Check className="mr-2 h-5 w-5" />
-                {t('recipient_confirmation_copied')}
-              </>
-            ) : (
-              <>
-                <Copy className="mr-2 h-5 w-5" />
-                {t('recipient_confirmation_copy')}
-              </>
-            )}
-          </SecondaryButton>
+              <SecondaryButton onClick={handleCopyConfirmation} fullWidth size="lg">
+                {copied ? (
+                  <>
+                    <Check className="mr-2 h-5 w-5" />
+                    {t('recipient_confirmation_copied')}
+                  </>
+                ) : (
+                  <>
+                    <Copy className="mr-2 h-5 w-5" />
+                    {t('recipient_confirmation_copy')}
+                  </>
+                )}
+              </SecondaryButton>
+            </>
+          ) : (
+            <>
+              <PrimaryButton onClick={handleCopyConfirmation} fullWidth size="lg">
+                {copied ? (
+                  <>
+                    <Check className="mr-2 h-5 w-5" />
+                    {t('recipient_confirmation_copied')}
+                  </>
+                ) : (
+                  <>
+                    <Copy className="mr-2 h-5 w-5" />
+                    {t('recipient_confirmation_copy')}
+                  </>
+                )}
+              </PrimaryButton>
+
+              <p className="text-center text-sm text-stone-600 py-2">
+                {t('recipient_confirmation_no_whatsapp_message')}
+              </p>
+
+              {canShare && (
+                <SecondaryButton onClick={handleShareConfirmation} fullWidth size="lg">
+                  <Share2 className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_share')}
+                </SecondaryButton>
+              )}
+            </>
+          )}
 
           <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
             {t('recipient_confirmation_create_own')}
