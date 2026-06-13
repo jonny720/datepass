@@ -25,6 +25,6 @@ export function getRandomDuckMessage(language: Language): string {
   return message[language];
 }
 
-export function shouldShowDuck(): boolean {
-  return Math.random() < 0.2; // 20% probability
+export function shouldShowDuck(isDevelopment = import.meta.env.DEV): boolean {
+  return isDevelopment || Math.random() < 0.2;
 }

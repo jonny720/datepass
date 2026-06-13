@@ -1,12 +1,29 @@
+import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, beforeEach } from 'vitest';
-import { createInviteUrl } from './useNavigation';
+import { createInviteUrl, useNavigation } from './useNavigation';
 import type { InviteConfig } from '@/types';
 import { SAMPLE_INVITE } from '@/data';
 
 describe('useNavigation', () => {
   beforeEach(() => {
-    // Reset URL hash before each test
-    window.location.hash = '';
+    window.history.pushState(null, '', '/');
+  });
+
+  it('clears invite query params when navigating internally', () => {
+    const inviteUrl = createInviteUrl(SAMPLE_INVITE);
+    const inviteSearch = new URL(inviteUrl).search;
+    window.history.pushState(null, '', `/${inviteSearch}`);
+
+    const { result } = renderHook(() => useNavigation());
+    expect(result.current.route.type).toBe('invite');
+
+    act(() => {
+      result.current.navigate({ type: 'landing' });
+    });
+
+    expect(window.location.search).toBe('');
+    expect(window.location.hash).toBe('#/');
+    expect(result.current.route.type).toBe('landing');
   });
 
   describe('createInviteUrl', () => {

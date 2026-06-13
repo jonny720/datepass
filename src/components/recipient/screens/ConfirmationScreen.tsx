@@ -424,9 +424,6 @@ export function ConfirmationScreen({
               </>
             )}
 
-            <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
-              {t('recipient_confirmation_create_own')}
-            </SecondaryButton>
           </motion.div>
 
           {/* Viral CTA - Subtle */}
@@ -438,9 +435,7 @@ export function ConfirmationScreen({
               onClick={onCreateOwn}
               className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
             >
-              {language === 'en' 
-                ? 'Liked the idea? Create your own invitation' 
-                : 'אהבת את הרעיון? יצירת הזמנה משלך'}
+              {t('recipient_confirmation_create_own')}
             </button>
           </motion.div>
         </motion.div>
@@ -726,9 +721,6 @@ export function ConfirmationScreen({
               </>
             )}
 
-            <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
-              {t('recipient_confirmation_create_own')}
-            </SecondaryButton>
           </motion.div>
 
           {/* Viral CTA - Subtle */}
@@ -740,9 +732,7 @@ export function ConfirmationScreen({
               onClick={onCreateOwn}
               className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
             >
-              {language === 'en' 
-                ? 'Liked the idea? Create your own invitation' 
-                : 'אהבת את הרעיון? יצירת הזמנה משלך'}
+              {t('recipient_confirmation_create_own')}
             </button>
           </motion.div>
         </motion.div>
@@ -896,19 +886,13 @@ export function ConfirmationScreen({
             </>
           )}
 
-          <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
-            {t('recipient_confirmation_create_own')}
-          </SecondaryButton>
-
           {/* Viral CTA - Subtle */}
           <div className="mt-6 text-center">
             <button
               onClick={onCreateOwn}
               className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
             >
-              {language === 'en' 
-                ? 'Liked the idea? Create your own invitation' 
-                : 'אהבת את הרעיון? יצירת הזמנה משלך'}
+              {t('recipient_confirmation_create_own')}
             </button>
           </div>
         </div>

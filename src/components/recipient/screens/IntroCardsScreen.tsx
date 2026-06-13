@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Heart, Zap, Star, MessageCircle, Coffee } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -21,7 +22,7 @@ interface IntroCardsScreenProps {
 export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: IntroCardsScreenProps) {
   const { t, config: langConfig } = useLanguage();
   const reduceMotion = prefersReducedMotion();
-  const showDuck = shouldShowDuck(); // 20% probability
+  const [showDuck] = useState(() => shouldShowDuck());
   
   // Filter out cards with empty answers
   const validCards = config.introCards.filter(card => card.answer && card.answer.trim());
@@ -188,8 +189,8 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}
       />
-      {/* Secret duck - 20% chance */}
-      {showDuck && !duckState.hasBeenRevealed && (
+      {/* Secret duck */}
+      {showDuck && (
         <SecretDuck onReveal={duckState.markAsRevealed} />
       )}
       {/* Continue Button */}

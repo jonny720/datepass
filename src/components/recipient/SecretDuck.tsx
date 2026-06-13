@@ -78,7 +78,7 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
       {/* Duck in bottom corner */}
       <motion.button
         onClick={handleDuckClick}
-        className="absolute bottom-4 left-4 z-10 flex h-11 w-11 cursor-pointer items-center justify-center"
+        className="fixed bottom-20 left-4 z-[70] flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-amber-200 bg-white/95 p-1 shadow-lg backdrop-blur-sm"
         animate={
           !prefersReducedMotion.current
             ? {

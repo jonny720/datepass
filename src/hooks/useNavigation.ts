@@ -116,7 +116,8 @@ export function useNavigation() {
 
   const navigate = useCallback((newRoute: Route) => {
     const hash = routeToHash(newRoute);
-    window.location.hash = hash;
+    window.history.pushState(null, '', `${window.location.pathname}${hash}`);
+    window.dispatchEvent(new Event('popstate'));
   }, []);
 
   return { route, navigate };

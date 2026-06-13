@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/hooks/useLanguage';
 import { IntroCardsScreen } from './IntroCardsScreen';
 import type { InviteConfig } from '@/types';
@@ -82,6 +82,40 @@ describe('IntroCardsScreen', () => {
     
     const continueButton = screen.getByRole('button', { name: /continue/i });
     expect(continueButton).toBeInTheDocument();
+  });
+
+  it('shows the secret duck in development', () => {
+    renderWithProvider(mockConfig);
+
+    expect(screen.getByLabelText(/secret duck/i)).toBeInTheDocument();
+  });
+
+  it('keeps the duck mounted after reveal so the message can display', () => {
+    const duckState = {
+      ...mockDuckState,
+      hasBeenRevealed: true,
+    };
+
+    render(
+      <LanguageProvider>
+        <IntroCardsScreen
+          config={mockConfig}
+          onNext={() => {}}
+          easterEggState={mockEasterEggState}
+          duckState={duckState}
+        />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByLabelText(/secret duck/i)).toBeInTheDocument();
+  });
+
+  it('shows a duck message when clicked', () => {
+    renderWithProvider(mockConfig);
+
+    fireEvent.click(screen.getByLabelText(/secret duck/i));
+
+    expect(screen.getByText(/duck/i)).toBeInTheDocument();
   });
 
   it('renders header with new copy', () => {
