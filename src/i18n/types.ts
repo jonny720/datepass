@@ -50,6 +50,8 @@ export interface TranslationDictionary {
   creator_theme_party_desc: string;
   creator_theme_after_dark: string;
   creator_theme_after_dark_desc: string;
+  creator_opening_message_label: string;
+  creator_opening_message_placeholder: string;
 
   // Creator flow - Step 4: Tone
   creator_tone_title: string;

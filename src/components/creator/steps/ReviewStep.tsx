@@ -60,6 +60,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       activityIds: draft.activityIds,
       dateSlots: draft.dateSlots,
       whatsappNumber,
+      ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
     };
 
     const url = createInviteUrl(inviteConfig);
@@ -133,6 +134,7 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       activityIds: draft.activityIds,
       dateSlots: draft.dateSlots,
       whatsappNumber,
+      ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
     };
 
     setPreviewConfig(config);

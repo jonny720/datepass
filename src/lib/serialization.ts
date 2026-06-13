@@ -128,6 +128,14 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
   ) {
     throw new InviteValidationError('Invalid WhatsApp number');
   }
+
+  // Optional opening message
+  if (
+    c.openingMessage !== undefined &&
+    (typeof c.openingMessage !== 'string' || c.openingMessage.length > 100)
+  ) {
+    throw new InviteValidationError('Invalid opening message');
+  }
 }
 
 /**

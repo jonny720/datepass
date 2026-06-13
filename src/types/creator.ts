@@ -12,6 +12,7 @@ export interface CreatorDraft {
   dateSlots: DateSlot[];
   selectedCountryIso2: string;
   localPhoneNumber: string;
+  openingMessage?: string;
 }
 
 export const INITIAL_DRAFT: CreatorDraft = {
@@ -26,6 +27,7 @@ export const INITIAL_DRAFT: CreatorDraft = {
   dateSlots: [],
   selectedCountryIso2: 'IL',
   localPhoneNumber: '',
+  openingMessage: '',
 };
 
 export const TOTAL_STEPS = 8;

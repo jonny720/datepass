@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig } from '@/types';
 import type { useEasterEggState } from '@/hooks/useEasterEggState';
@@ -9,6 +10,7 @@ import { NatureInvitation, NatureElements } from '@/components/nature';
 import { PartyInvitation, PartyElements } from '@/components/party';
 import { AfterDarkInvitation, AfterDarkElements } from '@/components/afterdark';
 import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { OpeningAnimation } from '@/components/recipient/OpeningAnimation';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, scaleIn, gentlePulse, float, prefersReducedMotion } from '@/lib/animations';
 
@@ -21,6 +23,7 @@ interface ArrivalScreenProps {
 export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenProps) {
   const { t } = useLanguage();
   const reduceMotion = prefersReducedMotion();
+  const [showOpening, setShowOpening] = useState(true);
 
   // Theme-specific rendering components
   const renderThemeContent = () => {
@@ -72,14 +75,26 @@ export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenP
   const { background, decorations, card } = renderThemeContent();
 
   return (
-    <motion.div 
-      key={`arrival-${config.theme}`}
-      className={`relative flex min-h-screen flex-col items-center justify-center ${background} px-4 py-12`}
-      variants={pageTransition}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-    >
+    <>
+      <AnimatePresence>
+        {showOpening && (
+          <OpeningAnimation
+            theme={config.theme}
+            recipientName={config.recipientName}
+            openingMessage={config.openingMessage}
+            onComplete={() => setShowOpening(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div 
+        key={`arrival-${config.theme}`}
+        className={`relative flex min-h-screen flex-col items-center justify-center ${background} px-4 py-12`}
+        variants={pageTransition}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
       {/* Theme decorations */}
       {decorations}
 
@@ -126,5 +141,6 @@ export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenP
         </motion.div>
       </div>
     </motion.div>
+    </>
   );
 }

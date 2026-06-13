@@ -49,6 +49,8 @@ export const he: TranslationDictionary = {
   creator_theme_party_desc: 'אנרגטי וכיפי',
   creator_theme_after_dark: 'אחרי החשכה',
   creator_theme_after_dark_desc: 'מתגרה ומסתורי',
+  creator_opening_message_label: 'הוסיפו משפט פתיחה קצר',
+  creator_opening_message_placeholder: 'חשבתי שלהציע לך לצאת בוואטסאפ זה קצת משעמם מדי.',
 
   // Creator flow - Step 4: Tone
   creator_tone_title: 'בחרו טון',

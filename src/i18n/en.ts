@@ -50,6 +50,8 @@ export const en: TranslationDictionary = {
   creator_theme_party_desc: 'Energetic and fun',
   creator_theme_after_dark: 'After Dark',
   creator_theme_after_dark_desc: 'Daring and mysterious',
+  creator_opening_message_label: 'Add a short opening line',
+  creator_opening_message_placeholder: 'I thought asking you out on WhatsApp was too boring.',
 
   // Creator flow - Step 4: Tone
   creator_tone_title: 'Choose your tone',

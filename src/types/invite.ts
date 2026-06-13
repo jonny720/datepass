@@ -37,4 +37,5 @@ export interface InviteConfig {
   activityIds: ActivityId[];
   dateSlots: DateSlot[];
   whatsappNumber?: string;
+  openingMessage?: string;
 }

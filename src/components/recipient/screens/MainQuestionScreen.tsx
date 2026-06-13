@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, type PointerEvent } from 'react';
 import { Heart, X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig } from '@/types';
 import {
@@ -10,6 +10,7 @@ import {
   IconBadge,
   Confetti,
 } from '@/components/ui';
+import { YesConfirmation } from '@/components/recipient/YesConfirmation';
 import { pageTransition, scaleIn, fadeInUp, springs } from '@/lib/animations';
 import {
   getNextSafeButtonTransform,
@@ -35,6 +36,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
   const [currentZone, setCurrentZone] = useState<SafeZone | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
+  const [showYesConfirmation, setShowYesConfirmation] = useState(false);
   const [isPointerInside, setIsPointerInside] = useState(false);
   const lastEscapeTime = useRef(0);
   const playAreaRef = useRef<HTMLDivElement>(null);
@@ -59,11 +61,10 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
     
     setCelebrating(true);
     setShowConfetti(true);
+    setShowYesConfirmation(true);
     
-    // Short celebration before continuing
-    setTimeout(() => {
-      onYes();
-    }, 1200);
+    // Confetti celebration is longer, confirmation animation is shorter
+    // Confetti stays visible while confirmation plays
   };
 
   const handleEscape = () => {
@@ -202,6 +203,15 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
       exit="exit"
     >
       {showConfetti && <Confetti />}
+      
+      <AnimatePresence>
+        {showYesConfirmation && (
+          <YesConfirmation
+            theme={config.theme}
+            onComplete={onYes}
+          />
+        )}
+      </AnimatePresence>
       
       <motion.div 
         className="mb-6 flex justify-center"
