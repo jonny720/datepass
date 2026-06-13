@@ -30,9 +30,17 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setSelectedSlot,
     setPrefersWhatsappCoordination,
     setFoundEasterEgg,
+    setFoundStamp,
+    setFoundDuck,
   } = useRecipientState(config);
   const easterEggState = useEasterEggState({
     onFound: () => setFoundEasterEgg(true),
+  });
+  const stampState = useEasterEggState({
+    onFound: () => setFoundStamp(true),
+  });
+  const duckState = useEasterEggState({
+    onFound: () => setFoundDuck(true),
   });
 
   // Sync language with invite config
@@ -83,10 +91,10 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
   const renderStep = () => {
     switch (response.step) {
       case RECIPIENT_STEPS.ARRIVAL:
-        return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} />;
+        return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} stampState={stampState} />;
 
       case RECIPIENT_STEPS.INTRO_CARDS:
-        return <IntroCardsScreen config={config} onNext={nextStep} easterEggState={easterEggState} />;
+        return <IntroCardsScreen config={config} onNext={nextStep} easterEggState={easterEggState} duckState={duckState} />;
 
       case RECIPIENT_STEPS.MAIN_QUESTION:
         return (
@@ -131,7 +139,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
         return <DeclineScreen config={config} onCreateOwn={handleCreateOwn} />;
 
       default:
-        return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} />;
+        return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} stampState={stampState} />;
     }
   };
 

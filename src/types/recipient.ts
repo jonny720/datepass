@@ -8,6 +8,8 @@ export interface RecipientResponse {
   prefersWhatsappCoordination: boolean;
   personalNote: string;
   foundEasterEgg: boolean;
+  foundStamp: boolean;
+  foundDuck: boolean;
 }
 
 export const INITIAL_RESPONSE: RecipientResponse = {
@@ -18,6 +20,8 @@ export const INITIAL_RESPONSE: RecipientResponse = {
   prefersWhatsappCoordination: false,
   personalNote: '',
   foundEasterEgg: false,
+  foundStamp: false,
+  foundDuck: false,
 };
 
 export const RECIPIENT_STEPS = {

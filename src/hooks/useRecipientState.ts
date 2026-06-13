@@ -70,6 +70,14 @@ export function useRecipientState(config: InviteConfig) {
     setResponse((prev) => ({ ...prev, foundEasterEgg: found }));
   }, []);
 
+  const setFoundStamp = useCallback((found: boolean) => {
+    setResponse((prev) => ({ ...prev, foundStamp: found }));
+  }, []);
+
+  const setFoundDuck = useCallback((found: boolean) => {
+    setResponse((prev) => ({ ...prev, foundDuck: found }));
+  }, []);
+
   return {
     response,
     setResponse,
@@ -81,5 +89,7 @@ export function useRecipientState(config: InviteConfig) {
     setSelectedSlot,
     setPrefersWhatsappCoordination,
     setFoundEasterEgg,
+    setFoundStamp,
+    setFoundDuck,
   };
 }

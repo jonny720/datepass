@@ -46,6 +46,8 @@ const mockResponse: RecipientResponse = {
   prefersWhatsappCoordination: false,
   personalNote: '',
   foundEasterEgg: false,
+  foundStamp: false,
+  foundDuck: false,
 };
 
 const screens = [
@@ -77,9 +79,9 @@ export function DevMode() {
 
     switch (selectedScreen) {
       case 'arrival':
-        return <ArrivalScreen config={config} onNext={noop} easterEggState={mockEasterEggState} />;
+        return <ArrivalScreen config={config} onNext={noop} easterEggState={mockEasterEggState} stampState={mockEasterEggState} />;
       case 'intro':
-        return <IntroCardsScreen config={config} onNext={noop} easterEggState={mockEasterEggState} />;
+        return <IntroCardsScreen config={config} onNext={noop} easterEggState={mockEasterEggState} duckState={mockEasterEggState} />;
       case 'question':
         return (
           <MainQuestionScreen

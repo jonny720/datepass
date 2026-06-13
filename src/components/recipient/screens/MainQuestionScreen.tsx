@@ -60,6 +60,9 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
   const handleYesClick = () => {
     if (celebrating) return;
     
+    // Haptic feedback for approval
+    navigator.vibrate?.(25);
+    
     setCelebrating(true);
     setShowConfetti(true);
     setShowYesConfirmation(true);
@@ -70,6 +73,9 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline }: MainQuest
 
   const handleEscape = () => {
     const now = Date.now();
+    
+    // Haptic feedback for button escape
+    navigator.vibrate?.(10);
     
     // Enforce cooldown
     if (now - lastEscapeTime.current < ESCAPE_COOLDOWN_MS) {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MessageCircle, Copy, Check, Heart, Share2, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, RecipientResponse } from '@/types';
 import type { useEasterEggState } from '@/hooks/useEasterEggState';
@@ -14,7 +14,9 @@ import {
 import { CruiseTicket, OceanWaves, FloatingElements } from '@/components/cruise';
 import { MissionDossier, GridLines, RadarElements } from '@/components/mission';
 import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { CompatibilityCalculation } from '@/components/recipient/CompatibilityCalculation';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
+import { generateCompatibilityScore, getScoreDisclaimer } from '@/config/compatibilityConfig';
 import { pageTransition, scaleIn, fadeInUp, staggerContainer } from '@/lib/animations';
 import {
   buildRecipientConfirmationWhatsAppUrl,
@@ -34,10 +36,11 @@ export function ConfirmationScreen({
   onCreateOwn,
   easterEggState,
 }: ConfirmationScreenProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [personalNote, setPersonalNote] = useState('');
   const [scoreDisclaimerIndex, setScoreDisclaimerIndex] = useState(0);
+  const [showCalculation, setShowCalculation] = useState(true);
   const MAX_NOTE_LENGTH = 160;
 
   const isCruiseTheme = config.theme === 'cruise';
@@ -51,16 +54,15 @@ export function ConfirmationScreen({
     ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
     : '';
 
-  // Cycle through playful score disclaimers
-  const scoreDisclaimers = [
-    t('recipient_confirmation_score_disclaimer'),
-    t('easter_egg_score_1'),
-    t('easter_egg_score_2'),
-    t('easter_egg_score_3'),
-  ];
-
+  // Cycle through playful score disclaimers using new config
   const handleScoreTap = () => {
-    setScoreDisclaimerIndex((prev) => (prev + 1) % scoreDisclaimers.length);
+    // Haptic feedback
+    navigator.vibrate?.(15);
+    setScoreDisclaimerIndex((prev) => (prev + 1) % 4);
+  };
+
+  const handleCalculationComplete = () => {
+    setShowCalculation(false);
   };
 
   // Build confirmation message (same for all actions)
@@ -135,20 +137,35 @@ export function ConfirmationScreen({
   // Check if Web Share API is available
   const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
-  // Generate a playful compatibility score
-  const compatibilityScore = Math.floor(Math.random() * (99 - 85 + 1)) + 85;
+  // Generate a deterministic compatibility score based on invite config
+  const compatibilityScore = generateCompatibilityScore(
+    `${config.senderName}-${config.recipientName}-${config.theme}`
+  );
+
+  // Get current score disclaimer
+  const currentDisclaimer = getScoreDisclaimer(scoreDisclaimerIndex, language);
 
   // Cruise theme rendering
   if (isCruiseTheme) {
     return (
-      <motion.div 
-        key="confirmation-cruise"
-        className="relative flex min-h-screen flex-col items-center justify-center ocean-background-soft px-4 py-12"
-        variants={pageTransition}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
+      <>
+        {/* Compatibility calculation overlay */}
+        <AnimatePresence>
+          {showCalculation && (
+            <CompatibilityCalculation
+              onComplete={handleCalculationComplete}
+            />
+          )}
+        </AnimatePresence>
+
+        <motion.div 
+          key="confirmation-cruise"
+          className="relative flex min-h-screen flex-col items-center justify-center ocean-background-soft px-4 py-12"
+          variants={pageTransition}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
         {/* Ocean waves decoration */}
         <OceanWaves />
         
@@ -339,7 +356,7 @@ export function ConfirmationScreen({
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              {scoreDisclaimers[scoreDisclaimerIndex]}
+              {currentDisclaimer}
             </motion.p>
             
             {/* Tap hint */}
@@ -411,22 +428,48 @@ export function ConfirmationScreen({
               {t('recipient_confirmation_create_own')}
             </SecondaryButton>
           </motion.div>
+
+          {/* Viral CTA - Subtle */}
+          <motion.div
+            variants={fadeInUp}
+            className="mt-6 text-center"
+          >
+            <button
+              onClick={onCreateOwn}
+              className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
+            >
+              {language === 'en' 
+                ? 'Liked the idea? Create your own invitation' 
+                : 'אהבת את הרעיון? יצירת הזמנה משלך'}
+            </button>
+          </motion.div>
         </motion.div>
       </motion.div>
+      </>
     );
   }
 
   // Secret mission theme rendering
   if (isMissionTheme) {
     return (
-      <motion.div 
-        key="confirmation-mission"
-        className="relative flex min-h-screen flex-col items-center justify-center mission-background-soft px-4 py-12"
-        variants={pageTransition}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
+      <>
+        {/* Compatibility calculation overlay */}
+        <AnimatePresence>
+          {showCalculation && (
+            <CompatibilityCalculation
+              onComplete={handleCalculationComplete}
+            />
+          )}
+        </AnimatePresence>
+
+        <motion.div 
+          key="confirmation-mission"
+          className="relative flex min-h-screen flex-col items-center justify-center mission-background-soft px-4 py-12"
+          variants={pageTransition}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
         {/* Grid decoration */}
         <GridLines />
         
@@ -615,7 +658,7 @@ export function ConfirmationScreen({
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              {scoreDisclaimers[scoreDisclaimerIndex]}
+              {currentDisclaimer}
             </motion.p>
             
             {/* Tap hint */}
@@ -687,21 +730,47 @@ export function ConfirmationScreen({
               {t('recipient_confirmation_create_own')}
             </SecondaryButton>
           </motion.div>
+
+          {/* Viral CTA - Subtle */}
+          <motion.div
+            variants={fadeInUp}
+            className="mt-6 text-center"
+          >
+            <button
+              onClick={onCreateOwn}
+              className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
+            >
+              {language === 'en' 
+                ? 'Liked the idea? Create your own invitation' 
+                : 'אהבת את הרעיון? יצירת הזמנה משלך'}
+            </button>
+          </motion.div>
         </motion.div>
       </motion.div>
+      </>
     );
   }
 
   // Fallback theme rendering (generic card)
   return (
-    <motion.div 
-      key="confirmation-fallback"
-      className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 px-4 py-12"
-      variants={pageTransition}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-    >
+    <>
+      {/* Compatibility calculation overlay */}
+      <AnimatePresence>
+        {showCalculation && (
+          <CompatibilityCalculation
+            onComplete={handleCalculationComplete}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div 
+        key="confirmation-fallback"
+        className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 px-4 py-12"
+        variants={pageTransition}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
       {/* Easter egg - always render to keep Portal alive */}
       <EasterEgg
         theme={config.theme}
@@ -830,9 +899,22 @@ export function ConfirmationScreen({
           <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
             {t('recipient_confirmation_create_own')}
           </SecondaryButton>
+
+          {/* Viral CTA - Subtle */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={onCreateOwn}
+              className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
+            >
+              {language === 'en' 
+                ? 'Liked the idea? Create your own invitation' 
+                : 'אהבת את הרעיון? יצירת הזמנה משלך'}
+            </button>
+          </div>
         </div>
       </Card>
       </motion.div>
     </motion.div>
+    </>
   );
 }

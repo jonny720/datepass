@@ -10,6 +10,7 @@ import { NatureInvitation, NatureElements } from '@/components/nature';
 import { PartyInvitation, PartyElements } from '@/components/party';
 import { AfterDarkInvitation, AfterDarkElements } from '@/components/afterdark';
 import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { HiddenStamp } from '@/components/recipient/HiddenStamp';
 import { OpeningAnimation } from '@/components/recipient/OpeningAnimation';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, scaleIn, gentlePulse, float, prefersReducedMotion } from '@/lib/animations';
@@ -18,9 +19,10 @@ interface ArrivalScreenProps {
   config: InviteConfig;
   onNext: () => void;
   easterEggState: ReturnType<typeof useEasterEggState>;
+  stampState: ReturnType<typeof useEasterEggState>;
 }
 
-export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenProps) {
+export function ArrivalScreen({ config, onNext, easterEggState, stampState }: ArrivalScreenProps) {
   const { t } = useLanguage();
   const reduceMotion = prefersReducedMotion();
   const [showOpening, setShowOpening] = useState(true);
@@ -115,10 +117,17 @@ export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenP
           transition={{ delay: 0.2 }}
         >
           <motion.div
+            className="relative"
             variants={!reduceMotion ? float : {}}
             animate={!reduceMotion ? 'animate' : undefined}
           >
             {card}
+            {/* Hidden stamp partially peeking from edge */}
+            <HiddenStamp
+              theme={config.theme}
+              onReveal={stampState.markAsRevealed}
+              hasBeenRevealed={stampState.hasBeenRevealed}
+            />
           </motion.div>
         </motion.div>
 

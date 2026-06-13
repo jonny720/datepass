@@ -6,6 +6,8 @@ import type { InviteConfig } from '@/types';
 import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { PrimaryButton } from '@/components/ui';
 import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { SecretDuck } from '@/components/recipient/SecretDuck';
+import { shouldShowDuck } from '@/config/duckConfig';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, staggerChildren, prefersReducedMotion } from '@/lib/animations';
 
@@ -13,11 +15,13 @@ interface IntroCardsScreenProps {
   config: InviteConfig;
   onNext: () => void;
   easterEggState: ReturnType<typeof useEasterEggState>;
+  duckState: ReturnType<typeof useEasterEggState>;
 }
 
-export function IntroCardsScreen({ config, onNext, easterEggState }: IntroCardsScreenProps) {
+export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: IntroCardsScreenProps) {
   const { t, config: langConfig } = useLanguage();
   const reduceMotion = prefersReducedMotion();
+  const showDuck = shouldShowDuck(); // 20% probability
   
   // Filter out cards with empty answers
   const validCards = config.introCards.filter(card => card.answer && card.answer.trim());
@@ -184,7 +188,10 @@ export function IntroCardsScreen({ config, onNext, easterEggState }: IntroCardsS
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}
       />
-
+      {/* Secret duck - 20% chance */}
+      {showDuck && !duckState.hasBeenRevealed && (
+        <SecretDuck onReveal={duckState.markAsRevealed} />
+      )}
       {/* Continue Button */}
       <motion.div
         className="mx-auto w-full max-w-md"
