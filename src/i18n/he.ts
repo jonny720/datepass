@@ -186,11 +186,10 @@ export const he: TranslationDictionary = {
   recipient_confirmation_when: 'מתי',
   recipient_confirmation_coordinate: 'נתאם ביננו',
   recipient_confirmation_score_disclaimer: 'ממציאים לחלוטין, אבל נשמע טוב',
-  recipient_confirmation_whatsapp_button: 'הודעה בווטסאפ',
-  recipient_confirmation_copy_button: 'העתקת סיכום',
-  recipient_confirmation_copied: 'הועתק ללוח!',
+  recipient_confirmation_whatsapp_send: 'שליחת אישור בוואטסאפ',
+  recipient_confirmation_copy: 'העתקת הסיכום',
+  recipient_confirmation_copied: 'הועתק',
   recipient_confirmation_create_own: 'צרו הזמנה משלכם',
-  recipient_confirmation_whatsapp_message: 'היי! קיבלתי את ההזמנה לדייט ואני בפנים! 😊',
 
   // Decline screen
   recipient_decline_title: 'הכול בסדר',

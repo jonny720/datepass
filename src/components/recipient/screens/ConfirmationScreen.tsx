@@ -13,6 +13,10 @@ import {
 import { CruiseTicket, OceanWaves, FloatingElements } from '@/components/cruise';
 import { MissionDossier, GridLines, RadarElements } from '@/components/mission';
 import { pageTransition, scaleIn, fadeInUp, staggerContainer } from '@/lib/animations';
+import {
+  buildRecipientConfirmationWhatsAppUrl,
+  buildRecipientConfirmationMessage,
+} from '@/lib/recipientConfirmation';
 
 interface ConfirmationScreenProps {
   config: InviteConfig;
@@ -35,31 +39,31 @@ export function ConfirmationScreen({
     (a) => a.id === response.selectedActivity
   );
 
+  const activityName = selectedActivity
+    ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
+    : '';
+
   const getWhatsAppUrl = () => {
-    if (!config.whatsappNumber) return '';
-    
-    const message = t('recipient_confirmation_whatsapp_message');
-    const encodedMessage = encodeURIComponent(message);
-    
-    // Format phone number (remove spaces, dashes, etc.)
-    const cleanNumber = config.whatsappNumber.replace(/[^\d+]/g, '');
-    
-    return `https://wa.me/${cleanNumber}?text=${encodedMessage}`;
+    return buildRecipientConfirmationWhatsAppUrl({
+      creatorPhone: config.whatsappNumber,
+      language: config.language,
+      activityName,
+      selectedSlot: response.selectedSlot ?? undefined,
+      coordinateLater: !response.selectedSlot,
+    });
   };
 
   const handleCopySummary = async () => {
-    const activity = selectedActivity
-      ? `${t(selectedActivity.titleKey as keyof typeof t)}`
-      : '';
-    
-    const when = response.selectedSlot
-      ? `${response.selectedSlot.date} at ${response.selectedSlot.time}`
-      : t('recipient_confirmation_coordinate');
-
-    const summary = `${t('recipient_confirmation_activity')}: ${activity}\n${t('recipient_confirmation_when')}: ${when}`;
+    const message = buildRecipientConfirmationMessage({
+      creatorPhone: config.whatsappNumber,
+      language: config.language,
+      activityName,
+      selectedSlot: response.selectedSlot ?? undefined,
+      coordinateLater: !response.selectedSlot,
+    });
 
     try {
-      await navigator.clipboard.writeText(summary);
+      await navigator.clipboard.writeText(message);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -176,30 +180,28 @@ export function ConfirmationScreen({
             className="space-y-3"
             variants={fadeInUp}
           >
-            {config.whatsappNumber ? (
-              <PrimaryButton
-                onClick={() => window.open(getWhatsAppUrl(), '_blank')}
-                fullWidth
-                size="lg"
-              >
-                <MessageCircle className="mr-2 h-5 w-5" />
-                {t('recipient_confirmation_whatsapp_button')}
-              </PrimaryButton>
-            ) : (
-              <PrimaryButton onClick={handleCopySummary} fullWidth size="lg">
-                {copied ? (
-                  <>
-                    <Check className="mr-2 h-5 w-5" />
-                    {t('recipient_confirmation_copied')}
-                  </>
-                ) : (
-                  <>
-                    <Copy className="mr-2 h-5 w-5" />
-                    {t('recipient_confirmation_copy_button')}
-                  </>
-                )}
-              </PrimaryButton>
-            )}
+            <PrimaryButton
+              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              fullWidth
+              size="lg"
+            >
+              <MessageCircle className="mr-2 h-5 w-5" />
+              {t('recipient_confirmation_whatsapp_send')}
+            </PrimaryButton>
+
+            <SecondaryButton onClick={handleCopySummary} fullWidth size="lg">
+              {copied ? (
+                <>
+                  <Check className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_copied')}
+                </>
+              ) : (
+                <>
+                  <Copy className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_copy')}
+                </>
+              )}
+            </SecondaryButton>
 
             <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
               {t('recipient_confirmation_create_own')}
@@ -316,30 +318,28 @@ export function ConfirmationScreen({
             className="space-y-3"
             variants={fadeInUp}
           >
-            {config.whatsappNumber ? (
-              <PrimaryButton
-                onClick={() => window.open(getWhatsAppUrl(), '_blank')}
-                fullWidth
-                size="lg"
-              >
-                <MessageCircle className="mr-2 h-5 w-5" />
-                {t('recipient_confirmation_whatsapp_button')}
-              </PrimaryButton>
-            ) : (
-              <PrimaryButton onClick={handleCopySummary} fullWidth size="lg">
-                {copied ? (
-                  <>
-                    <Check className="mr-2 h-5 w-5" />
-                    {t('recipient_confirmation_copied')}
-                  </>
-                ) : (
-                  <>
-                    <Copy className="mr-2 h-5 w-5" />
-                    {t('recipient_confirmation_copy_button')}
-                  </>
-                )}
-              </PrimaryButton>
-            )}
+            <PrimaryButton
+              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+              fullWidth
+              size="lg"
+            >
+              <MessageCircle className="mr-2 h-5 w-5" />
+              {t('recipient_confirmation_whatsapp_send')}
+            </PrimaryButton>
+
+            <SecondaryButton onClick={handleCopySummary} fullWidth size="lg">
+              {copied ? (
+                <>
+                  <Check className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_copied')}
+                </>
+              ) : (
+                <>
+                  <Copy className="mr-2 h-5 w-5" />
+                  {t('recipient_confirmation_copy')}
+                </>
+              )}
+            </SecondaryButton>
 
             <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
               {t('recipient_confirmation_create_own')}
@@ -423,30 +423,28 @@ export function ConfirmationScreen({
 
         {/* Actions */}
         <div className="space-y-3">
-          {config.whatsappNumber ? (
-            <PrimaryButton
-              onClick={() => window.open(getWhatsAppUrl(), '_blank')}
-              fullWidth
-              size="lg"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              {t('recipient_confirmation_whatsapp_button')}
-            </PrimaryButton>
-          ) : (
-            <PrimaryButton onClick={handleCopySummary} fullWidth size="lg">
-              {copied ? (
-                <>
-                  <Check className="mr-2 h-5 w-5" />
-                  {t('recipient_confirmation_copied')}
-                </>
-              ) : (
-                <>
-                  <Copy className="mr-2 h-5 w-5" />
-                  {t('recipient_confirmation_copy_button')}
-                </>
-              )}
-            </PrimaryButton>
-          )}
+          <PrimaryButton
+            onClick={() => window.open(getWhatsAppUrl(), '_blank')}
+            fullWidth
+            size="lg"
+          >
+            <MessageCircle className="mr-2 h-5 w-5" />
+            {t('recipient_confirmation_whatsapp_send')}
+          </PrimaryButton>
+
+          <SecondaryButton onClick={handleCopySummary} fullWidth size="lg">
+            {copied ? (
+              <>
+                <Check className="mr-2 h-5 w-5" />
+                {t('recipient_confirmation_copied')}
+              </>
+            ) : (
+              <>
+                <Copy className="mr-2 h-5 w-5" />
+                {t('recipient_confirmation_copy')}
+              </>
+            )}
+          </SecondaryButton>
 
           <SecondaryButton onClick={onCreateOwn} fullWidth size="lg">
             {t('recipient_confirmation_create_own')}

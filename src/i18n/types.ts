@@ -185,11 +185,10 @@ export interface TranslationDictionary {
   recipient_confirmation_when: string;
   recipient_confirmation_coordinate: string;
   recipient_confirmation_score_disclaimer: string;
-  recipient_confirmation_whatsapp_button: string;
-  recipient_confirmation_copy_button: string;
+  recipient_confirmation_whatsapp_send: string;
+  recipient_confirmation_copy: string;
   recipient_confirmation_copied: string;
   recipient_confirmation_create_own: string;
-  recipient_confirmation_whatsapp_message: string;
 
   // Decline screen
   recipient_decline_title: string;

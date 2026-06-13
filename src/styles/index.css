@@ -97,6 +97,15 @@
     padding-right: max(1rem, env(safe-area-inset-right));
   }
 
+  /* Date and time input fixes for mobile */
+  input[type="date"],
+  input[type="time"] {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
   /* Dynamic viewport height support */
   .min-h-screen-dynamic {
     min-height: 100vh;

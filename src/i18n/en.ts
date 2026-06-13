@@ -186,11 +186,10 @@ export const en: TranslationDictionary = {
   recipient_confirmation_when: 'When',
   recipient_confirmation_coordinate: 'We\'ll coordinate',
   recipient_confirmation_score_disclaimer: 'Totally made up, but sounds good',
-  recipient_confirmation_whatsapp_button: 'Message on WhatsApp',
-  recipient_confirmation_copy_button: 'Copy Summary',
-  recipient_confirmation_copied: 'Copied to clipboard!',
+  recipient_confirmation_whatsapp_send: 'Send confirmation on WhatsApp',
+  recipient_confirmation_copy: 'Copy confirmation',
+  recipient_confirmation_copied: 'Copied',
   recipient_confirmation_create_own: 'Create your own invitation',
-  recipient_confirmation_whatsapp_message: 'Hi! I got your date invitation and I\'m in! 😊',
 
   // Decline screen
   recipient_decline_title: 'All good',
