@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { RecipientResponse, ActivityId, DateSlot, InviteConfig } from '@/types';
+import type { RecipientResponse, ActivityId, DateSlot, InviteConfig, ArrivalPreference } from '@/types';
 import { INITIAL_RESPONSE, RECIPIENT_STEPS } from '@/types';
 
 export function useRecipientState(config: InviteConfig) {
@@ -58,6 +58,10 @@ export function useRecipientState(config: InviteConfig) {
     setResponse((prev) => ({ ...prev, selectedActivity: activity }));
   }, []);
 
+  const setArrivalPreference = useCallback((arrivalPreference: ArrivalPreference) => {
+    setResponse((prev) => ({ ...prev, arrivalPreference }));
+  }, []);
+
   const setSelectedSlot = useCallback((slot: DateSlot | null) => {
     setResponse((prev) => ({ ...prev, selectedSlot: slot }));
   }, []);
@@ -85,6 +89,7 @@ export function useRecipientState(config: InviteConfig) {
     nextStep,
     prevStep,
     setWantsDate,
+    setArrivalPreference,
     setSelectedActivity,
     setSelectedSlot,
     setPrefersWhatsappCoordination,

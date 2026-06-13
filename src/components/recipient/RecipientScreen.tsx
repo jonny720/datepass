@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigation } from '@/hooks/useNavigation';
 import { useRecipientState } from '@/hooks/useRecipientState';
 import { useEasterEggState } from '@/hooks/useEasterEggState';
@@ -10,6 +8,7 @@ import {
   ArrivalScreen,
   IntroCardsScreen,
   MainQuestionScreen,
+  ArrivalPreferenceScreen,
   ActivityChoiceScreen,
   SlotChoiceScreen,
   ConfirmationScreen,
@@ -21,13 +20,13 @@ interface RecipientScreenProps {
 }
 
 export function RecipientScreen({ config }: RecipientScreenProps) {
-  const { language, setLanguage } = useLanguage();
   const { navigate } = useNavigation();
   const {
     response,
     setResponse,
     nextStep,
     setWantsDate,
+    setArrivalPreference,
     setSelectedActivity,
     setSelectedSlot,
     setPrefersWhatsappCoordination,
@@ -44,13 +43,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
   const duckState = useEasterEggState({
     onFound: () => setFoundDuck(true),
   });
-
-  // Sync language with invite config
-  useEffect(() => {
-    if (config.language !== language) {
-      setLanguage(config.language);
-    }
-  }, [config.language, language, setLanguage]);
 
   const handleYes = () => {
     setWantsDate(true);
@@ -71,6 +63,11 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
 
   const handleActivitySelect = (activity: typeof config.activityIds[number]) => {
     setSelectedActivity(activity);
+    nextStep();
+  };
+
+  const handleArrivalPreferenceSelect = (preference: 'pickup' | 'self') => {
+    setArrivalPreference(preference);
     nextStep();
   };
 
@@ -105,6 +102,15 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             onYes={handleYes}
             onNo={handleNo}
             onDecline={handleDecline}
+          />
+        );
+
+      case RECIPIENT_STEPS.ARRIVAL_PREFERENCE:
+        return (
+          <ArrivalPreferenceScreen
+            config={config}
+            onSelect={handleArrivalPreferenceSelect}
+            easterEggState={easterEggState}
           />
         );
 

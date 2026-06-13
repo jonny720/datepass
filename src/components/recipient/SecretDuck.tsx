@@ -10,7 +10,6 @@ interface SecretDuckProps {
 
 export function SecretDuck({ onReveal }: SecretDuckProps) {
   const { language } = useLanguage();
-  const [isRevealed, setIsRevealed] = useState(false);
   const [message, setMessage] = useState<string>('');
   const timeoutRef = useRef<number>();
   const tapGuardRef = useRef(false);
@@ -55,16 +54,10 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
   }, [message]);
 
   const handleDuckClick = () => {
-    if (isRevealed) return;
-
     // Haptic feedback
     navigator.vibrate?.(15);
 
-    // Set message
-    setMessage(getRandomDuckMessage(language));
-
-    // Mark as revealed
-    setIsRevealed(true);
+    setMessage((previousMessage) => getRandomDuckMessage(language, previousMessage));
     onReveal?.();
   };
 

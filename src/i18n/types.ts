@@ -192,6 +192,15 @@ export interface TranslationDictionary {
   recipient_question_no_escape_6: string;
   recipient_question_decline_serious: string;
   recipient_question_notification: string;
+
+  // Recipient Screen 4: Arrival Preference
+  recipient_arrival_preference_title: string;
+  recipient_arrival_preference_subtitle: string;
+  recipient_arrival_preference_pickup: string;
+  recipient_arrival_preference_pickup_desc: string;
+  recipient_arrival_preference_self: string;
+  recipient_arrival_preference_self_desc: string;
+
   // Recipient Screen 4: Activity Choice
   recipient_activity_title: string;
   recipient_activity_subtitle: string;
@@ -208,6 +217,9 @@ export interface TranslationDictionary {
   recipient_confirmation_subtitle: string;
   recipient_confirmation_activity: string;
   recipient_confirmation_when: string;
+  recipient_confirmation_arrival_preference: string;
+  recipient_confirmation_arrival_pickup: string;
+  recipient_confirmation_arrival_self: string;
   recipient_confirmation_coordinate: string;
   recipient_confirmation_score_disclaimer: string;
   recipient_confirmation_whatsapp_send: string;

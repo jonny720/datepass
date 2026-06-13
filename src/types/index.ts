@@ -12,5 +12,5 @@ export type {
 export type { Route, NavigationState } from './navigation';
 export type { CreatorDraft } from './creator';
 export { INITIAL_DRAFT, TOTAL_STEPS } from './creator';
-export type { RecipientResponse } from './recipient';
+export type { RecipientResponse, ArrivalPreference } from './recipient';
 export { INITIAL_RESPONSE, RECIPIENT_STEPS } from './recipient';

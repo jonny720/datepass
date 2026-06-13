@@ -193,6 +193,14 @@ export const en: TranslationDictionary = {
   recipient_question_decline_serious: 'No thanks, seriously',
   recipient_question_notification: 'will get your answer',
 
+  // Recipient Screen 4: Arrival Preference
+  recipient_arrival_preference_title: 'How are you getting there?',
+  recipient_arrival_preference_subtitle: 'One tiny logistics question',
+  recipient_arrival_preference_pickup: 'I need pickup',
+  recipient_arrival_preference_pickup_desc: 'Please come get me',
+  recipient_arrival_preference_self: 'I’ll come by myself',
+  recipient_arrival_preference_self_desc: 'I’ll meet you there',
+
   // Recipient Screen 4: Activity Choice
   recipient_activity_title: 'What sounds good?',
   recipient_activity_subtitle: 'Pick what you\'d enjoy',
@@ -209,6 +217,9 @@ export const en: TranslationDictionary = {
   recipient_confirmation_subtitle: 'Here\'s what we agreed on',
   recipient_confirmation_activity: 'Activity',
   recipient_confirmation_when: 'When',
+  recipient_confirmation_arrival_preference: 'Getting there',
+  recipient_confirmation_arrival_pickup: 'I need pickup',
+  recipient_confirmation_arrival_self: 'I’ll come by myself',
   recipient_confirmation_coordinate: 'We\'ll coordinate',
   recipient_confirmation_score_disclaimer: 'Totally made up, but sounds good',
   recipient_confirmation_whatsapp_send: 'Send confirmation on WhatsApp',

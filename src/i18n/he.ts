@@ -192,6 +192,14 @@ export const he: TranslationDictionary = {
   recipient_question_decline_serious: 'לא תודה, ברצינות',
   recipient_question_notification: 'יקבל את התשובה',
 
+  // Recipient Screen 4: Arrival Preference
+  recipient_arrival_preference_title: 'איך את מגיעה?',
+  recipient_arrival_preference_subtitle: 'שאלת לוגיסטיקה קטנה',
+  recipient_arrival_preference_pickup: 'אני צריכה איסוף',
+  recipient_arrival_preference_pickup_desc: 'תבוא לאסוף אותי',
+  recipient_arrival_preference_self: 'אני אגיע בעצמי',
+  recipient_arrival_preference_self_desc: 'אפגוש אותך שם',
+
   // Recipient Screen 4: Activity Choice
   recipient_activity_title: 'מה נשמע טוב?',
   recipient_activity_subtitle: 'בחרו מה שמתאים לכם',
@@ -208,6 +216,9 @@ export const he: TranslationDictionary = {
   recipient_confirmation_subtitle: 'הנה מה שסיכמנו',
   recipient_confirmation_activity: 'פעילות',
   recipient_confirmation_when: 'מתי',
+  recipient_confirmation_arrival_preference: 'איך מגיעה',
+  recipient_confirmation_arrival_pickup: 'אני צריכה איסוף',
+  recipient_confirmation_arrival_self: 'אני אגיע בעצמי',
   recipient_confirmation_coordinate: 'נתאם ביננו',
   recipient_confirmation_score_disclaimer: 'ממציאים לחלוטין, אבל נשמע טוב',
   recipient_confirmation_whatsapp_send: 'שליחת אישור בוואטסאפ',

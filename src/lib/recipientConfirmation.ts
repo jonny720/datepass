@@ -1,4 +1,4 @@
-import type { Language, DateSlot } from '@/types';
+import type { ArrivalPreference, Language, DateSlot } from '@/types';
 
 /**
  * Parameters for building the recipient confirmation message
@@ -9,6 +9,7 @@ export interface RecipientConfirmationParams {
   activityName: string;
   selectedSlot?: DateSlot;
   coordinateLater: boolean;
+  arrivalPreference?: ArrivalPreference | null;
   personalNote?: string;
   noteHeader?: string;
   foundEasterEgg?: boolean;
@@ -51,7 +52,7 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { language, activityName, selectedSlot, coordinateLater, personalNote, noteHeader, foundEasterEgg } = params;
+  const { language, activityName, selectedSlot, coordinateLater, arrivalPreference, personalNote, noteHeader, foundEasterEgg } = params;
   
   if (language === 'he') {
     let message = 'אישרתי את ההזמנה 😌\n\n';
@@ -62,6 +63,12 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
     } else if (selectedSlot) {
       const formattedDate = formatDate(selectedSlot.date, language);
       message += `המועד שמתאים לי: ${formattedDate} בשעה ${selectedSlot.time}`;
+    }
+
+    if (arrivalPreference) {
+      message += `\nאיך אני מגיעה: ${
+        arrivalPreference === 'pickup' ? 'אני צריכה איסוף' : 'אני אגיע בעצמי'
+      }`;
     }
     
     // Append personal note if provided
@@ -84,6 +91,12 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
     } else if (selectedSlot) {
       const formattedDate = formatDate(selectedSlot.date, language);
       message += `Preferred time: ${formattedDate} at ${selectedSlot.time}`;
+    }
+
+    if (arrivalPreference) {
+      message += `\nGetting there: ${
+        arrivalPreference === 'pickup' ? 'I need pickup' : 'I’ll come by myself'
+      }`;
     }
     
     // Append personal note if provided

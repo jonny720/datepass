@@ -20,7 +20,7 @@ interface IntroCardsScreenProps {
 }
 
 export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: IntroCardsScreenProps) {
-  const { t, config: langConfig } = useLanguage();
+  const { t, language, config: langConfig } = useLanguage();
   const reduceMotion = prefersReducedMotion();
   const [showDuck] = useState(() => shouldShowDuck());
   
@@ -112,7 +112,7 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
           {validCards.map((card, index) => {
             const Icon = getCardIcon(index);
             const rotation = getCardRotation(index);
-            const promptLabel = getPromptLabel(card.promptKey, config.language);
+            const promptLabel = getPromptLabel(card.promptKey, language);
 
             return (
               <motion.div

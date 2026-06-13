@@ -9,14 +9,12 @@ describe('shouldShowDuck', () => {
   it('always shows the duck in development', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0.99);
 
-    expect(shouldShowDuck(true)).toBe(true);
+    expect(shouldShowDuck()).toBe(true);
   });
 
-  it('keeps the duck rare in production', () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0.19);
-    expect(shouldShowDuck(false)).toBe(true);
+  it('always shows the duck in production', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.99);
 
-    vi.spyOn(Math, 'random').mockReturnValue(0.2);
-    expect(shouldShowDuck(false)).toBe(false);
+    expect(shouldShowDuck()).toBe(true);
   });
 });

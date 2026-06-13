@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/hooks/useLanguage';
 import { IntroCardsScreen } from './IntroCardsScreen';
@@ -43,6 +43,10 @@ const renderWithProvider = (config: InviteConfig, onNext = () => {}) => {
 };
 
 describe('IntroCardsScreen', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('renders all intro cards at once', () => {
     renderWithProvider(mockConfig);
     
@@ -116,6 +120,19 @@ describe('IntroCardsScreen', () => {
     fireEvent.click(screen.getByLabelText(/secret duck/i));
 
     expect(screen.getByText(/duck/i)).toBeInTheDocument();
+  });
+
+  it('lets the duck be clicked repeatedly with different messages', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+
+    renderWithProvider(mockConfig);
+
+    const duck = screen.getByLabelText(/secret duck/i);
+    fireEvent.click(duck);
+    expect(screen.getByText('This duck has no role in the process.')).toBeInTheDocument();
+
+    fireEvent.click(duck);
+    expect(screen.getByText('You found the completely unnecessary duck.')).toBeInTheDocument();
   });
 
   it('renders header with new copy', () => {

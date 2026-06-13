@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigation } from '@/hooks/useNavigation';
 import { LandingScreen, InvalidLinkScreen, NotFoundScreen, ErrorBoundary } from '@/components/common';
@@ -7,8 +8,18 @@ import { DevMode } from '@/components/DevMode';
 import { AppShell, AppHeader } from '@/components/ui';
 
 function App() {
-  const { config } = useLanguage();
+  const { config, language, setLanguage } = useLanguage();
   const { route, navigate } = useNavigation();
+  const syncedInviteConfigRef = useRef<unknown>(null);
+
+  useLayoutEffect(() => {
+    if (route.type === 'invite' && syncedInviteConfigRef.current !== route.config) {
+      syncedInviteConfigRef.current = route.config;
+      if (route.config.language !== language) {
+        setLanguage(route.config.language);
+      }
+    }
+  }, [language, route, setLanguage]);
 
   const handleStartOver = () => {
     // Clear localStorage
@@ -47,7 +58,10 @@ function App() {
     <ErrorBoundary>
       <AppShell>
         <AppHeader onStartOver={handleStartOver} showStartOver={showStartOver} />
-        <div dir={config.direction} className="pt-12">
+        <div
+          dir={config.direction}
+          className="pt-12"
+        >
           {renderRoute()}
         </div>
       </AppShell>

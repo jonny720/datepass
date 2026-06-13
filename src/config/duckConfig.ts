@@ -20,11 +20,15 @@ export const DUCK_MESSAGES: DuckMessage[] = [
   },
 ];
 
-export function getRandomDuckMessage(language: Language): string {
-  const message = DUCK_MESSAGES[Math.floor(Math.random() * DUCK_MESSAGES.length)];
+export function getRandomDuckMessage(language: Language, previousMessage?: string): string {
+  const availableMessages = DUCK_MESSAGES.filter(
+    (message) => message[language] !== previousMessage
+  );
+  const messages = availableMessages.length > 0 ? availableMessages : DUCK_MESSAGES;
+  const message = messages[Math.floor(Math.random() * messages.length)];
   return message[language];
 }
 
-export function shouldShowDuck(isDevelopment = import.meta.env.DEV): boolean {
-  return isDevelopment || Math.random() < 0.2;
+export function shouldShowDuck(): boolean {
+  return true;
 }

@@ -5,6 +5,7 @@ import type { InviteConfig, RecipientResponse } from '@/types';
 import { ArrivalScreen } from './recipient/screens/ArrivalScreen';
 import { IntroCardsScreen } from './recipient/screens/IntroCardsScreen';
 import { MainQuestionScreen } from './recipient/screens/MainQuestionScreen';
+import { ArrivalPreferenceScreen } from './recipient/screens/ArrivalPreferenceScreen';
 import { ActivityChoiceScreen } from './recipient/screens/ActivityChoiceScreen';
 import { SlotChoiceScreen } from './recipient/screens/SlotChoiceScreen';
 import { ConfirmationScreen } from './recipient/screens/ConfirmationScreen';
@@ -39,8 +40,9 @@ const mockConfigMission: InviteConfig = {
 };
 
 const mockResponse: RecipientResponse = {
-  step: 6,
+  step: 7,
   wantsDate: true,
+  arrivalPreference: 'pickup',
   selectedActivity: 'coffee',
   selectedSlot: mockConfigCruise.dateSlots[0],
   prefersWhatsappCoordination: false,
@@ -54,6 +56,7 @@ const screens = [
   { id: 'arrival', label: 'Arrival Screen' },
   { id: 'intro', label: 'Intro Cards Screen' },
   { id: 'question', label: 'Main Question Screen' },
+  { id: 'arrivalPreference', label: 'Arrival Preference Screen' },
   { id: 'activity', label: 'Activity Choice Screen' },
   { id: 'slots', label: 'Slot Choice Screen' },
   { id: 'confirmation', label: 'Confirmation Screen' },
@@ -89,6 +92,14 @@ export function DevMode() {
             onYes={noop}
             onNo={noop}
             onDecline={noop}
+          />
+        );
+      case 'arrivalPreference':
+        return (
+          <ArrivalPreferenceScreen
+            config={config}
+            onSelect={(preference) => console.log('Selected arrival preference:', preference)}
+            easterEggState={mockEasterEggState}
           />
         );
       case 'activity':

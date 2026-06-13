@@ -50,6 +50,20 @@ export function ConfirmationScreen({
     (a) => a.id === response.selectedActivity
   );
 
+  const arrivalPreferenceLabel = response.arrivalPreference
+    ? t(
+        response.arrivalPreference === 'pickup'
+          ? 'recipient_confirmation_arrival_pickup'
+          : 'recipient_confirmation_arrival_self'
+      )
+    : '';
+
+  const selectedTimeLabel = response.selectedSlot
+    ? language === 'he'
+      ? `${response.selectedSlot.date} בשעה ${response.selectedSlot.time}`
+      : `${response.selectedSlot.date} at ${response.selectedSlot.time}`
+    : t('recipient_confirmation_coordinate');
+
   const activityName = selectedActivity
     ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
     : '';
@@ -68,10 +82,11 @@ export function ConfirmationScreen({
   // Build confirmation message (same for all actions)
   const confirmationMessage = buildRecipientConfirmationMessage({
     creatorPhone: config.whatsappNumber,
-    language: config.language,
+    language,
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
     coordinateLater: !response.selectedSlot,
+    arrivalPreference: response.arrivalPreference,
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
     foundEasterEgg: response.foundEasterEgg,
@@ -80,10 +95,11 @@ export function ConfirmationScreen({
   // Build WhatsApp URL (returns null if no valid phone)
   const whatsappUrl = buildRecipientConfirmationWhatsAppUrl({
     creatorPhone: config.whatsappNumber,
-    language: config.language,
+    language,
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
     coordinateLater: !response.selectedSlot,
+    arrivalPreference: response.arrivalPreference,
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
     foundEasterEgg: response.foundEasterEgg,
@@ -238,9 +254,16 @@ export function ConfirmationScreen({
                     {t('recipient_confirmation_when')}
                   </p>
                   <p className="text-lg font-bold text-stone-900">
-                    {response.selectedSlot
-                      ? `${response.selectedSlot.date} at ${response.selectedSlot.time}`
-                      : t('recipient_confirmation_coordinate')}
+                    {selectedTimeLabel}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="mb-1 text-sm font-semibold text-stone-500">
+                    {t('recipient_confirmation_arrival_preference')}
+                  </p>
+                  <p className="text-lg font-bold text-stone-900">
+                    {arrivalPreferenceLabel}
                   </p>
                 </div>
               </div>
@@ -535,9 +558,16 @@ export function ConfirmationScreen({
                     {t('recipient_confirmation_when')}
                   </p>
                   <p className="text-lg font-bold text-stone-900">
-                    {response.selectedSlot
-                      ? `${response.selectedSlot.date} at ${response.selectedSlot.time}`
-                      : t('recipient_confirmation_coordinate')}
+                    {selectedTimeLabel}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="mb-1 text-sm font-semibold text-stone-500">
+                    {t('recipient_confirmation_arrival_preference')}
+                  </p>
+                  <p className="text-lg font-bold text-stone-900">
+                    {arrivalPreferenceLabel}
                   </p>
                 </div>
               </div>
@@ -809,9 +839,16 @@ export function ConfirmationScreen({
               {t('recipient_confirmation_when')}
             </p>
             <p className="text-lg font-bold text-stone-900">
-              {response.selectedSlot
-                ? `${response.selectedSlot.date} at ${response.selectedSlot.time}`
-                : t('recipient_confirmation_coordinate')}
+              {selectedTimeLabel}
+            </p>
+          </div>
+
+          <div>
+            <p className="mb-1 text-sm font-semibold text-stone-500">
+              {t('recipient_confirmation_arrival_preference')}
+            </p>
+            <p className="text-lg font-bold text-stone-900">
+              {arrivalPreferenceLabel}
             </p>
           </div>
         </div>
