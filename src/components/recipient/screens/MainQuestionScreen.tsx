@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type PointerEvent } from 'react';
-import { ChevronDown, Heart, X } from 'lucide-react';
+import { Check, CheckCircle, ChevronDown, Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, RecipientGender } from '@/types';
@@ -36,6 +36,8 @@ interface MainQuestionScreenProps {
 export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGender }: MainQuestionScreenProps) {
   const { t, language } = useLanguage();
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
+  const isDateInvite = (config.inviteType || 'date') === 'date';
+  const AffirmativeIcon = isDateInvite ? Heart : CheckCircle;
   const defaultYesCopy = config.yesButtonCopy && inviteTypeConfig.yesCopyOptions.includes(config.yesButtonCopy)
     ? config.yesButtonCopy
     : inviteTypeConfig.yesCopyOptions[0];
@@ -226,6 +228,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
         {showYesConfirmation && (
           <YesConfirmation
             theme={config.theme}
+            inviteType={config.inviteType}
             onComplete={onYes}
           />
         )}
@@ -236,7 +239,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
         variants={scaleIn}
       >
         <IconBadge variant="primary" size="lg">
-          <Heart className="h-12 w-12" fill="currentColor" />
+          <AffirmativeIcon className="h-12 w-12" fill={isDateInvite ? 'currentColor' : 'none'} />
         </IconBadge>
       </motion.div>
 
@@ -267,7 +270,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                   disabled={celebrating}
                   className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-pink-600 px-5 py-3 text-button-label-lg font-semibold text-white transition-all duration-200 hover:from-pink-600 hover:to-pink-700 active:from-pink-700 active:to-pink-800 disabled:cursor-not-allowed disabled:from-stone-300 disabled:to-stone-300 disabled:text-stone-500"
                 >
-                  <Heart className="h-5 w-5 flex-shrink-0" fill="currentColor" />
+                  <AffirmativeIcon className="h-5 w-5 flex-shrink-0" fill={isDateInvite ? 'currentColor' : 'none'} />
                   {getYesButtonLabel(selectedYesCopy, language)}
                 </button>
                 <button
@@ -302,7 +305,11 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                   >
                     <span>{option.label[language]}</span>
                     {selectedYesCopy === option.id && (
-                      <Heart className="h-4 w-4 text-pink-500" fill="currentColor" />
+                      isDateInvite ? (
+                        <Heart className="h-4 w-4 text-pink-500" fill="currentColor" />
+                      ) : (
+                        <Check className="h-4 w-4 text-pink-500" />
+                      )
                     )}
                   </button>
                 ))}

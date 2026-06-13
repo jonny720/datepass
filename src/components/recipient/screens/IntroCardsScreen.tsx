@@ -47,7 +47,9 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
 
   // Icon rotation for visual variety
   const getCardIcon = (index: number) => {
-    const icons = [Sparkles, Heart, Zap, Star, MessageCircle, Coffee];
+    const icons = (config.inviteType || 'date') === 'date'
+      ? [Sparkles, Heart, Zap, Star, MessageCircle, Coffee]
+      : [Sparkles, Zap, Star, MessageCircle, Coffee];
     return icons[index % icons.length];
   };
 

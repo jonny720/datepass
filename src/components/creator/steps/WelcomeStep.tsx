@@ -1,4 +1,4 @@
-import { Heart, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { CreatorDraft } from '@/types';
 import { INVITATION_PRESETS, type InvitationPreset } from '@/data/presets';
@@ -38,7 +38,7 @@ export function WelcomeStep({ draft, updateDraft, onNext }: WelcomeStepProps) {
     <>
       <div className="mb-8 flex justify-center">
         <IconBadge variant="primary" size="lg">
-          <Heart className="h-12 w-12" fill="currentColor" />
+          <Sparkles className="h-12 w-12" />
         </IconBadge>
       </div>
 

@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
-import type { ThemeId } from '@/types';
-import { Check, Shield, Leaf, Music, Heart } from 'lucide-react';
+import type { InviteType, ThemeId } from '@/types';
+import { Check, Shield, Leaf, Music, Heart, Sparkles } from 'lucide-react';
 
 interface YesConfirmationProps {
   theme: ThemeId;
+  inviteType?: InviteType;
   onComplete: () => void;
 }
 
-export function YesConfirmation({ theme, onComplete }: YesConfirmationProps) {
+export function YesConfirmation({ theme, inviteType = 'date', onComplete }: YesConfirmationProps) {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Haptic feedback
@@ -40,7 +41,7 @@ export function YesConfirmation({ theme, onComplete }: YesConfirmationProps) {
         {theme === 'secret_mission' && <MissionConfirmation />}
         {theme === 'nature' && <NatureConfirmation />}
         {theme === 'party' && <PartyConfirmation />}
-        {theme === 'after_dark' && <AfterDarkConfirmation />}
+        {theme === 'after_dark' && <AfterDarkConfirmation isDateInvite={inviteType === 'date'} />}
       </motion.div>
     </motion.div>
   );
@@ -204,7 +205,9 @@ function PartyConfirmation() {
   );
 }
 
-function AfterDarkConfirmation() {
+function AfterDarkConfirmation({ isDateInvite }: { isDateInvite: boolean }) {
+  const Icon = isDateInvite ? Heart : Sparkles;
+
   return (
     <div className="relative">
       <motion.div
@@ -221,7 +224,7 @@ function AfterDarkConfirmation() {
         }}
         transition={{ duration: 0.7 }}
       >
-        <Heart className="h-10 w-10 text-purple-300" strokeWidth={2.5} fill="currentColor" />
+        <Icon className="h-10 w-10 text-purple-300" strokeWidth={2.5} fill={isDateInvite ? 'currentColor' : 'none'} />
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 10 }}

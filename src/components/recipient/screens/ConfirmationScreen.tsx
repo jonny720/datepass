@@ -45,6 +45,7 @@ export function ConfirmationScreen({
   const [showCalculation, setShowCalculation] = useState(true);
   const MAX_NOTE_LENGTH = 160;
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
+  const isDateInvite = (config.inviteType || 'date') === 'date';
 
   const isCruiseTheme = config.theme === 'cruise';
   const isMissionTheme = config.theme === 'secret_mission';
@@ -374,7 +375,11 @@ export function ConfirmationScreen({
                   ease: 'easeInOut',
                 }}
               >
-                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                {isDateInvite ? (
+                  <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                ) : (
+                  <Sparkles className="h-6 w-6 text-pink-600" />
+                )}
               </motion.div>
               <motion.span 
                 className="text-4xl font-bold text-pink-600"
@@ -396,7 +401,11 @@ export function ConfirmationScreen({
                   delay: 0.3,
                 }}
               >
-                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                {isDateInvite ? (
+                  <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                ) : (
+                  <Sparkles className="h-6 w-6 text-pink-600" />
+                )}
               </motion.div>
             </div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">
@@ -682,7 +691,11 @@ export function ConfirmationScreen({
                   ease: 'easeInOut',
                 }}
               >
-                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                {isDateInvite ? (
+                  <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                ) : (
+                  <Sparkles className="h-6 w-6 text-pink-600" />
+                )}
               </motion.div>
               <motion.span 
                 className="text-4xl font-bold text-pink-600"
@@ -704,7 +717,11 @@ export function ConfirmationScreen({
                   delay: 0.3,
                 }}
               >
-                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                {isDateInvite ? (
+                  <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+                ) : (
+                  <Sparkles className="h-6 w-6 text-pink-600" />
+                )}
               </motion.div>
             </div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-500">
@@ -894,11 +911,19 @@ export function ConfirmationScreen({
             {inviteTypeConfig.scoreLabel[language]}
           </p>
           <div className="mb-2 flex items-center justify-center gap-2">
-            <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+            {isDateInvite ? (
+              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+            ) : (
+              <Sparkles className="h-5 w-5 text-pink-600" />
+            )}
             <span className="text-2xl font-bold text-pink-600">
               {compatibilityScore}%
             </span>
-            <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+            {isDateInvite ? (
+              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+            ) : (
+              <Sparkles className="h-5 w-5 text-pink-600" />
+            )}
           </div>
           <p className="text-xs italic text-stone-600">
             {t('recipient_confirmation_score_disclaimer')}

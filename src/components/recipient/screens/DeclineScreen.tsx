@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react';
+import { Heart, Undo2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, RecipientGender } from '@/types';
@@ -19,6 +19,8 @@ interface DeclineScreenProps {
 
 export function DeclineScreen({ config, onCreateOwn, onRegret, recipientGender }: DeclineScreenProps) {
   const { t, language } = useLanguage();
+  const isDateInvite = (config.inviteType || 'date') === 'date';
+  const DeclineIcon = isDateInvite ? Heart : Undo2;
   const notificationText = language === 'he'
     ? `${heByGender(recipientGender, {
         male: 'לא יקבל את התשובה אם לא תגיד לו',
@@ -41,7 +43,7 @@ export function DeclineScreen({ config, onCreateOwn, onRegret, recipientGender }
         variants={scaleIn}
       >
         <IconBadge variant="secondary" size="lg">
-          <Heart className="h-12 w-12" />
+          <DeclineIcon className="h-12 w-12" />
         </IconBadge>
       </motion.div>
 

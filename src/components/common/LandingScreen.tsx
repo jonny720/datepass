@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigation } from '@/hooks/useNavigation';
 import {
@@ -25,7 +25,7 @@ export function LandingScreen() {
       <div className="w-full text-center">
         <div className="mb-8 flex justify-center">
           <IconBadge variant="primary" size="lg">
-            <Heart className="h-12 w-12" fill="currentColor" />
+            <Sparkles className="h-12 w-12" />
           </IconBadge>
         </div>
 
