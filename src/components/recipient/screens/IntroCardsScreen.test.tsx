@@ -20,10 +20,17 @@ const mockConfig: InviteConfig = {
   dateSlots: [],
 };
 
+const mockEasterEggState = {
+  targetScreen: 'arrival' as const,
+  hasBeenRevealed: false,
+  markAsRevealed: () => {},
+  shouldShowOnScreen: () => false,
+};
+
 const renderWithProvider = (config: InviteConfig, onNext = () => {}) => {
   return render(
     <LanguageProvider>
-      <IntroCardsScreen config={config} onNext={onNext} />
+      <IntroCardsScreen config={config} onNext={onNext} easterEggState={mockEasterEggState} />
     </LanguageProvider>
   );
 };
@@ -134,7 +141,7 @@ describe('IntroCardsScreen', () => {
     const missionConfig: InviteConfig = { ...mockConfig, theme: 'secret_mission' };
     rerender(
       <LanguageProvider>
-        <IntroCardsScreen config={missionConfig} onNext={() => {}} />
+        <IntroCardsScreen config={missionConfig} onNext={() => {}} easterEggState={mockEasterEggState} />
       </LanguageProvider>
     );
     const missionDiv = container.querySelector('[class*="mission-background-soft"]');

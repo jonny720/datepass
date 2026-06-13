@@ -66,6 +66,10 @@ export function useRecipientState(config: InviteConfig) {
     setResponse((prev) => ({ ...prev, prefersWhatsappCoordination: prefers }));
   }, []);
 
+  const setFoundEasterEgg = useCallback((found: boolean) => {
+    setResponse((prev) => ({ ...prev, foundEasterEgg: found }));
+  }, []);
+
   return {
     response,
     setResponse,
@@ -76,5 +80,6 @@ export function useRecipientState(config: InviteConfig) {
     setSelectedActivity,
     setSelectedSlot,
     setPrefersWhatsappCoordination,
+    setFoundEasterEgg,
   };
 }

@@ -7,6 +7,7 @@ export interface RecipientResponse {
   selectedSlot: DateSlot | null;
   prefersWhatsappCoordination: boolean;
   personalNote: string;
+  foundEasterEgg: boolean;
 }
 
 export const INITIAL_RESPONSE: RecipientResponse = {
@@ -16,6 +17,7 @@ export const INITIAL_RESPONSE: RecipientResponse = {
   selectedSlot: null,
   prefersWhatsappCoordination: false,
   personalNote: '',
+  foundEasterEgg: false,
 };
 
 export const RECIPIENT_STEPS = {

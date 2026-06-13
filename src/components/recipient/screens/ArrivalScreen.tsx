@@ -1,20 +1,24 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig } from '@/types';
+import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { PrimaryButton } from '@/components/ui';
 import { CruiseTicket, OceanWaves, FloatingElements } from '@/components/cruise';
 import { MissionDossier, GridLines, RadarElements } from '@/components/mission';
 import { NatureInvitation, NatureElements } from '@/components/nature';
 import { PartyInvitation, PartyElements } from '@/components/party';
 import { AfterDarkInvitation, AfterDarkElements } from '@/components/afterdark';
+import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, scaleIn, gentlePulse, float, prefersReducedMotion } from '@/lib/animations';
 
 interface ArrivalScreenProps {
   config: InviteConfig;
   onNext: () => void;
+  easterEggState: ReturnType<typeof useEasterEggState>;
 }
 
-export function ArrivalScreen({ config, onNext }: ArrivalScreenProps) {
+export function ArrivalScreen({ config, onNext, easterEggState }: ArrivalScreenProps) {
   const { t } = useLanguage();
   const reduceMotion = prefersReducedMotion();
 
@@ -78,6 +82,15 @@ export function ArrivalScreen({ config, onNext }: ArrivalScreenProps) {
     >
       {/* Theme decorations */}
       {decorations}
+
+      {/* Easter egg */}
+      {easterEggState.shouldShowOnScreen('arrival') && (
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('arrival')}
+          onReveal={easterEggState.markAsRevealed}
+        />
+      )}
 
       {/* Main content */}
       <div className="relative z-10 w-full max-w-md">

@@ -3,15 +3,19 @@ import { Sparkles, Heart, Zap, Star, MessageCircle, Coffee } from 'lucide-react'
 import { useLanguage } from '@/hooks/useLanguage';
 import { getPromptLabel } from '@/lib/promptResolver';
 import type { InviteConfig } from '@/types';
+import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { PrimaryButton } from '@/components/ui';
+import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, staggerChildren, prefersReducedMotion } from '@/lib/animations';
 
 interface IntroCardsScreenProps {
   config: InviteConfig;
   onNext: () => void;
+  easterEggState: ReturnType<typeof useEasterEggState>;
 }
 
-export function IntroCardsScreen({ config, onNext }: IntroCardsScreenProps) {
+export function IntroCardsScreen({ config, onNext, easterEggState }: IntroCardsScreenProps) {
   const { t, config: langConfig } = useLanguage();
   const reduceMotion = prefersReducedMotion();
   
@@ -172,6 +176,15 @@ export function IntroCardsScreen({ config, onNext }: IntroCardsScreenProps) {
           })}
         </div>
       </motion.div>
+
+      {/* Easter egg */}
+      {easterEggState.shouldShowOnScreen('personality') && (
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('personality')}
+          onReveal={easterEggState.markAsRevealed}
+        />
+      )}
 
       {/* Continue Button */}
       <motion.div

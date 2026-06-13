@@ -11,6 +11,7 @@ export interface RecipientConfirmationParams {
   coordinateLater: boolean;
   personalNote?: string;
   noteHeader?: string;
+  foundEasterEgg?: boolean;
 }
 
 /**
@@ -50,7 +51,7 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { language, activityName, selectedSlot, coordinateLater, personalNote, noteHeader } = params;
+  const { language, activityName, selectedSlot, coordinateLater, personalNote, noteHeader, foundEasterEgg } = params;
   
   if (language === 'he') {
     let message = 'אישרתי את ההזמנה 😌\n\n';
@@ -68,6 +69,11 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
       message += `\n\n${noteHeader || 'הודעה ממני:'}\n${personalNote.trim()}`;
     }
     
+    // Add Easter egg message if found
+    if (foundEasterEgg) {
+      message += '\n\n🥚 גם מצאתי את הביצה הסודית!';
+    }
+    
     return message;
   } else {
     let message = 'I accepted the invitation 😌\n\n';
@@ -83,6 +89,11 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
     // Append personal note if provided
     if (personalNote && personalNote.trim()) {
       message += `\n\n${noteHeader || 'My note:'}\n${personalNote.trim()}`;
+    }
+    
+    // Add Easter egg message if found
+    if (foundEasterEgg) {
+      message += '\n\n🥚 I also found the secret egg!';
     }
     
     return message;

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useRecipientState } from '@/hooks/useRecipientState';
+import { useEasterEggState } from '@/hooks/useEasterEggState';
 import type { InviteConfig } from '@/types';
 import { RECIPIENT_STEPS } from '@/types';
 import {
@@ -28,7 +29,11 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setSelectedActivity,
     setSelectedSlot,
     setPrefersWhatsappCoordination,
+    setFoundEasterEgg,
   } = useRecipientState(config);
+  const easterEggState = useEasterEggState({
+    onFound: () => setFoundEasterEgg(true),
+  });
 
   // Sync language with invite config
   useEffect(() => {
@@ -78,10 +83,10 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
   const renderStep = () => {
     switch (response.step) {
       case RECIPIENT_STEPS.ARRIVAL:
-        return <ArrivalScreen config={config} onNext={nextStep} />;
+        return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} />;
 
       case RECIPIENT_STEPS.INTRO_CARDS:
-        return <IntroCardsScreen config={config} onNext={nextStep} />;
+        return <IntroCardsScreen config={config} onNext={nextStep} easterEggState={easterEggState} />;
 
       case RECIPIENT_STEPS.MAIN_QUESTION:
         return (
@@ -98,6 +103,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
           <ActivityChoiceScreen
             config={config}
             onSelect={handleActivitySelect}
+            easterEggState={easterEggState}
           />
         );
 
@@ -107,6 +113,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             config={config}
             onSelectSlot={handleSlotSelect}
             onCoordinateWhatsapp={handleWhatsappCoordinate}
+            easterEggState={easterEggState}
           />
         );
 
@@ -116,6 +123,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             config={config}
             response={response}
             onCreateOwn={handleCreateOwn}
+            easterEggState={easterEggState}
           />
         );
 
@@ -123,7 +131,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
         return <DeclineScreen config={config} onCreateOwn={handleCreateOwn} />;
 
       default:
-        return <ArrivalScreen config={config} onNext={nextStep} />;
+        return <ArrivalScreen config={config} onNext={nextStep} easterEggState={easterEggState} />;
     }
   };
 

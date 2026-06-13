@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, ActivityId } from '@/types';
+import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { ACTIVITIES } from '@/data';
 import {
   Card,
@@ -9,14 +10,17 @@ import {
   PrimaryButton,
   OptionCard,
 } from '@/components/ui';
+import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, staggerContainer } from '@/lib/animations';
 
 interface ActivityChoiceScreenProps {
   config: InviteConfig;
   onSelect: (activity: ActivityId) => void;
+  easterEggState: ReturnType<typeof useEasterEggState>;
 }
 
-export function ActivityChoiceScreen({ config, onSelect }: ActivityChoiceScreenProps) {
+export function ActivityChoiceScreen({ config, onSelect, easterEggState }: ActivityChoiceScreenProps) {
   const { t } = useLanguage();
   const [selectedActivity, setSelectedActivity] = useState<ActivityId | null>(null);
 
@@ -93,6 +97,15 @@ export function ActivityChoiceScreen({ config, onSelect }: ActivityChoiceScreenP
           </motion.div>
         </Card>
       </motion.div>
+
+      {/* Easter egg */}
+      {easterEggState.shouldShowOnScreen('activities') && (
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('activities')}
+          onReveal={easterEggState.markAsRevealed}
+        />
+      )}
     </motion.div>
   );
 }

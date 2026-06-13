@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { MessageCircle, Copy, Check, Heart, Share2 } from 'lucide-react';
+import { MessageCircle, Copy, Check, Heart, Share2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, RecipientResponse } from '@/types';
+import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { ACTIVITIES } from '@/data';
 import {
   Card,
@@ -12,6 +13,8 @@ import {
 } from '@/components/ui';
 import { CruiseTicket, OceanWaves, FloatingElements } from '@/components/cruise';
 import { MissionDossier, GridLines, RadarElements } from '@/components/mission';
+import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, scaleIn, fadeInUp, staggerContainer } from '@/lib/animations';
 import {
   buildRecipientConfirmationWhatsAppUrl,
@@ -22,12 +25,14 @@ interface ConfirmationScreenProps {
   config: InviteConfig;
   response: RecipientResponse;
   onCreateOwn: () => void;
+  easterEggState: ReturnType<typeof useEasterEggState>;
 }
 
 export function ConfirmationScreen({
   config,
   response,
   onCreateOwn,
+  easterEggState,
 }: ConfirmationScreenProps) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
@@ -67,6 +72,7 @@ export function ConfirmationScreen({
     coordinateLater: !response.selectedSlot,
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
+    foundEasterEgg: response.foundEasterEgg,
   });
 
   // Build WhatsApp URL (returns null if no valid phone)
@@ -78,6 +84,7 @@ export function ConfirmationScreen({
     coordinateLater: !response.selectedSlot,
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
+    foundEasterEgg: response.foundEasterEgg,
   });
 
   // Development diagnostics
@@ -147,6 +154,15 @@ export function ConfirmationScreen({
         
         {/* Floating decorative elements */}
         <FloatingElements />
+
+        {/* Easter egg */}
+        {easterEggState.shouldShowOnScreen('confirmation') && (
+          <EasterEgg
+            theme={config.theme}
+            placement={getRandomPlacementForScreen('confirmation')}
+            onReveal={easterEggState.markAsRevealed}
+          />
+        )}
 
         {/* Success badge */}
         <motion.div 
@@ -248,9 +264,9 @@ export function ConfirmationScreen({
             </Card>
           </motion.div>
 
-          {/* Compatibility Score */}
+          {/* Compatibility Score - Interactive */}
           <motion.div 
-            className="cursor-pointer rounded-xl bg-white/80 p-4 text-center backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
+            className="group relative cursor-pointer overflow-hidden rounded-xl bg-gradient-to-br from-pink-50 to-purple-50 p-6 text-center shadow-md transition-all hover:scale-105 hover:shadow-xl active:scale-95"
             variants={fadeInUp}
             onClick={handleScoreTap}
             role="button"
@@ -261,16 +277,75 @@ export function ConfirmationScreen({
                 handleScoreTap();
               }
             }}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <div className="mb-2 flex items-center justify-center gap-2">
-              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
-              <span className="text-2xl font-bold text-pink-600">
+            {/* Sparkle decoration */}
+            <motion.div
+              className="absolute right-2 top-2 text-pink-400"
+              animate={{
+                opacity: [0.3, 1, 0.3],
+                scale: [0.8, 1.2, 0.8],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            >
+              <Sparkles className="h-4 w-4" />
+            </motion.div>
+
+            <div className="mb-3 flex items-center justify-center gap-3">
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              >
+                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+              </motion.div>
+              <motion.span 
+                className="text-4xl font-bold text-pink-600"
+                key={scoreDisclaimerIndex}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+              >
                 {compatibilityScore}%
-              </span>
-              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+              </motion.span>
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 0.3,
+                }}
+              >
+                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+              </motion.div>
             </div>
-            <p className="text-xs italic text-stone-600">
+            <motion.p 
+              className="text-sm font-medium italic text-stone-700"
+              key={`disclaimer-${scoreDisclaimerIndex}`}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {scoreDisclaimers[scoreDisclaimerIndex]}
+            </motion.p>
+            
+            {/* Tap hint */}
+            <p className="mt-2 text-xs text-stone-400 opacity-0 transition-opacity group-hover:opacity-100">
+              Tap for more
             </p>
           </motion.div>
 
@@ -358,6 +433,15 @@ export function ConfirmationScreen({
         
         {/* Radar decorative elements */}
         <RadarElements />
+
+        {/* Easter egg */}
+        {easterEggState.shouldShowOnScreen('confirmation') && (
+          <EasterEgg
+            theme={config.theme}
+            placement={getRandomPlacementForScreen('confirmation')}
+            onReveal={easterEggState.markAsRevealed}
+          />
+        )}
 
         {/* Success badge */}
         <motion.div 
@@ -459,9 +543,9 @@ export function ConfirmationScreen({
             </Card>
           </motion.div>
 
-          {/* Compatibility Score */}
+          {/* Compatibility Score - Interactive */}
           <motion.div 
-            className="cursor-pointer rounded-xl bg-white/80 p-4 text-center backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
+            className="group relative cursor-pointer overflow-hidden rounded-xl bg-gradient-to-br from-pink-50 to-purple-50 p-6 text-center shadow-md transition-all hover:scale-105 hover:shadow-xl active:scale-95"
             variants={fadeInUp}
             onClick={handleScoreTap}
             role="button"
@@ -472,16 +556,75 @@ export function ConfirmationScreen({
                 handleScoreTap();
               }
             }}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <div className="mb-2 flex items-center justify-center gap-2">
-              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
-              <span className="text-2xl font-bold text-pink-600">
+            {/* Sparkle decoration */}
+            <motion.div
+              className="absolute right-2 top-2 text-pink-400"
+              animate={{
+                opacity: [0.3, 1, 0.3],
+                scale: [0.8, 1.2, 0.8],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            >
+              <Sparkles className="h-4 w-4" />
+            </motion.div>
+
+            <div className="mb-3 flex items-center justify-center gap-3">
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              >
+                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+              </motion.div>
+              <motion.span 
+                className="text-4xl font-bold text-pink-600"
+                key={scoreDisclaimerIndex}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+              >
                 {compatibilityScore}%
-              </span>
-              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+              </motion.span>
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 0.3,
+                }}
+              >
+                <Heart className="h-6 w-6 text-pink-600" fill="currentColor" />
+              </motion.div>
             </div>
-            <p className="text-xs italic text-stone-600">
+            <motion.p 
+              className="text-sm font-medium italic text-stone-700"
+              key={`disclaimer-mission-${scoreDisclaimerIndex}`}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {scoreDisclaimers[scoreDisclaimerIndex]}
+            </motion.p>
+            
+            {/* Tap hint */}
+            <p className="mt-2 text-xs text-stone-400 opacity-0 transition-opacity group-hover:opacity-100">
+              Tap for more
             </p>
           </motion.div>
 
@@ -563,6 +706,15 @@ export function ConfirmationScreen({
       animate="animate"
       exit="exit"
     >
+      {/* Easter egg */}
+      {easterEggState.shouldShowOnScreen('confirmation') && (
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('confirmation')}
+          onReveal={easterEggState.markAsRevealed}
+        />
+      )}
+
       <motion.div 
         className="mb-8 flex justify-center"
         variants={scaleIn}

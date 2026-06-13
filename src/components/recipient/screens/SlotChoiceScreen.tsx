@@ -3,24 +3,29 @@ import { Calendar, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, DateSlot } from '@/types';
+import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import {
   Card,
   StepHeader,
   PrimaryButton,
   OptionCard,
 } from '@/components/ui';
+import { EasterEgg } from '@/components/recipient/EasterEgg';
+import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { pageTransition, fadeInUp, staggerContainer } from '@/lib/animations';
 
 interface SlotChoiceScreenProps {
   config: InviteConfig;
   onSelectSlot: (slot: DateSlot) => void;
   onCoordinateWhatsapp: () => void;
+  easterEggState: ReturnType<typeof useEasterEggState>;
 }
 
 export function SlotChoiceScreen({
   config,
   onSelectSlot,
   onCoordinateWhatsapp,
+  easterEggState,
 }: SlotChoiceScreenProps) {
   const { t } = useLanguage();
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
@@ -116,6 +121,15 @@ export function SlotChoiceScreen({
           </motion.div>
         </Card>
       </motion.div>
+
+      {/* Easter egg */}
+      {easterEggState.shouldShowOnScreen('slots') && (
+        <EasterEgg
+          theme={config.theme}
+          placement={getRandomPlacementForScreen('slots')}
+          onReveal={easterEggState.markAsRevealed}
+        />
+      )}
     </motion.div>
   );
 }

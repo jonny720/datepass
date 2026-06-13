@@ -45,6 +45,7 @@ const mockResponse: RecipientResponse = {
   selectedSlot: mockConfigCruise.dateSlots[0],
   prefersWhatsappCoordination: false,
   personalNote: '',
+  foundEasterEgg: false,
 };
 
 const screens = [
@@ -63,14 +64,22 @@ export function DevMode() {
 
   const config = theme === 'cruise' ? mockConfigCruise : mockConfigMission;
 
+  // Mock Easter egg state for DevMode
+  const mockEasterEggState = {
+    targetScreen: 'arrival' as const,
+    hasBeenRevealed: false,
+    markAsRevealed: () => console.log('Easter egg revealed'),
+    shouldShowOnScreen: () => false, // Don't show in DevMode to avoid distraction
+  };
+
   const renderScreen = () => {
     const noop = () => console.log('Action triggered');
 
     switch (selectedScreen) {
       case 'arrival':
-        return <ArrivalScreen config={config} onNext={noop} />;
+        return <ArrivalScreen config={config} onNext={noop} easterEggState={mockEasterEggState} />;
       case 'intro':
-        return <IntroCardsScreen config={config} onNext={noop} />;
+        return <IntroCardsScreen config={config} onNext={noop} easterEggState={mockEasterEggState} />;
       case 'question':
         return (
           <MainQuestionScreen
@@ -85,6 +94,7 @@ export function DevMode() {
           <ActivityChoiceScreen
             config={config}
             onSelect={(activityId) => console.log('Selected:', activityId)}
+            easterEggState={mockEasterEggState}
           />
         );
       case 'slots':
@@ -93,6 +103,7 @@ export function DevMode() {
             config={config}
             onSelectSlot={(slot) => console.log('Selected slot:', slot)}
             onCoordinateWhatsapp={noop}
+            easterEggState={mockEasterEggState}
           />
         );
       case 'confirmation':
@@ -101,6 +112,7 @@ export function DevMode() {
             config={config}
             response={mockResponse}
             onCreateOwn={noop}
+            easterEggState={mockEasterEggState}
           />
         );
       case 'decline':
