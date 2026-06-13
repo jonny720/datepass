@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ThemeId } from '@/types';
@@ -59,6 +59,8 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
   const [showMessage, setShowMessage] = useState(false);
   const [showRareBonus, setShowRareBonus] = useState(false);
   const [isTapping, setIsTapping] = useState(false);
+  const timeoutRef = useRef<number>();
+  const tapGuardRef = useRef(false);
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -79,15 +81,49 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
   const themeColors = THEME_COLORS[theme];
   const placementClass = PLACEMENT_STYLES[placement];
 
+  // Auto-dismiss after 3 seconds
+  useEffect(() => {
+    if (showMessage) {
+      // Set tap guard to prevent immediate dismissal from the same tap
+      tapGuardRef.current = true;
+      setTimeout(() => {
+        tapGuardRef.current = false;
+      }, 100);
+
+      // Auto-dismiss after 3 seconds
+      timeoutRef.current = window.setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }
+  }, [showMessage]);
+
+  // Dismiss on Escape key
+  useEffect(() => {
+    if (!showMessage) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowMessage(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [showMessage]);
+
   const handleTap = () => {
     if (isRevealed || isTapping) return;
 
-    console.log('🥚 Easter egg tapped!');
     setIsTapping(true);
     
     // Crack animation then reveal and show message
     setTimeout(() => {
-      console.log('🥚 Revealing egg and showing message');
       setIsRevealed(true);
       setShowMessage(true);
       onReveal?.();
@@ -95,17 +131,15 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
       // Check for rare bonus
       if (shouldShowRareBonus()) {
         setTimeout(() => {
-          console.log('🥚 Showing rare bonus');
           setShowRareBonus(true);
         }, 600);
       }
-      
-      // Hide message after delay
-      setTimeout(() => {
-        console.log('🥚 Hiding message');
-        setShowMessage(false);
-      }, 8000);
     }, 400);
+  };
+
+  const handleDismissMessage = () => {
+    if (tapGuardRef.current) return;
+    setShowMessage(false);
   };
 
   return (
@@ -263,21 +297,27 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
 
       {/* Message card - SEPARATE PORTAL-LIKE FIXED ELEMENT */}
       {showMessage && createPortal(
-        <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/20"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <AnimatePresence>
+          <motion.div
+            className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0.01 : 0.3 }}
+            onClick={handleDismissMessage}
+          >
           <motion.div
             className="w-full max-w-md"
-            initial={{ scale: 0.5, y: -100 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.8, y: 20 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ 
+              duration: prefersReducedMotion ? 0.01 : 0.3,
+              ease: 'easeOut'
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
-              <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${themeColors.shell} p-6 shadow-2xl ring-4 ring-white/50`}>
+              <div className={`relative overflow-hidden rounded-2xl ${getPopupBackgroundClass(theme)} p-6 shadow-2xl`}>
                 {/* Sparkle decorations */}
                 <motion.div
                   className="absolute right-4 top-4"
@@ -308,29 +348,53 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
 
                 {/* Message */}
                 <motion.p
-                  className="text-center text-lg font-bold text-stone-800"
+                  className={`text-center text-lg font-bold ${getPopupTextClass(theme)}`}
                   dir={config.direction}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}
                 >
                   {language === 'en' ? message.en : message.he}
                 </motion.p>
 
                 {/* Subtitle */}
                 <motion.p
-                  className="mt-2 text-center text-sm text-stone-600"
+                  className={`mt-2 text-center text-sm ${getPopupSubtextClass(theme)}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}
                 >
                   {language === 'en' ? '🎉 You found the secret!' : '🎉 מצאת את הסוד!'}
                 </motion.p>
               </div>
             </motion.div>
-          </motion.div>,
-          document.body
-        )}
+          </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
+}
+
+// Helper functions for theme-aware popup styling
+function getPopupBackgroundClass(theme: ThemeId): string {
+  // Use light popup for most themes, dark popup for dark themes
+  if (theme === 'secret_mission' || theme === 'after_dark') {
+    return 'bg-stone-900 ring-4 ring-white/20';
+  }
+  return 'bg-white ring-4 ring-black/10';
+}
+
+function getPopupTextClass(theme: ThemeId): string {
+  if (theme === 'secret_mission' || theme === 'after_dark') {
+    return 'text-white';
+  }
+  return 'text-stone-900';
+}
+
+function getPopupSubtextClass(theme: ThemeId): string {
+  if (theme === 'secret_mission' || theme === 'after_dark') {
+    return 'text-stone-300';
+  }
+  return 'text-stone-600';
 }

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useNavigation } from '@/hooks/useNavigation';
 import { useRecipientState } from '@/hooks/useRecipientState';
 import { useEasterEggState } from '@/hooks/useEasterEggState';
 import type { InviteConfig } from '@/types';
@@ -21,6 +22,7 @@ interface RecipientScreenProps {
 
 export function RecipientScreen({ config }: RecipientScreenProps) {
   const { language, setLanguage } = useLanguage();
+  const { navigate } = useNavigation();
   const {
     response,
     setResponse,
@@ -85,7 +87,7 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
   };
 
   const handleCreateOwn = () => {
-    window.location.hash = '/';
+    navigate({ type: 'landing' });
   };
 
   const renderStep = () => {
