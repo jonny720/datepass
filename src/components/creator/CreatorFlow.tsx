@@ -57,12 +57,20 @@ export function CreatorFlow() {
 
   return (
     <CreatorProvider onReset={resetDraft}>
-      <ScreenContainer>
-        {draft.step > 1 && draft.step < 8 && (
-          <ProgressIndicator currentStep={draft.step} totalSteps={TOTAL_STEPS - 1} />
-        )}
-        {renderStep()}
-      </ScreenContainer>
+      {draft.step === 8 ? (
+        // ReviewStep renders full-bleed without container padding
+        <>
+          <ReviewStep {...{ draft, updateDraft, onNext: nextStep, onBack: prevStep, onReset: resetDraft }} />
+        </>
+      ) : (
+        // All other steps use the standard padded container
+        <ScreenContainer>
+          {draft.step > 1 && (
+            <ProgressIndicator currentStep={draft.step} totalSteps={TOTAL_STEPS - 1} />
+          )}
+          {renderStep()}
+        </ScreenContainer>
+      )}
     </CreatorProvider>
   );
 }

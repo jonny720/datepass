@@ -89,6 +89,20 @@
     outline-offset: 2px;
   }
 
+  /* Safe area insets for mobile devices */
+  .safe-area-insets {
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  /* Dynamic viewport height support */
+  .min-h-screen-dynamic {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
   /* Responsive Typography System */
   .text-display {
     font-size: clamp(2rem, 5vw + 0.5rem, 3rem);

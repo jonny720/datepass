@@ -12,7 +12,7 @@ describe('useNavigation', () => {
   describe('createInviteUrl', () => {
     it('creates a valid invite URL', () => {
       const url = createInviteUrl(SAMPLE_INVITE);
-      expect(url).toContain('#/invite/');
+      expect(url).toContain('?invite=');
       expect(url).toMatch(/^https?:\/\//);
     });
 
@@ -30,15 +30,13 @@ describe('useNavigation', () => {
       };
 
       const url = createInviteUrl(config);
-      expect(url).toContain('#/invite/');
+      expect(url).toContain('?invite=');
       
-      // Extract encoded part
-      const hashIndex = url.indexOf('#/invite/');
-      expect(hashIndex).toBeGreaterThan(-1);
-      
-      const encoded = url.slice(hashIndex + 9);
+      // Extract encoded part from query parameter
+      const urlObj = new URL(url);
+      const encoded = urlObj.searchParams.get('invite');
       expect(encoded).toBeTypeOf('string');
-      expect(encoded.length).toBeGreaterThan(0);
+      expect(encoded!.length).toBeGreaterThan(0);
     });
 
     it('handles Hebrew config correctly', () => {
@@ -57,7 +55,7 @@ describe('useNavigation', () => {
       };
 
       const url = createInviteUrl(hebrewConfig);
-      expect(url).toContain('#/invite/');
+      expect(url).toContain('?invite=');
       expect(url).toBeTypeOf('string');
     });
   });

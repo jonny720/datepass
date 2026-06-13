@@ -85,13 +85,11 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
   const handleWhatsApp = () => {
     if (!inviteUrl) return;
 
-    const message = encodeURIComponent(
-      `${t('recipient_title')} 💌\n\n`
-    );
-    window.open(
-      `https://wa.me/?text=${message}${encodeURIComponent(inviteUrl)}`,
-      '_blank'
-    );
+    // Build WhatsApp message with the complete invite URL
+    const message = `${t('recipient_title')} 💌\n\n${inviteUrl}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
   const handlePreview = () => {
@@ -141,11 +139,11 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
   };
 
   return (
-    <div className={`relative min-h-screen ${getBackgroundClass()}`}>
+    <div className={`relative flex min-h-screen flex-col ${getBackgroundClass()}`}>
       {renderDecorations()}
 
       <motion.div
-        className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12"
+        className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-12 safe-area-insets"
         variants={staggerChildren}
         initial="initial"
         animate="animate"
