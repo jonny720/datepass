@@ -285,27 +285,29 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
 
             {/* Share Message Preset Selector */}
             <motion.div variants={fadeInUp} className="w-full max-w-md">
-              <label className="mb-2 block text-sm font-medium text-white/90">
-                {t('creator_review_share_message_label')}
-              </label>
-              <div className="flex flex-col gap-2">
-                {SHARE_MESSAGE_PRESETS.map((preset) => {
-                  const isSelected = selectedSharePreset === preset.id;
-                  return (
-                    <button
-                      key={preset.id}
-                      type="button"
-                      onClick={() => setSelectedSharePreset(preset.id)}
-                      className={`rounded-lg px-4 py-3 text-left text-sm transition-all ${
-                        isSelected
-                          ? 'bg-white text-purple-700 shadow-lg ring-2 ring-white/50'
-                          : 'bg-white/20 text-white hover:bg-white/30'
-                      }`}
-                    >
-                      {preset.message[language]}
-                    </button>
-                  );
-                })}
+              <div className="rounded-xl border border-stone-200 bg-white/95 p-4 shadow-lg backdrop-blur-sm">
+                <label className="mb-3 block text-sm font-semibold text-stone-800">
+                  {t('creator_review_share_message_label')}
+                </label>
+                <div className="flex flex-col gap-2">
+                  {SHARE_MESSAGE_PRESETS.map((preset) => {
+                    const isSelected = selectedSharePreset === preset.id;
+                    return (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => setSelectedSharePreset(preset.id)}
+                        className={`rounded-lg border-2 px-4 py-3 text-left text-sm font-medium transition-all ${
+                          isSelected
+                            ? 'border-pink-500 bg-pink-50 text-stone-950 shadow-sm'
+                            : 'border-stone-200 bg-white text-stone-800 hover:border-stone-300 hover:bg-stone-50'
+                        }`}
+                      >
+                        {preset.message[language]}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
 
