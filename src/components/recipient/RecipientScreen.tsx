@@ -13,6 +13,8 @@ import {
   ArrivalPreferenceScreen,
   ActivityChoiceScreen,
   SlotChoiceScreen,
+  AdvancedDetailsScreen,
+  BoundariesScreen,
   ConfirmationScreen,
   DeclineScreen,
 } from './screens';
@@ -33,6 +35,8 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setSelectedActivity,
     setSelectedSlot,
     setPrefersWhatsappCoordination,
+    setAdvancedAnswers,
+    setBoundariesAnswer,
     setFoundEasterEgg,
     setFoundStamp,
     setFoundDuck,
@@ -51,8 +55,11 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setLanguage(config.language);
   }, [config.language, setLanguage]);
 
-  const handleYes = () => {
+  const handleYes = (customOption?: string) => {
     setWantsDate(true);
+    if (customOption) {
+      setResponse((prev) => ({ ...prev, selectedCustomOption: customOption }));
+    }
     nextStep();
   };
 
@@ -92,6 +99,16 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
   const handleWhatsappCoordinate = () => {
     setSelectedSlot(null);
     setPrefersWhatsappCoordination(true);
+    nextStep();
+  };
+
+  const handleAdvancedDetailsComplete = (answers: { rideAnswer: string | null; spontaneityAnswer: string | null }) => {
+    setAdvancedAnswers(answers);
+    nextStep();
+  };
+
+  const handleBoundariesComplete = (answer: string) => {
+    setBoundariesAnswer(answer);
     nextStep();
   };
 
@@ -146,6 +163,17 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             easterEggState={easterEggState}
           />
         );
+
+      case RECIPIENT_STEPS.ADVANCED_DETAILS:
+        return (
+          <AdvancedDetailsScreen
+            config={config}
+            onComplete={handleAdvancedDetailsComplete}
+          />
+        );
+
+      case RECIPIENT_STEPS.BOUNDARIES:
+        return <BoundariesScreen onComplete={handleBoundariesComplete} />;
 
       case RECIPIENT_STEPS.CONFIRMATION:
         return (

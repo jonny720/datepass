@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ThemeId } from '@/types';
 import { Anchor, Shield, Leaf, Music, Moon, Check } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
+import { getThemeVisualIdentity } from '@/config/themes';
 
 interface OpeningAnimationProps {
   theme: ThemeId;
@@ -11,8 +13,10 @@ interface OpeningAnimationProps {
 }
 
 export function OpeningAnimation({ theme, recipientName, openingMessage, onComplete }: OpeningAnimationProps) {
+  const { language } = useLanguage();
   const [stage, setStage] = useState<'envelope' | 'reveal' | 'complete'>('envelope');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const themeIdentity = getThemeVisualIdentity(theme);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -72,6 +76,7 @@ export function OpeningAnimation({ theme, recipientName, openingMessage, onCompl
             {theme === 'nature' && <NatureEnvelope />}
             {theme === 'party' && <PartyEnvelope />}
             {(theme === 'after_dark' || theme === 'temptation') && <AfterDarkEnvelope />}
+            {themeIdentity && <ThemeIdentityEnvelope theme={theme} />}
           </motion.div>
         )}
 
@@ -88,10 +93,95 @@ export function OpeningAnimation({ theme, recipientName, openingMessage, onCompl
             {theme === 'nature' && <NatureReveal recipientName={recipientName} openingMessage={openingMessage} />}
             {theme === 'party' && <PartyReveal recipientName={recipientName} openingMessage={openingMessage} />}
             {(theme === 'after_dark' || theme === 'temptation') && <AfterDarkReveal recipientName={recipientName} openingMessage={openingMessage} />}
+            {themeIdentity && (
+              <ThemeIdentityReveal
+                theme={theme}
+                recipientName={recipientName}
+                openingMessage={openingMessage || themeIdentity.openingSubtitle[language]}
+              />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </motion.div>
+  );
+}
+
+function ThemeIdentityEnvelope({ theme }: { theme: ThemeId }) {
+  const identity = getThemeVisualIdentity(theme);
+  if (!identity) return null;
+
+  const Icon = identity.icon;
+
+  return (
+    <div className={`relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-2xl shadow-2xl ${identity.backgroundClass}`}>
+      <div className="absolute inset-4 rounded-2xl border border-white/35" />
+      <div className="theme-ticket-motif absolute inset-0 opacity-70">
+        <div className={`theme-ticket-motif theme-ticket-motif-${theme}`} />
+      </div>
+      <motion.div
+        className={`relative z-10 rounded-2xl bg-white/85 p-6 shadow-xl ${identity.accentClass}`}
+        animate={{ rotate: [0, -3, 3, 0], scale: [1, 1.03, 1] }}
+        transition={{ duration: 2.2, repeat: Infinity }}
+      >
+        <Icon className="h-20 w-20" strokeWidth={1.7} />
+      </motion.div>
+    </div>
+  );
+}
+
+function ThemeIdentityReveal({
+  theme,
+  recipientName,
+  openingMessage,
+}: {
+  theme: ThemeId;
+  recipientName: string;
+  openingMessage?: string;
+}) {
+  const { language } = useLanguage();
+  const identity = getThemeVisualIdentity(theme);
+  if (!identity) return null;
+
+  const Icon = identity.icon;
+
+  return (
+    <div className="max-w-md">
+      <motion.div
+        initial={{ y: -10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className={`mb-3 text-sm font-bold uppercase tracking-widest ${identity.accentClass}`}
+      >
+        {identity.openingMotif[language]}
+      </motion.div>
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.2, type: 'spring' }}
+        className="mb-2 text-3xl font-bold text-stone-900"
+      >
+        {recipientName}
+      </motion.div>
+      {openingMessage && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-sm italic text-stone-700"
+        >
+          {openingMessage}
+        </motion.p>
+      )}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.5, type: 'spring' }}
+        className={`mx-auto mt-4 flex h-12 w-12 items-center justify-center rounded-full bg-stone-100 ${identity.accentClass}`}
+      >
+        <Icon className="h-6 w-6" />
+      </motion.div>
+    </div>
   );
 }
 

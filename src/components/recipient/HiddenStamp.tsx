@@ -1,17 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import type { ThemeId } from '@/types';
+import type { HumorLevel, ThemeId } from '@/types';
 import { THEME_STAMPS, getRandomStampMessage } from '@/config/stampConfig';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface HiddenStampProps {
   theme: ThemeId;
+  humorLevel?: HumorLevel;
   onReveal?: () => void;
   hasBeenRevealed?: boolean;
 }
 
-export function HiddenStamp({ theme, onReveal, hasBeenRevealed = false }: HiddenStampProps) {
+export function HiddenStamp({ theme, humorLevel, onReveal, hasBeenRevealed = false }: HiddenStampProps) {
   const { language } = useLanguage();
   const [isRevealed, setIsRevealed] = useState(false);
   const [message, setMessage] = useState<string>('');
@@ -71,7 +72,7 @@ export function HiddenStamp({ theme, onReveal, hasBeenRevealed = false }: Hidden
     navigator.vibrate?.(20);
 
     // Set message
-    setMessage(getRandomStampMessage(language));
+    setMessage(getRandomStampMessage(language, humorLevel));
 
     // Mark as revealed
     setIsRevealed(true);

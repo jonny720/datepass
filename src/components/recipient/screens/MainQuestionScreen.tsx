@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type PointerEvent } from 'react';
+import { useState, useRef, useEffect, useMemo, type PointerEvent } from 'react';
 import { Check, CheckCircle, ChevronDown, Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -13,6 +13,17 @@ import {
   IconBadge,
   Confetti,
 } from '@/components/ui';
+import {
+  NO_BUTTON_LABELS_BY_HUMOR,
+  NO_BUTTON_PERSISTENCE_BY_HUMOR,
+  resolveHumorLevel,
+} from '@/config/humorCopy';
+import {
+  getThemeNoLabels,
+  getThemeQuestion,
+  getThemeQuestionSubtitle,
+  getThemeYesLabels,
+} from '@/config/themes';
 import { YesConfirmation } from '@/components/recipient/YesConfirmation';
 import { pageTransition, scaleIn, fadeInUp, springs } from '@/lib/animations';
 import {
@@ -27,7 +38,7 @@ import {
 
 interface MainQuestionScreenProps {
   config: InviteConfig;
-  onYes: () => void;
+  onYes: (customOption?: string) => void;
   onNo: () => void;
   onDecline: () => void;
   recipientGender?: RecipientGender | null;
@@ -37,7 +48,23 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
   const { t, language } = useLanguage();
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
   const isDateInvite = (config.inviteType || 'date') === 'date';
+  const isCustomInvite = config.inviteType === 'custom';
+  const noButtonMode = config.advancedSettings?.noButtonMode || (isDateInvite ? 'playful' : 'gentle');
+  const humorLevel = resolveHumorLevel(config.advancedSettings?.humorLevel);
+  const maxEscapes = noButtonMode === 'normal' ? 0 : noButtonMode === 'gentle' ? 3 : ESCAPE_LIMIT - 1;
   const AffirmativeIcon = isDateInvite ? Heart : CheckCircle;
+  const customYesOptions = useMemo(() => {
+    const fallback = language === 'he'
+      ? ['אני בפנים', 'אולי', 'תפתיעו אותי']
+      : ["I'm in", 'Maybe', 'Surprise me'];
+    return config.customOptions && config.customOptions.length > 0
+      ? config.customOptions
+      : fallback;
+  }, [config.customOptions, language]);
+  const themeYesOptions = useMemo(
+    () => getThemeYesLabels(config.theme, language),
+    [config.theme, language]
+  );
   const defaultYesCopy = config.yesButtonCopy && inviteTypeConfig.yesCopyOptions.includes(config.yesButtonCopy)
     ? config.yesButtonCopy
     : inviteTypeConfig.yesCopyOptions[0];
@@ -50,9 +77,16 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
   const [selectedYesCopy, setSelectedYesCopy] = useState<YesButtonCopy>(
     defaultYesCopy
   );
+  const [selectedCustomOption, setSelectedCustomOption] = useState(
+    customYesOptions[0]
+  );
+  const [selectedThemeYesOption, setSelectedThemeYesOption] = useState(
+    themeYesOptions?.[0] || ''
+  );
   const [showYesOptions, setShowYesOptions] = useState(false);
   const [isPointerInside, setIsPointerInside] = useState(false);
   const lastEscapeTime = useRef(0);
+  const lastPointerInteractionTime = useRef(0);
   const playAreaRef = useRef<HTMLDivElement>(null);
   const escapingButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useRef(
@@ -67,10 +101,13 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
     setShowConfetti(false);
     setCelebrating(false);
     setSelectedYesCopy(defaultYesCopy);
+    setSelectedCustomOption(customYesOptions[0]);
+    setSelectedThemeYesOption(themeYesOptions?.[0] || '');
     setShowYesOptions(false);
     setIsPointerInside(false);
     lastEscapeTime.current = 0;
-  }, [config, defaultYesCopy]);
+    lastPointerInteractionTime.current = 0;
+  }, [config, customYesOptions, defaultYesCopy, themeYesOptions]);
 
   const handleYesClick = () => {
     if (celebrating) return;
@@ -91,6 +128,16 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
     setShowYesOptions(false);
   };
 
+  const handleCustomOptionSelect = (option: string) => {
+    setSelectedCustomOption(option);
+    setShowYesOptions(false);
+  };
+
+  const handleThemeYesOptionSelect = (option: string) => {
+    setSelectedThemeYesOption(option);
+    setShowYesOptions(false);
+  };
+
   const handleEscape = () => {
     const now = Date.now();
     
@@ -103,7 +150,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
     }
     
     // Stop escaping after max attempts
-    if (escapeCount >= ESCAPE_LIMIT - 1) {
+    if (escapeCount >= maxEscapes) {
       return;
     }
 
@@ -149,7 +196,8 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
   const handlePointerEnter = (e: PointerEvent<HTMLButtonElement>) => {
     // Only escape on mouse/pen, not touch
     if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
-      if (!isPointerInside && escapeCount < ESCAPE_LIMIT - 1) {
+      if (!isPointerInside && escapeCount < maxEscapes) {
+        lastPointerInteractionTime.current = Date.now();
         setIsPointerInside(true);
         handleEscape();
       }
@@ -163,15 +211,22 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
   // Mobile: trigger on pointer down (touch)
   const handlePointerDown = (e: PointerEvent<HTMLButtonElement>) => {
-    if (e.pointerType === 'touch' && escapeCount < ESCAPE_LIMIT - 1) {
+    if (e.pointerType === 'touch' && escapeCount < maxEscapes) {
       e.preventDefault();
+      lastPointerInteractionTime.current = Date.now();
       handleEscape();
     }
   };
 
   const handleNoClick = () => {
+    const cameFromRecentPointer = Date.now() - lastPointerInteractionTime.current < 800;
+    if (!cameFromRecentPointer) {
+      onNo();
+      return;
+    }
+
     // If still escaping, trigger an escape on click
-    if (escapeCount < ESCAPE_LIMIT - 1) {
+    if (escapeCount < maxEscapes) {
       handleEscape();
     } else {
       // After all escapes, actually call onNo
@@ -180,9 +235,18 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
   };
 
   const getNoButtonLabel = () => {
-    const labels = inviteTypeConfig.noCopyOptions[language];
+    const themeNoLabels = getThemeNoLabels(config.theme, language);
+    if (themeNoLabels?.length) {
+      return themeNoLabels[Math.min(escapeCount, themeNoLabels.length - 1)];
+    }
+
+    const labels = humorLevel === 'normal'
+      ? inviteTypeConfig.noCopyOptions[language]
+      : NO_BUTTON_LABELS_BY_HUMOR[humorLevel][language];
     return labels[Math.min(escapeCount, labels.length - 1)];
   };
+  const themeQuestion = getThemeQuestion(config.theme, language);
+  const themeQuestionSubtitle = getThemeQuestionSubtitle(config.theme, language);
 
   const notificationText = language === 'he'
     ? `${heByGender(recipientGender, {
@@ -194,7 +258,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
   // Position the button for final stable state
   useEffect(() => {
-    if (escapeCount === ESCAPE_LIMIT - 1 && playAreaRef.current && escapingButtonRef.current) {
+    if (escapeCount === maxEscapes && maxEscapes > 0 && playAreaRef.current && escapingButtonRef.current) {
       const playArea = playAreaRef.current;
       const button = escapingButtonRef.current;
       
@@ -211,7 +275,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
       setButtonTransform(finalTransform);
     }
-  }, [escapeCount]);
+  }, [escapeCount, maxEscapes]);
 
   return (
     <motion.div 
@@ -229,7 +293,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
           <YesConfirmation
             theme={config.theme}
             inviteType={config.inviteType}
-            onComplete={onYes}
+            onComplete={() => onYes(isCustomInvite ? selectedCustomOption : undefined)}
           />
         )}
       </AnimatePresence>
@@ -250,10 +314,12 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
         <Card className="w-full max-w-sm">
           <div className="mb-8 text-center">
             <h1 className="text-screen-title mb-3 text-stone-900">
-              {inviteTypeConfig.mainQuestion[language]}
+              {config.inviteType === 'custom' && config.customMainQuestion
+                ? config.customMainQuestion
+                : themeQuestion || inviteTypeConfig.mainQuestion[language]}
             </h1>
             <p className="text-body text-stone-600">
-              {inviteTypeConfig.questionSubtitle[language]}
+              {themeQuestionSubtitle || inviteTypeConfig.questionSubtitle[language]}
             </p>
           </div>
 
@@ -271,7 +337,11 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                   className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-pink-600 px-5 py-3 text-button-label-lg font-semibold text-white transition-all duration-200 hover:from-pink-600 hover:to-pink-700 active:from-pink-700 active:to-pink-800 disabled:cursor-not-allowed disabled:from-stone-300 disabled:to-stone-300 disabled:text-stone-500"
                 >
                   <AffirmativeIcon className="h-5 w-5 flex-shrink-0" fill={isDateInvite ? 'currentColor' : 'none'} />
-                  {getYesButtonLabel(selectedYesCopy, language)}
+                  {isCustomInvite
+                    ? selectedCustomOption
+                    : themeYesOptions?.length
+                      ? selectedThemeYesOption
+                      : getYesButtonLabel(selectedYesCopy, language)}
                 </button>
                 <button
                   type="button"
@@ -290,7 +360,43 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
             {showYesOptions && (
               <div className="absolute inset-x-0 top-full z-20 mt-2 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-xl">
-                {YES_BUTTON_OPTIONS.filter((option) =>
+                {isCustomInvite ? customYesOptions.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => handleCustomOptionSelect(option)}
+                    className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors ${
+                      selectedCustomOption === option
+                        ? 'bg-pink-50 text-pink-700'
+                        : 'bg-white text-stone-800 hover:bg-stone-50'
+                    }`}
+                  >
+                    <span>{option}</span>
+                    {selectedCustomOption === option && (
+                      <Check className="h-4 w-4 text-pink-500" />
+                    )}
+                  </button>
+                )) : themeYesOptions?.length ? themeYesOptions.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => handleThemeYesOptionSelect(option)}
+                    className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors ${
+                      selectedThemeYesOption === option
+                        ? 'bg-pink-50 text-pink-700'
+                        : 'bg-white text-stone-800 hover:bg-stone-50'
+                    }`}
+                  >
+                    <span>{option}</span>
+                    {selectedThemeYesOption === option && (
+                      isDateInvite ? (
+                        <Heart className="h-4 w-4 text-pink-500" fill="currentColor" />
+                      ) : (
+                        <Check className="h-4 w-4 text-pink-500" />
+                      )
+                    )}
+                  </button>
+                )) : YES_BUTTON_OPTIONS.filter((option) =>
                   inviteTypeConfig.yesCopyOptions.includes(option.id)
                 ).map((option) => (
                   <button
@@ -322,7 +428,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
             ref={playAreaRef}
             className="relative mb-6"
             style={{
-              minHeight: '180px', // Reserve space for button movement on mobile
+              minHeight: noButtonMode === 'normal' ? '56px' : '180px',
               height: 'auto',
             }}
           >
@@ -330,9 +436,9 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
             {escapeCount === 0 && (
               <SecondaryButton 
                 onClick={handleNoClick}
-                onPointerEnter={handlePointerEnter}
+                onPointerEnter={maxEscapes > 0 ? handlePointerEnter : undefined}
                 onPointerLeave={handlePointerLeave}
-                onPointerDown={handlePointerDown}
+                onPointerDown={maxEscapes > 0 ? handlePointerDown : undefined}
                 fullWidth 
                 size="lg"
                 style={{ minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px` }}
@@ -364,9 +470,9 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                 <SecondaryButton 
                   ref={escapingButtonRef}
                   onClick={handleNoClick}
-                  onPointerEnter={escapeCount < ESCAPE_LIMIT - 1 ? handlePointerEnter : undefined}
-                  onPointerLeave={escapeCount < ESCAPE_LIMIT - 1 ? handlePointerLeave : undefined}
-                  onPointerDown={escapeCount < ESCAPE_LIMIT - 1 ? handlePointerDown : undefined}
+                  onPointerEnter={escapeCount < maxEscapes ? handlePointerEnter : undefined}
+                  onPointerLeave={escapeCount < maxEscapes ? handlePointerLeave : undefined}
+                  onPointerDown={escapeCount < maxEscapes ? handlePointerDown : undefined}
                   size="lg"
                   aria-label={getNoButtonLabel()}
                   style={{
@@ -374,7 +480,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                     minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px`,
                     maxWidth: '90vw',
                     whiteSpace: 'nowrap',
-                    cursor: escapeCount >= ESCAPE_LIMIT - 1 ? 'pointer' : 'default',
+                    cursor: escapeCount >= maxEscapes ? 'pointer' : 'default',
                   }}
                 >
                   <X className="h-5 w-5 flex-shrink-0" />
@@ -385,7 +491,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
           </div>
 
           {/* Persistence Easter Egg Message */}
-          {escapeCount >= 4 && escapeCount < ESCAPE_LIMIT - 1 && (
+          {escapeCount >= 4 && escapeCount < maxEscapes && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -393,7 +499,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
               className="mb-4 text-center"
             >
               <p className="text-xs italic text-stone-600">
-                {t('easter_egg_no_persistence')}
+                {NO_BUTTON_PERSISTENCE_BY_HUMOR[humorLevel][language]}
               </p>
             </motion.div>
           )}

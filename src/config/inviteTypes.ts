@@ -26,7 +26,7 @@ export interface InviteTypeConfig {
   calculationSteps: Record<Language, string[]>;
 }
 
-export const INVITE_TYPE_ORDER: InviteType[] = ['date', 'birthday', 'friends-night'];
+export const INVITE_TYPE_ORDER: InviteType[] = ['date', 'birthday', 'friends-night', 'custom'];
 
 export const INVITE_TYPE_CONFIGS: Record<InviteType, InviteTypeConfig> = {
   date: {
@@ -52,7 +52,7 @@ export const INVITE_TYPE_CONFIGS: Record<InviteType, InviteTypeConfig> = {
       he: 'הזמנה קטנה מחכה לך.',
     },
     defaultTheme: 'cruise',
-    recommendedThemes: ['cruise', 'nature', 'after_dark', 'temptation', 'secret_mission', 'party'],
+    recommendedThemes: ['cruise', 'nature', 'black-tie', 'after_dark', 'flight', 'hotel', 'generic'],
     activityOptions: ['coffee', 'drinks', 'restaurant', 'sunset-walk', 'movie', 'competitive', 'creative', 'surprise-me'],
     yesCopyOptions: ['yes_lets_do', 'im_in', 'you_convinced', 'okay_worked', 'fine_cute'],
     noCopyOptions: {
@@ -111,7 +111,7 @@ export const INVITE_TYPE_CONFIGS: Record<InviteType, InviteTypeConfig> = {
       he: 'הוזמנת רשמית לחגוג.',
     },
     defaultTheme: 'party',
-    recommendedThemes: ['party', 'nature', 'secret_mission'],
+    recommendedThemes: ['party', 'black-tie', 'concert', 'theater', 'generic'],
     activityOptions: ['cake', 'food', 'drinks', 'music', 'games', 'surprise-me'],
     yesCopyOptions: ['im_coming', 'wouldnt_miss_it', 'count_me_in', 'obviously_yes'],
     noCopyOptions: {
@@ -170,7 +170,7 @@ export const INVITE_TYPE_CONFIGS: Record<InviteType, InviteTypeConfig> = {
       he: 'ערב חשוב מאוד נמצא בתכנון.',
     },
     defaultTheme: 'party',
-    recommendedThemes: ['party', 'secret_mission', 'nature'],
+    recommendedThemes: ['party', 'stadium', 'concert', 'black-tie', 'generic'],
     activityOptions: ['playstation', 'board-games', 'pizza', 'movie', 'bbq', 'karaoke', 'surprise-me'],
     yesCopyOptions: ['im_in', 'say_less', 'obviously', 'dangerous_im_in'],
     noCopyOptions: {
@@ -204,6 +204,65 @@ export const INVITE_TYPE_CONFIGS: Record<InviteType, InviteTypeConfig> = {
     calculationSteps: {
       en: ['Calculating chaos level...', 'Checking snack compatibility...', 'Estimating laugh probability...'],
       he: ['מחשבים רמת כאוס...', 'בודקים התאמת חטיפים...', 'מעריכים הסתברות לצחוק...'],
+    },
+  },
+  custom: {
+    id: 'custom',
+    labels: {
+      en: 'Custom invite',
+      he: 'הזמנה כללית',
+    },
+    subtitles: {
+      en: 'Create something for any plan.',
+      he: 'ליצור הזמנה לכל תוכנית.',
+    },
+    mainQuestion: {
+      en: 'Are you in?',
+      he: 'בא לך להצטרף?',
+    },
+    questionSubtitle: {
+      en: 'Choose what works for you.',
+      he: 'בחרו מה שמתאים לכם.',
+    },
+    openingSubtitle: {
+      en: 'A small plan is waiting for you.',
+      he: 'תוכנית קטנה מחכה לך.',
+    },
+    defaultTheme: 'generic',
+    recommendedThemes: ['generic', 'black-tie', 'stadium', 'concert', 'theater', 'hotel', 'flight', 'party', 'nature'],
+    activityOptions: ['surprise-me'],
+    yesCopyOptions: ['im_in', 'count_me_in', 'say_less', 'obviously'],
+    noCopyOptions: {
+      en: ["Can't make it", 'Maybe?', 'Last chance', 'Fine, you can click me now'],
+      he: ['לא מסתדר', 'אולי?', 'הזדמנות אחרונה', 'טוב, עכשיו באמת אפשר ללחוץ'],
+    },
+    shareCopyPresets: [
+      {
+        id: 'custom_1',
+        message: {
+          en: 'I made you a small invitation ✨',
+          he: 'הכנתי לך הזמנה קטנה ✨',
+        },
+      },
+      {
+        id: 'custom_2',
+        message: {
+          en: 'A plan is forming, and your presence is requested.',
+          he: 'מתגבשת תוכנית, ונוכחותך מתבקשת.',
+        },
+      },
+    ],
+    confirmationIntro: {
+      en: "I'm in ✨",
+      he: 'אני בפנים ✨',
+    },
+    scoreLabel: {
+      en: 'Vibe check',
+      he: 'בדיקת וייב',
+    },
+    calculationSteps: {
+      en: ['Checking plan energy...', 'Consulting the vibe meter...', 'Approving completely unofficially...'],
+      he: ['בודקים אנרגיית תוכנית...', 'מתייעצים עם מד הווייב...', 'מאשרים באופן לא רשמי בכלל...'],
     },
   },
 };

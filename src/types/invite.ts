@@ -1,9 +1,23 @@
 export type Language = 'he' | 'en';
 
-export type InviteType = 'date' | 'birthday' | 'friends-night';
+export type InviteType = 'date' | 'birthday' | 'friends-night' | 'custom';
 export type RecipientGender = 'male' | 'female' | 'private';
 
-export type ThemeId = 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark' | 'temptation';
+export type ThemeId =
+  | 'cruise'
+  | 'secret_mission'
+  | 'nature'
+  | 'party'
+  | 'after_dark'
+  | 'temptation'
+  | 'black-tie'
+  | 'power-play'
+  | 'generic'
+  | 'stadium'
+  | 'concert'
+  | 'theater'
+  | 'hotel'
+  | 'flight';
 
 export type IntroTone = 'light' | 'flirty' | 'absurd' | 'romantic' | 'bold' | 'dry';
 
@@ -20,6 +34,16 @@ export type YesButtonCopy =
   | 'say_less'
   | 'obviously'
   | 'dangerous_im_in';
+
+export type NoButtonMode = 'playful' | 'gentle' | 'normal';
+export type HumorLevel = 'soft' | 'normal' | 'chaos';
+
+export interface AdvancedSettings {
+  askForRide?: boolean;
+  askSpontaneityLevel?: boolean;
+  noButtonMode?: NoButtonMode;
+  humorLevel?: HumorLevel;
+}
 
 export interface IntroCard {
   id: string;
@@ -67,4 +91,7 @@ export interface InviteConfig {
   whatsappNumber?: string;
   openingMessage?: string;
   yesButtonCopy?: YesButtonCopy;
+  customMainQuestion?: string;
+  customOptions?: string[];
+  advancedSettings?: AdvancedSettings;
 }

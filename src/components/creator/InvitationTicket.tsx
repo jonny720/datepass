@@ -18,6 +18,8 @@ export function InvitationTicket({
   const { t } = useLanguage();
   const themeConfig = THEME_CONFIGS[theme];
   const Icon = themeConfig.icon;
+  const themeKey = theme.replace(/-/g, '_');
+  const isDarkTicket = theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play' || theme === 'black-tie';
 
   // Theme-specific background classes
   const getBackgroundClass = () => {
@@ -33,27 +35,43 @@ export function InvitationTicket({
       case 'after_dark':
       case 'temptation':
         return 'bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 text-white';
+      case 'black-tie':
+        return 'bg-gradient-to-br from-stone-950 via-black to-yellow-950 text-white';
+      case 'power-play':
+        return 'bg-gradient-to-br from-black via-zinc-950 to-red-950 text-white';
+      case 'generic':
+        return 'bg-gradient-to-br from-white via-sky-50 to-pink-50';
+      case 'stadium':
+        return 'bg-gradient-to-br from-green-50 via-lime-50 to-blue-50';
+      case 'concert':
+        return 'bg-gradient-to-br from-fuchsia-50 via-yellow-50 to-cyan-50';
+      case 'theater':
+        return 'bg-gradient-to-br from-rose-50 via-red-50 to-amber-50';
+      case 'hotel':
+        return 'bg-gradient-to-br from-slate-50 via-sky-50 to-amber-50';
+      case 'flight':
+        return 'bg-gradient-to-br from-blue-50 via-sky-50 to-yellow-50';
       default:
         return 'bg-white';
     }
   };
 
   const getBorderClass = () => {
-    if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
+    if (isDarkTicket) {
       return 'border-white/20';
     }
     return 'border-stone-200';
   };
 
   const getTextColorClass = () => {
-    if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
+    if (isDarkTicket) {
       return 'text-white/70';
     }
     return 'text-stone-600';
   };
 
   const getHeadingColorClass = () => {
-    if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
+    if (isDarkTicket) {
       return 'text-white';
     }
     return 'text-stone-900';
@@ -73,7 +91,7 @@ export function InvitationTicket({
           className={`
             rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide
             ${
-              theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
+              isDarkTicket
                 ? 'bg-white/10 text-white/90'
                 : 'bg-stone-900/10 text-stone-900/90'
             }
@@ -89,7 +107,7 @@ export function InvitationTicket({
           className={`
             inline-flex items-center justify-center rounded-xl p-3
             ${
-              theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
+              isDarkTicket
                 ? 'bg-white/10'
                 : 'bg-stone-900/5'
             }
@@ -114,7 +132,7 @@ export function InvitationTicket({
         {/* Divider */}
         <div
           className={`border-t border-dashed ${
-            theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
+            isDarkTicket
               ? 'border-white/20'
               : 'border-stone-300'
           }`}
@@ -136,7 +154,7 @@ export function InvitationTicket({
               {t('creator_review_ticket_theme')}
             </div>
             <div className={`mt-1 text-base font-semibold ${getHeadingColorClass()}`}>
-              {t(`creator_theme_${theme}` as never)}
+              {t(`creator_theme_${themeKey}` as never)}
             </div>
           </div>
 
@@ -155,7 +173,7 @@ export function InvitationTicket({
       <div className="relative h-6">
         <div
           className={`absolute inset-0 border-t border-dashed ${
-            theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation'
+            isDarkTicket
               ? 'border-white/20'
               : 'border-stone-300'
           }`}

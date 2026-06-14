@@ -15,8 +15,11 @@ import { CruiseTicket, OceanWaves, FloatingElements } from '@/components/cruise'
 import { MissionDossier, GridLines, RadarElements } from '@/components/mission';
 import { EasterEgg } from '@/components/recipient/EasterEgg';
 import { CompatibilityCalculation } from '@/components/recipient/CompatibilityCalculation';
+import { ThemeIdentityDecorations } from '@/components/recipient/ThemeIdentityCard';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
 import { generateCompatibilityScore, getScoreDisclaimer } from '@/config/compatibilityConfig';
+import { CONFIRMATION_SUBTITLES_BY_HUMOR, resolveHumorLevel } from '@/config/humorCopy';
+import { getThemeVisualIdentity } from '@/config/themes';
 import { pageTransition, scaleIn, fadeInUp, staggerContainer } from '@/lib/animations';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
 import { heByGender } from '@/lib/hebrewGender';
@@ -46,9 +49,11 @@ export function ConfirmationScreen({
   const MAX_NOTE_LENGTH = 160;
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
   const isDateInvite = (config.inviteType || 'date') === 'date';
+  const humorLevel = resolveHumorLevel(config.advancedSettings?.humorLevel);
 
   const isCruiseTheme = config.theme === 'cruise';
   const isMissionTheme = config.theme === 'secret_mission';
+  const themeIdentity = getThemeVisualIdentity(config.theme);
 
   const selectedActivity = ACTIVITIES.find(
     (a) => a.id === response.selectedActivity
@@ -89,7 +94,9 @@ export function ConfirmationScreen({
 
   const activityName = selectedActivity
     ? String(t(selectedActivity.titleKey as keyof ReturnType<typeof useLanguage>['t']))
-    : '';
+    : (config.inviteType === 'custom'
+      ? response.selectedCustomOption || (language === 'he' ? 'אישרתי את ההזמנה' : 'Accepted the invitation')
+      : '');
 
   // Cycle through playful score disclaimers using new config
   const handleScoreTap = () => {
@@ -106,6 +113,7 @@ export function ConfirmationScreen({
   const confirmationMessage = buildRecipientConfirmationMessage({
     creatorPhone: config.whatsappNumber,
     inviteType: config.inviteType,
+    theme: config.theme,
     language,
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
@@ -115,12 +123,16 @@ export function ConfirmationScreen({
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
     foundEasterEgg: response.foundEasterEgg,
+    rideAnswer: response.rideAnswer,
+    spontaneityAnswer: response.spontaneityAnswer,
+    boundariesAnswer: response.boundariesAnswer,
   });
 
   // Build WhatsApp URL (returns null if no valid phone)
   const whatsappUrl = buildRecipientConfirmationWhatsAppUrl({
     creatorPhone: config.whatsappNumber,
     inviteType: config.inviteType,
+    theme: config.theme,
     language,
     activityName,
     selectedSlot: response.selectedSlot ?? undefined,
@@ -130,6 +142,9 @@ export function ConfirmationScreen({
     personalNote: personalNote.trim(),
     noteHeader: t('recipient_confirmation_note_header'),
     foundEasterEgg: response.foundEasterEgg,
+    rideAnswer: response.rideAnswer,
+    spontaneityAnswer: response.spontaneityAnswer,
+    boundariesAnswer: response.boundariesAnswer,
   });
 
   // Development diagnostics
@@ -181,12 +196,17 @@ export function ConfirmationScreen({
   const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   // Generate a deterministic compatibility score based on invite config
-  const compatibilityScore = generateCompatibilityScore(
-    `${config.senderName}-${config.recipientName}-${config.theme}`
-  );
+  const compatibilityScore = config.theme === 'black-tie' || config.theme === 'power-play'
+    ? 94
+    : generateCompatibilityScore(`${config.senderName}-${config.recipientName}-${config.theme}`);
 
   // Get current score disclaimer
-  const currentDisclaimer = getScoreDisclaimer(scoreDisclaimerIndex, language);
+  const currentDisclaimer = config.theme === 'power-play'
+    ? (scoreDisclaimerIndex % 2 === 0
+      ? (language === 'he' ? 'התוצאה תקפה רק בהסכמה.' : 'Result valid only with consent.')
+      : (language === 'he' ? 'מדעית מפוקפק. גבולות חובה.' : 'Scientifically questionable. Boundaries required.'))
+    : getScoreDisclaimer(scoreDisclaimerIndex, language, humorLevel);
+  const confirmationSubtitle = CONFIRMATION_SUBTITLES_BY_HUMOR[humorLevel][language];
 
   // Cruise theme rendering
   if (isCruiseTheme) {
@@ -197,6 +217,8 @@ export function ConfirmationScreen({
           {showCalculation && (
             <CompatibilityCalculation
               inviteType={config.inviteType}
+              humorLevel={humorLevel}
+              theme={config.theme}
               onComplete={handleCalculationComplete}
             />
           )}
@@ -219,6 +241,7 @@ export function ConfirmationScreen({
         {/* Easter egg - always render to keep Portal alive */}
         <EasterEgg
           theme={config.theme}
+          humorLevel={humorLevel}
           placement={getRandomPlacementForScreen('confirmation')}
           onReveal={easterEggState.markAsRevealed}
           hasBeenRevealed={easterEggState.hasBeenRevealed}
@@ -250,7 +273,7 @@ export function ConfirmationScreen({
               {t('recipient_confirmation_title')}
             </h1>
             <p className="text-lg text-stone-700">
-              {t('recipient_confirmation_subtitle')}
+              {confirmationSubtitle}
             </p>
           </motion.div>
 
@@ -272,8 +295,7 @@ export function ConfirmationScreen({
                     {t('recipient_confirmation_activity')}
                   </p>
                   <p className="text-lg font-bold text-stone-900">
-                    {selectedActivity &&
-                      t(selectedActivity.titleKey as keyof typeof t)}
+                    {activityName}
                   </p>
                 </div>
 
@@ -515,6 +537,8 @@ export function ConfirmationScreen({
           {showCalculation && (
             <CompatibilityCalculation
               inviteType={config.inviteType}
+              humorLevel={humorLevel}
+              theme={config.theme}
               onComplete={handleCalculationComplete}
             />
           )}
@@ -538,7 +562,10 @@ export function ConfirmationScreen({
         <EasterEgg
           theme={config.theme}
           placement={getRandomPlacementForScreen('confirmation')}
-          onReveal={easterEggState.markAsRevealed}          hasBeenRevealed={easterEggState.hasBeenRevealed}        />
+          humorLevel={humorLevel}
+          onReveal={easterEggState.markAsRevealed}
+          hasBeenRevealed={easterEggState.hasBeenRevealed}
+        />
 
         {/* Success badge */}
         <motion.div 
@@ -566,7 +593,7 @@ export function ConfirmationScreen({
               {t('recipient_confirmation_title')}
             </h1>
             <p className="text-lg text-stone-700">
-              {t('recipient_confirmation_subtitle')}
+              {confirmationSubtitle}
             </p>
           </motion.div>
 
@@ -588,8 +615,7 @@ export function ConfirmationScreen({
                     {t('recipient_confirmation_activity')}
                   </p>
                   <p className="text-lg font-bold text-stone-900">
-                    {selectedActivity &&
-                      t(selectedActivity.titleKey as keyof typeof t)}
+                    {activityName}
                   </p>
                 </div>
 
@@ -830,6 +856,8 @@ export function ConfirmationScreen({
         {showCalculation && (
           <CompatibilityCalculation
             inviteType={config.inviteType}
+            humorLevel={humorLevel}
+            theme={config.theme}
             onComplete={handleCalculationComplete}
           />
         )}
@@ -837,22 +865,25 @@ export function ConfirmationScreen({
 
       <motion.div 
         key="confirmation-fallback"
-        className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 px-4 py-12"
+        className={`relative flex min-h-screen flex-col items-center justify-center px-4 py-12 ${themeIdentity?.backgroundClass || 'bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50'}`}
         variants={pageTransition}
         initial="initial"
         animate="animate"
         exit="exit"
       >
+      {themeIdentity && <ThemeIdentityDecorations theme={config.theme} />}
+
       {/* Easter egg - always render to keep Portal alive */}
       <EasterEgg
         theme={config.theme}
+        humorLevel={humorLevel}
         placement={getRandomPlacementForScreen('confirmation')}
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}
       />
 
       <motion.div 
-        className="mb-8 flex justify-center"
+        className="relative z-10 mb-8 flex justify-center"
         variants={scaleIn}
       >
         <IconBadge variant="success" size="lg">
@@ -861,72 +892,88 @@ export function ConfirmationScreen({
       </motion.div>
 
       <motion.div
+        className="relative z-10 w-full max-w-md"
         variants={fadeInUp}
         transition={{ delay: 0.2 }}
       >
-        <Card className="w-full max-w-md">
+        <div className={`w-full rounded-2xl p-6 shadow-md ${themeIdentity ? `border ${themeIdentity.surfaceClass}` : 'bg-white'}`}>
         <div className="mb-8 text-center">
-          <h1 className="mb-3 text-3xl font-bold text-stone-900">
+          {themeIdentity && (
+            <p className={`mb-3 inline-flex rounded-full border border-current/20 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.18em] ${themeIdentity.accentClass}`}>
+              {themeIdentity.yesStamp[language]}
+            </p>
+          )}
+          <h1 className={`mb-3 text-3xl font-bold ${themeIdentity?.textClass || 'text-stone-900'}`}>
             {t('recipient_confirmation_title')}
           </h1>
-          <p className="text-lg text-stone-600">
-            {t('recipient_confirmation_subtitle')}
+          <p className={`text-lg ${themeIdentity?.mutedTextClass || 'text-stone-600'}`}>
+            {confirmationSubtitle}
           </p>
         </div>
 
         {/* Summary */}
-        <div className="mb-6 space-y-4 rounded-xl bg-stone-50 p-4">
+        <div className="mb-6 space-y-4 rounded-xl border border-current/10 bg-white/20 p-4">
           <div>
-            <p className="mb-1 text-sm font-semibold text-stone-500">
+            <p className={`mb-1 text-sm font-semibold ${themeIdentity?.mutedTextClass || 'text-stone-500'}`}>
               {t('recipient_confirmation_activity')}
             </p>
-            <p className="text-lg font-bold text-stone-900">
-              {selectedActivity &&
-                t(selectedActivity.titleKey as keyof typeof t)}
+            <p className={`text-lg font-bold ${themeIdentity?.textClass || 'text-stone-900'}`}>
+              {activityName}
             </p>
           </div>
 
           <div>
-            <p className="mb-1 text-sm font-semibold text-stone-500">
+            <p className={`mb-1 text-sm font-semibold ${themeIdentity?.mutedTextClass || 'text-stone-500'}`}>
               {t('recipient_confirmation_when')}
             </p>
-            <p className="text-lg font-bold text-stone-900">
+            <p className={`text-lg font-bold ${themeIdentity?.textClass || 'text-stone-900'}`}>
               {selectedTimeLabel}
             </p>
           </div>
 
           <div>
-            <p className="mb-1 text-sm font-semibold text-stone-500">
+            <p className={`mb-1 text-sm font-semibold ${themeIdentity?.mutedTextClass || 'text-stone-500'}`}>
               {arrivalPreferenceHeader}
             </p>
-            <p className="text-lg font-bold text-stone-900">
+            <p className={`text-lg font-bold ${themeIdentity?.textClass || 'text-stone-900'}`}>
               {arrivalPreferenceLabel}
             </p>
           </div>
+
+          {response.boundariesAnswer && (
+            <div>
+              <p className={`mb-1 text-sm font-semibold ${themeIdentity?.mutedTextClass || 'text-stone-500'}`}>
+                {language === 'he' ? 'גבולות' : 'Boundaries'}
+              </p>
+              <p className={`text-lg font-bold ${themeIdentity?.textClass || 'text-stone-900'}`}>
+                {response.boundariesAnswer}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Compatibility Score Disclaimer */}
-        <div className="mb-6 rounded-xl bg-pink-50 p-4 text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">
-            {inviteTypeConfig.scoreLabel[language]}
+        <div className="mb-6 rounded-xl border border-current/10 bg-white/20 p-4 text-center">
+          <p className={`mb-2 text-xs font-semibold uppercase tracking-wide ${themeIdentity?.mutedTextClass || 'text-stone-500'}`}>
+            {themeIdentity?.vibeLabel[language] || inviteTypeConfig.scoreLabel[language]}
           </p>
           <div className="mb-2 flex items-center justify-center gap-2">
             {isDateInvite ? (
-              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+              <Heart className={`h-5 w-5 ${themeIdentity?.accentClass || 'text-pink-600'}`} fill="currentColor" />
             ) : (
-              <Sparkles className="h-5 w-5 text-pink-600" />
+              <Sparkles className={`h-5 w-5 ${themeIdentity?.accentClass || 'text-pink-600'}`} />
             )}
-            <span className="text-2xl font-bold text-pink-600">
+            <span className={`text-2xl font-bold ${themeIdentity?.accentClass || 'text-pink-600'}`}>
               {compatibilityScore}%
             </span>
             {isDateInvite ? (
-              <Heart className="h-5 w-5 text-pink-600" fill="currentColor" />
+              <Heart className={`h-5 w-5 ${themeIdentity?.accentClass || 'text-pink-600'}`} fill="currentColor" />
             ) : (
-              <Sparkles className="h-5 w-5 text-pink-600" />
+              <Sparkles className={`h-5 w-5 ${themeIdentity?.accentClass || 'text-pink-600'}`} />
             )}
           </div>
-          <p className="text-xs italic text-stone-600">
-            {t('recipient_confirmation_score_disclaimer')}
+          <p className={`text-xs italic ${themeIdentity?.mutedTextClass || 'text-stone-600'}`}>
+            {currentDisclaimer}
           </p>
         </div>
 
@@ -973,7 +1020,7 @@ export function ConfirmationScreen({
                 )}
               </PrimaryButton>
 
-              <p className="text-center text-sm text-stone-600 py-2">
+              <p className={`py-2 text-center text-sm ${themeIdentity?.mutedTextClass || 'text-stone-600'}`}>
                 {t('recipient_confirmation_no_whatsapp_message')}
               </p>
 
@@ -990,13 +1037,13 @@ export function ConfirmationScreen({
           <div className="mt-6 text-center">
             <button
               onClick={onCreateOwn}
-              className="text-sm text-stone-500 hover:text-stone-700 transition-colors underline"
+              className={`text-sm underline transition-colors ${themeIdentity?.mutedTextClass || 'text-stone-500 hover:text-stone-700'}`}
             >
               {t('recipient_confirmation_create_own')}
             </button>
           </div>
         </div>
-      </Card>
+      </div>
       </motion.div>
     </motion.div>
     </>

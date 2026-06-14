@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { InviteConfig, RecipientGender } from '@/types';
 import { heByGender } from '@/lib/hebrewGender';
+import { getThemeDeclineMessage } from '@/config/themes';
 import {
   Card,
   SecondaryButton,
@@ -21,6 +22,7 @@ export function DeclineScreen({ config, onCreateOwn, onRegret, recipientGender }
   const { t, language } = useLanguage();
   const isDateInvite = (config.inviteType || 'date') === 'date';
   const DeclineIcon = isDateInvite ? Heart : Undo2;
+  const themeDeclineMessage = getThemeDeclineMessage(config.theme, language);
   const notificationText = language === 'he'
     ? `${heByGender(recipientGender, {
         male: 'לא יקבל את התשובה אם לא תגיד לו',
@@ -57,7 +59,7 @@ export function DeclineScreen({ config, onCreateOwn, onRegret, recipientGender }
               {t('recipient_decline_title')}
             </h1>
             <p className="text-base text-stone-600">
-              {t('recipient_decline_subtitle')}
+              {themeDeclineMessage || t('recipient_decline_subtitle')}
             </p>
           </div>
 

@@ -190,7 +190,10 @@ export const RARE_BONUS_MESSAGES: RareBonusMessage[] = [
 
 export function getRandomMessageForTheme(theme: ThemeId): EasterEggMessage {
   const themeMessages = EASTER_EGG_MESSAGES.filter((msg) => msg.theme === theme);
-  return themeMessages[Math.floor(Math.random() * themeMessages.length)];
+  const fallbackMessages = themeMessages.length > 0
+    ? themeMessages
+    : EASTER_EGG_MESSAGES.filter((msg) => msg.theme === 'party');
+  return fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
 }
 
 export function getRandomRareBonus(): RareBonusMessage {

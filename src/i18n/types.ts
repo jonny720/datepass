@@ -29,6 +29,8 @@ export interface TranslationDictionary {
   creator_type_birthday_desc: string;
   creator_type_friends_night: string;
   creator_type_friends_night_desc: string;
+  creator_type_custom: string;
+  creator_type_custom_desc: string;
   creator_welcome_title: string;
   creator_welcome_subtitle: string;
   creator_choose_language: string;
@@ -64,6 +66,22 @@ export interface TranslationDictionary {
   creator_theme_after_dark_desc: string;
   creator_theme_temptation: string;
   creator_theme_temptation_desc: string;
+  creator_theme_black_tie: string;
+  creator_theme_black_tie_desc: string;
+  creator_theme_power_play: string;
+  creator_theme_power_play_desc: string;
+  creator_theme_generic: string;
+  creator_theme_generic_desc: string;
+  creator_theme_stadium: string;
+  creator_theme_stadium_desc: string;
+  creator_theme_concert: string;
+  creator_theme_concert_desc: string;
+  creator_theme_theater: string;
+  creator_theme_theater_desc: string;
+  creator_theme_hotel: string;
+  creator_theme_hotel_desc: string;
+  creator_theme_flight: string;
+  creator_theme_flight_desc: string;
   creator_opening_message_label: string;
   creator_opening_message_placeholder: string;
   creator_yes_button_label: string;
@@ -101,6 +119,13 @@ export interface TranslationDictionary {
   creator_activities_subtitle: string;
   creator_activities_min_max: string;
   creator_activities_empty_state: string;
+  creator_custom_details_title: string;
+  creator_custom_details_subtitle: string;
+  creator_custom_question_label: string;
+  creator_custom_question_placeholder: string;
+  creator_custom_question_helper: string;
+  creator_custom_options_label: string;
+  creator_custom_options_helper: string;
 
   // Creator flow - Step 7: Date Slots
   creator_slots_title: string;
@@ -122,6 +147,26 @@ export interface TranslationDictionary {
   creator_whatsapp_validation_error: string;
   creator_whatsapp_skip: string;
   creator_whatsapp_privacy_note: string;
+  creator_advanced_title: string;
+  creator_advanced_subtitle: string;
+  creator_advanced_ride_label: string;
+  creator_advanced_ride_helper: string;
+  creator_advanced_spontaneity_label: string;
+  creator_advanced_spontaneity_helper: string;
+  creator_advanced_no_button_label: string;
+  creator_advanced_no_button_playful: string;
+  creator_advanced_no_button_gentle: string;
+  creator_advanced_no_button_normal: string;
+  creator_advanced_no_button_helper_playful: string;
+  creator_advanced_no_button_helper_gentle: string;
+  creator_advanced_no_button_helper_normal: string;
+  creator_advanced_humor_label: string;
+  creator_advanced_humor_soft: string;
+  creator_advanced_humor_normal: string;
+  creator_advanced_humor_chaos: string;
+  creator_advanced_humor_helper_soft: string;
+  creator_advanced_humor_helper_normal: string;
+  creator_advanced_humor_helper_chaos: string;
 
   // Creator flow - Step 8: Review
   creator_review_title: string;
@@ -242,12 +287,16 @@ export interface TranslationDictionary {
   recipient_activity_title: string;
   recipient_activity_subtitle: string;
   recipient_activity_choose_one: string;
+  recipient_custom_options_title: string;
 
   // Recipient Screen 5: Slot Choice
   recipient_slot_title: string;
   recipient_slot_subtitle: string;
   recipient_slot_coordinate_whatsapp: string;
   recipient_slot_choose_one: string;
+  recipient_advanced_title: string;
+  recipient_advanced_ride_question: string;
+  recipient_advanced_spontaneity_question: string;
 
   // Recipient Screen 6: Confirmation
   recipient_confirmation_title: string;

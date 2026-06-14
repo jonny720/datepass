@@ -1,4 +1,4 @@
-import type { Language, InviteType, ThemeId, IntroTone, IntroCard, ActivityId, DateSlot, YesButtonCopy, RecipientGender } from './invite';
+import type { Language, InviteType, ThemeId, IntroTone, IntroCard, ActivityId, DateSlot, YesButtonCopy, RecipientGender, AdvancedSettings } from './invite';
 
 export interface CreatorDraft {
   step: number;
@@ -16,6 +16,9 @@ export interface CreatorDraft {
   localPhoneNumber: string;
   openingMessage?: string;
   yesButtonCopy?: YesButtonCopy;
+  customMainQuestion: string;
+  customOptions: string[];
+  advancedSettings: AdvancedSettings;
 }
 
 export const INITIAL_DRAFT: CreatorDraft = {
@@ -34,6 +37,9 @@ export const INITIAL_DRAFT: CreatorDraft = {
   localPhoneNumber: '',
   openingMessage: '',
   yesButtonCopy: 'yes_lets_do',
+  customMainQuestion: '',
+  customOptions: [],
+  advancedSettings: {},
 };
 
 export const TOTAL_STEPS = 9;

@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { useLanguage } from '@/hooks/useLanguage';
-import { getRandomDuckMessage } from '@/config/duckConfig';
+import type { HumorLevel } from '@/types';
+import { getAnnoyedDuckMessage, getRandomDuckMessage } from '@/config/duckConfig';
 import {
   ENABLE_EASTER_EGG_SOUNDS,
   EASTER_EGG_SOUND,
@@ -10,15 +11,18 @@ import {
 import { playSoundEffect } from '@/lib/soundEffects';
 
 interface SecretDuckProps {
+  humorLevel?: HumorLevel;
   onReveal?: () => void;
 }
 
-export function SecretDuck({ onReveal }: SecretDuckProps) {
+export function SecretDuck({ humorLevel, onReveal }: SecretDuckProps) {
   const { language } = useLanguage();
   const [message, setMessage] = useState<string>('');
   const [position, setPosition] = useState({ x: 12, y: 78 });
+  const [, setTapCount] = useState(0);
   const timeoutRef = useRef<number>();
   const tapGuardRef = useRef(false);
+  const lastSoundTimeRef = useRef(0);
   const prefersReducedMotion = useRef(
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
@@ -62,11 +66,21 @@ export function SecretDuck({ onReveal }: SecretDuckProps) {
   const handleDuckClick = () => {
     // Haptic feedback
     navigator.vibrate?.(15);
-    if (ENABLE_EASTER_EGG_SOUNDS) {
+    const now = Date.now();
+    if (ENABLE_EASTER_EGG_SOUNDS && now - lastSoundTimeRef.current > 700) {
       playSoundEffect(EASTER_EGG_SOUND);
+      lastSoundTimeRef.current = now;
     }
 
-    setMessage((previousMessage) => getRandomDuckMessage(language, previousMessage));
+    setTapCount((currentTapCount) => {
+      const nextTapCount = currentTapCount + 1;
+      setMessage((previousMessage) =>
+        nextTapCount > 3
+          ? getAnnoyedDuckMessage(language, nextTapCount)
+          : getRandomDuckMessage(language, previousMessage, humorLevel)
+      );
+      return nextTapCount;
+    });
     setPosition((currentPosition) => getNextDuckPosition(currentPosition));
     onReveal?.();
   };

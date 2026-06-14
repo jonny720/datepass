@@ -1,4 +1,5 @@
-import type { Language } from '@/types';
+import type { HumorLevel, Language } from '@/types';
+import { SCORE_DISCLAIMERS_BY_HUMOR, resolveHumorLevel } from './humorCopy';
 
 interface CalculationStep {
   en: string;
@@ -55,9 +56,14 @@ export function getCalculationStep(index: number, language: Language): string {
   return CALCULATION_STEPS[index][language];
 }
 
-export function getScoreDisclaimer(index: number, language: Language): string {
-  const disclaimer = SCORE_DISCLAIMERS[index % SCORE_DISCLAIMERS.length];
-  return disclaimer[language];
+export function getScoreDisclaimer(
+  index: number,
+  language: Language,
+  humorLevel?: HumorLevel
+): string {
+  const resolvedHumorLevel = resolveHumorLevel(humorLevel);
+  const disclaimers = SCORE_DISCLAIMERS_BY_HUMOR[resolvedHumorLevel][language];
+  return disclaimers[index % disclaimers.length];
 }
 
 export function generateCompatibilityScore(inviteId: string = ''): number {

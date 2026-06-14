@@ -1,4 +1,5 @@
-import type { Language } from '@/types';
+import type { HumorLevel, Language } from '@/types';
+import { SECRET_MESSAGES_BY_HUMOR, pickHumorMessage, resolveHumorLevel } from './humorCopy';
 
 interface DuckMessage {
   en: string;
@@ -80,13 +81,36 @@ export const DUCK_MESSAGES: DuckMessage[] = [
   },
 ];
 
-export function getRandomDuckMessage(language: Language, previousMessage?: string): string {
-  const availableMessages = DUCK_MESSAGES.filter(
-    (message) => message[language] !== previousMessage
+export const ANNOYED_DUCK_MESSAGES: DuckMessage[] = [
+  { en: 'Okay, that was one tap too many.', he: 'טוב, זו כבר נגיעה אחת יותר מדי.' },
+  { en: 'Please stop poking the duck.', he: 'די להציק לברווז.' },
+  { en: 'The duck has boundaries.', he: 'גם לברווז יש גבולות.' },
+  { en: 'This duck did not consent to unlimited tapping.', he: 'הברווז לא אישר נגיעות ללא הגבלה.' },
+  { en: 'You have officially annoyed the duck.', he: 'הצלחת לעצבן את הברווז רשמית.' },
+  { en: 'The duck is considering legal action.', he: 'הברווז שוקל צעדים משפטיים.' },
+  { en: 'Still tapping? Bold choice.', he: 'עדיין נוגעים? בחירה אמיצה.' },
+  { en: 'The duck has left emotionally.', he: 'הברווז עזב רגשית.' },
+  { en: 'That is enough duck interaction for today.', he: 'זה מספיק אינטראקציה עם ברווז להיום.' },
+  { en: 'The duck remembers everything.', he: 'הברווז זוכר הכול.' },
+  { en: 'Quack means no.', he: 'קוואק אומר לא.' },
+];
+
+export function getRandomDuckMessage(
+  language: Language,
+  previousMessage?: string,
+  humorLevel?: HumorLevel
+): string {
+  const resolvedHumorLevel = resolveHumorLevel(humorLevel);
+  return pickHumorMessage(
+    SECRET_MESSAGES_BY_HUMOR[resolvedHumorLevel],
+    language,
+    previousMessage
   );
-  const messages = availableMessages.length > 0 ? availableMessages : DUCK_MESSAGES;
-  const message = messages[Math.floor(Math.random() * messages.length)];
-  return message[language];
+}
+
+export function getAnnoyedDuckMessage(language: Language, tapCount: number): string {
+  const index = Math.max(0, tapCount - 4) % ANNOYED_DUCK_MESSAGES.length;
+  return ANNOYED_DUCK_MESSAGES[index][language];
 }
 
 export function shouldShowDuck(): boolean {

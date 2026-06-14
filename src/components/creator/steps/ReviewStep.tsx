@@ -70,6 +70,11 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       dateSlots: draft.dateSlots,
       whatsappNumber,
       ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
+      ...(draft.inviteType === 'custom' && {
+        customMainQuestion: draft.customMainQuestion.trim(),
+        customOptions: draft.customOptions.map((option) => option.trim()).filter(Boolean),
+      }),
+      advancedSettings: draft.advancedSettings,
     };
 
     const url = createInviteUrl(inviteConfig);
@@ -150,6 +155,11 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       dateSlots: draft.dateSlots,
       whatsappNumber,
       ...(draft.openingMessage?.trim() && { openingMessage: draft.openingMessage.trim() }),
+      ...(draft.inviteType === 'custom' && {
+        customMainQuestion: draft.customMainQuestion.trim(),
+        customOptions: draft.customOptions.map((option) => option.trim()).filter(Boolean),
+      }),
+      advancedSettings: draft.advancedSettings,
     };
 
     setPreviewConfig(config);
@@ -179,6 +189,18 @@ export function ReviewStep({ draft, onBack, onReset }: ReviewStepProps) {
       case 'after_dark':
       case 'temptation':
         return 'after-dark-background-soft';
+      case 'generic':
+        return 'generic-background-soft';
+      case 'stadium':
+        return 'stadium-background-soft';
+      case 'concert':
+        return 'concert-background-soft';
+      case 'theater':
+        return 'theater-background-soft';
+      case 'hotel':
+        return 'hotel-background-soft';
+      case 'flight':
+        return 'flight-background-soft';
       default:
         return 'bg-gradient-to-br from-stone-50 to-stone-100';
     }

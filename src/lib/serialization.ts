@@ -80,7 +80,7 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
 
   if (c.inviteType === undefined) {
     c.inviteType = 'date';
-  } else if (!['date', 'birthday', 'friends-night'].includes(c.inviteType)) {
+  } else if (!['date', 'birthday', 'friends-night', 'custom'].includes(c.inviteType)) {
     throw new InviteValidationError('Invalid invite type');
   }
 
@@ -108,7 +108,22 @@ function validateInviteConfig(config: unknown): asserts config is InviteConfig {
 
   if (
     typeof c.theme !== 'string' ||
-    !['cruise', 'secret_mission', 'nature', 'party', 'after_dark', 'temptation'].includes(c.theme)
+    ![
+      'cruise',
+      'secret_mission',
+      'nature',
+      'party',
+      'after_dark',
+      'temptation',
+      'black-tie',
+      'power-play',
+      'generic',
+      'stadium',
+      'concert',
+      'theater',
+      'hotel',
+      'flight',
+    ].includes(c.theme)
   ) {
     throw new InviteValidationError('Invalid theme');
   }

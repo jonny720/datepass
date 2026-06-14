@@ -368,6 +368,161 @@
     );
   }
 
+  .generic-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgb(236 72 153 / 0.08) 0 10%, transparent 10% 20%, rgb(14 165 233 / 0.08) 20% 30%, transparent 30% 100%),
+      radial-gradient(circle at 18% 20%, rgb(251 207 232 / 0.55), transparent 26%),
+      radial-gradient(circle at 82% 16%, rgb(191 219 254 / 0.55), transparent 24%),
+      linear-gradient(135deg, #fff7ed 0%, #f8fafc 45%, #ecfeff 100%);
+  }
+
+  .stadium-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 50%, transparent 0 78px, rgb(255 255 255 / 0.38) 79px 81px, transparent 82px),
+      linear-gradient(90deg, transparent 0 16%, rgb(255 255 255 / 0.32) 16.4% 16.8%, transparent 17% 83%, rgb(255 255 255 / 0.32) 83.2% 83.6%, transparent 84%),
+      linear-gradient(0deg, transparent 0 24%, rgb(255 255 255 / 0.32) 24.4% 24.8%, transparent 25% 75%, rgb(255 255 255 / 0.32) 75.2% 75.6%, transparent 76%),
+      linear-gradient(90deg, rgb(255 255 255 / 0.22) 1px, transparent 1px),
+      linear-gradient(0deg, rgb(255 255 255 / 0.16) 1px, transparent 1px),
+      linear-gradient(135deg, #064e3b 0%, #15803d 45%, #bef264 100%);
+    background-size: auto, auto, auto, 42px 42px, 42px 42px, auto;
+  }
+
+  .concert-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(115deg, transparent 0 20%, rgb(251 191 36 / 0.28) 20% 22%, transparent 22% 100%),
+      linear-gradient(245deg, transparent 0 18%, rgb(217 70 239 / 0.25) 18% 20%, transparent 20% 100%),
+      repeating-linear-gradient(90deg, transparent 0 22px, rgb(255 255 255 / 0.22) 22px 26px, transparent 26px 42px),
+      radial-gradient(circle at 25% 12%, rgb(253 224 71 / 0.5), transparent 24%),
+      radial-gradient(circle at 74% 18%, rgb(244 114 182 / 0.45), transparent 25%),
+      linear-gradient(135deg, #111827 0%, #581c87 52%, #f59e0b 100%);
+  }
+
+  .theater-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 18%, rgb(254 240 138 / 0.55), transparent 28%),
+      linear-gradient(100deg, rgb(127 29 29 / 0.88) 0 18%, transparent 18% 100%),
+      linear-gradient(260deg, rgb(127 29 29 / 0.88) 0 18%, transparent 18% 100%),
+      repeating-linear-gradient(90deg, rgb(153 27 27 / 0.34) 0 24px, rgb(69 10 10 / 0.34) 24px 48px),
+      linear-gradient(135deg, #450a0a 0%, #991b1b 48%, #fbbf24 100%);
+  }
+
+  .hotel-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgb(255 255 255 / 0.72) 0 12%, transparent 12% 100%),
+      linear-gradient(90deg, transparent 0 47%, rgb(180 83 9 / 0.16) 47% 53%, transparent 53% 100%),
+      repeating-linear-gradient(45deg, rgb(255 255 255 / 0.18) 0 18px, transparent 18px 44px),
+      linear-gradient(135deg, #f8fafc 0%, #e0f2fe 42%, #fef3c7 100%);
+  }
+
+  .flight-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(25deg, transparent 0 46%, rgb(14 165 233 / 0.28) 46.2% 46.8%, transparent 47% 100%),
+      radial-gradient(circle at 20% 25%, rgb(255 255 255 / 0.9) 0 8%, transparent 9%),
+      radial-gradient(circle at 78% 20%, rgb(255 255 255 / 0.82) 0 9%, transparent 10%),
+      radial-gradient(circle at 62% 68%, rgb(255 255 255 / 0.65) 0 7%, transparent 8%),
+      linear-gradient(135deg, #dbeafe 0%, #bfdbfe 42%, #fef9c3 100%);
+  }
+
+  .black-tie-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 12%, rgb(250 204 21 / 0.22), transparent 30%),
+      linear-gradient(115deg, transparent 0 45%, rgb(250 204 21 / 0.14) 45.4% 46%, transparent 46.4% 100%),
+      radial-gradient(circle at 18% 75%, rgb(255 250 240 / 0.1), transparent 18%),
+      linear-gradient(135deg, #0c0a09 0%, #18181b 46%, #422006 100%);
+  }
+
+  .power-play-background-soft {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 72% 18%, rgb(220 38 38 / 0.28), transparent 24%),
+      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 18px),
+      linear-gradient(135deg, #020202 0%, #18181b 48%, #450a0a 100%);
+  }
+
+  .theme-identity-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 0%, rgb(255 255 255 / 0.26), transparent 34%),
+      radial-gradient(circle at 50% 100%, rgb(0 0 0 / 0.12), transparent 46%);
+  }
+
+  .theme-ticket-motif {
+    position: absolute;
+    inset: 0;
+  }
+
+  .theme-ticket-motif-generic {
+    background:
+      radial-gradient(circle at 12% 18%, rgb(236 72 153 / 0.18) 0 7px, transparent 8px),
+      radial-gradient(circle at 90% 70%, rgb(14 165 233 / 0.2) 0 9px, transparent 10px),
+      repeating-linear-gradient(135deg, transparent 0 22px, rgb(236 72 153 / 0.08) 22px 24px, transparent 24px 44px);
+  }
+
+  .theme-ticket-motif-stadium {
+    background:
+      radial-gradient(circle at 50% 48%, transparent 0 44px, rgb(255 255 255 / 0.22) 45px 47px, transparent 48px),
+      linear-gradient(90deg, transparent 0 48%, rgb(255 255 255 / 0.25) 48.5% 49%, transparent 49.5% 100%),
+      linear-gradient(0deg, transparent 0 18%, rgb(255 255 255 / 0.2) 18.5% 19%, transparent 19.5% 81%, rgb(255 255 255 / 0.2) 81.5% 82%, transparent 82.5% 100%);
+  }
+
+  .theme-ticket-motif-concert {
+    background:
+      linear-gradient(105deg, transparent 0 28%, rgb(244 114 182 / 0.22) 28% 31%, transparent 31% 100%),
+      linear-gradient(255deg, transparent 0 24%, rgb(253 224 71 / 0.2) 24% 27%, transparent 27% 100%),
+      repeating-linear-gradient(90deg, transparent 0 18px, rgb(255 255 255 / 0.14) 18px 22px, transparent 22px 34px);
+  }
+
+  .theme-ticket-motif-theater {
+    background:
+      radial-gradient(ellipse at 50% 6%, rgb(251 191 36 / 0.28), transparent 32%),
+      linear-gradient(100deg, rgb(127 29 29 / 0.2) 0 20%, transparent 20% 100%),
+      linear-gradient(260deg, rgb(127 29 29 / 0.2) 0 20%, transparent 20% 100%);
+  }
+
+  .theme-ticket-motif-hotel {
+    background:
+      linear-gradient(90deg, transparent 0 72%, rgb(180 83 9 / 0.13) 72% 78%, transparent 78% 100%),
+      repeating-linear-gradient(45deg, rgb(255 255 255 / 0.2) 0 12px, transparent 12px 28px);
+  }
+
+  .theme-ticket-motif-flight {
+    background:
+      linear-gradient(28deg, transparent 0 42%, rgb(14 165 233 / 0.18) 42.4% 43%, transparent 43.4% 100%),
+      radial-gradient(circle at 24% 28%, rgb(255 255 255 / 0.5) 0 12px, transparent 13px),
+      radial-gradient(circle at 78% 70%, rgb(255 255 255 / 0.42) 0 16px, transparent 17px);
+  }
+
+  .theme-ticket-motif-black-tie {
+    background:
+      linear-gradient(122deg, transparent 0 32%, rgb(250 204 21 / 0.16) 32.4% 33%, transparent 33.4% 100%),
+      linear-gradient(238deg, transparent 0 30%, rgb(250 204 21 / 0.12) 30.4% 31%, transparent 31.4% 100%),
+      radial-gradient(circle at 86% 18%, rgb(250 204 21 / 0.2) 0 5px, transparent 6px),
+      radial-gradient(circle at 12% 74%, rgb(250 204 21 / 0.16) 0 7px, transparent 8px);
+  }
+
+  .theme-ticket-motif-power-play {
+    background:
+      repeating-linear-gradient(90deg, transparent 0 18px, rgb(248 113 113 / 0.08) 18px 20px, transparent 20px 38px),
+      radial-gradient(circle at 85% 18%, rgb(248 113 113 / 0.18) 0 12px, transparent 13px),
+      linear-gradient(135deg, transparent 0 54%, rgb(248 113 113 / 0.12) 54.4% 55%, transparent 55.4% 100%);
+  }
+
   /* Cruise theme animations */
   @keyframes float-slow {
     0%, 100% {

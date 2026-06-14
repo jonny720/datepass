@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { CreatorDraft, ActivityId } from '@/types';
 import { ACTIVITIES } from '@/data';
@@ -24,10 +25,17 @@ const MAX_ACTIVITIES = 4;
 export function ActivitiesStep({ draft, updateDraft, onNext, onBack }: ActivitiesStepProps) {
   const { t } = useLanguage();
   const inviteTypeConfig = getInviteTypeConfig(draft.inviteType);
+  const isCustomInvite = draft.inviteType === 'custom';
   const activityById = new Map(ACTIVITIES.map((activity) => [activity.id, activity]));
   const visibleActivities = inviteTypeConfig.activityOptions
     .map((activityId) => activityById.get(activityId))
     .filter((activity): activity is (typeof ACTIVITIES)[number] => Boolean(activity));
+
+  useEffect(() => {
+    if (isCustomInvite) {
+      onNext();
+    }
+  }, [isCustomInvite, onNext]);
 
   const handleActivityToggle = (activityId: ActivityId) => {
     const isSelected = draft.activityIds.includes(activityId);
@@ -46,6 +54,10 @@ export function ActivitiesStep({ draft, updateDraft, onNext, onBack }: Activitie
   const isValid =
     draft.activityIds.length >= MIN_ACTIVITIES &&
     draft.activityIds.length <= MAX_ACTIVITIES;
+
+  if (isCustomInvite) {
+    return null;
+  }
 
   return (
     <Card>

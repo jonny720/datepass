@@ -127,6 +127,7 @@ export function SlotChoiceScreen({
       {/* Easter egg - always render to keep Portal alive */}
       <EasterEgg
         theme={config.theme}
+        humorLevel={config.advancedSettings?.humorLevel}
         placement={getRandomPlacementForScreen('slots')}
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}

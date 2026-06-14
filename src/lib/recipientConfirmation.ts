@@ -1,4 +1,4 @@
-import type { ArrivalPreference, Language, DateSlot, InviteType, RecipientGender } from '@/types';
+import type { ArrivalPreference, Language, DateSlot, InviteType, RecipientGender, ThemeId } from '@/types';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
 import { heByGender } from '@/lib/hebrewGender';
 
@@ -8,6 +8,7 @@ import { heByGender } from '@/lib/hebrewGender';
 export interface RecipientConfirmationParams {
   creatorPhone?: string;
   inviteType?: InviteType;
+  theme?: ThemeId;
   language: Language;
   activityName: string;
   selectedSlot?: DateSlot;
@@ -17,6 +18,9 @@ export interface RecipientConfirmationParams {
   personalNote?: string;
   noteHeader?: string;
   foundEasterEgg?: boolean;
+  rideAnswer?: string | null;
+  spontaneityAnswer?: string | null;
+  boundariesAnswer?: string | null;
 }
 
 /**
@@ -56,11 +60,17 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { inviteType = 'date', language, activityName, selectedSlot, coordinateLater, arrivalPreference, recipientGender, personalNote, noteHeader, foundEasterEgg } = params;
+  const { inviteType = 'date', theme, language, activityName, selectedSlot, coordinateLater, arrivalPreference, recipientGender, personalNote, noteHeader, foundEasterEgg, rideAnswer, spontaneityAnswer, boundariesAnswer } = params;
   const typeConfig = getInviteTypeConfig(inviteType);
+  const intro = theme === 'power-play'
+    ? {
+        en: 'I accepted the private terms 🔒',
+        he: 'אישרתי את התנאים הפרטיים 🔒',
+      }
+    : typeConfig.confirmationIntro;
   
   if (language === 'he') {
-    let message = `${typeConfig.confirmationIntro.he}\n\n`;
+    let message = `${intro.he}\n\n`;
     message += `בחרתי: ${activityName}\n`;
     
     if (coordinateLater) {
@@ -85,6 +95,18 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
             })
       }`;
     }
+
+    if (rideAnswer) {
+      message += `\nטרמפ: ${rideAnswer}`;
+    }
+
+    if (spontaneityAnswer) {
+      message += `\nספונטניות: ${spontaneityAnswer}`;
+    }
+
+    if (boundariesAnswer) {
+      message += `\nגבולות: ${boundariesAnswer}`;
+    }
     
     // Append personal note if provided
     if (personalNote && personalNote.trim()) {
@@ -98,7 +120,7 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
     
     return message;
   } else {
-    let message = `${typeConfig.confirmationIntro.en}\n\n`;
+    let message = `${intro.en}\n\n`;
     message += `My choice: ${activityName}\n`;
     
     if (coordinateLater) {
@@ -112,6 +134,18 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
       message += `\nGetting there: ${
         arrivalPreference === 'pickup' ? 'I need pickup' : 'I’ll come by myself'
       }`;
+    }
+
+    if (rideAnswer) {
+      message += `\nRide: ${rideAnswer}`;
+    }
+
+    if (spontaneityAnswer) {
+      message += `\nSpontaneity: ${spontaneityAnswer}`;
+    }
+
+    if (boundariesAnswer) {
+      message += `\nBoundaries: ${boundariesAnswer}`;
     }
     
     // Append personal note if provided

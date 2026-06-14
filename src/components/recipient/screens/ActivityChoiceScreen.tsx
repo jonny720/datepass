@@ -5,6 +5,8 @@ import type { InviteConfig, ActivityId } from '@/types';
 import type { useEasterEggState } from '@/hooks/useEasterEggState';
 import { ACTIVITIES } from '@/data';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
+import { getThemeActivitySubtitle, getThemeVisualIdentity } from '@/config/themes';
+import { ThemeIdentityDecorations } from '@/components/recipient/ThemeIdentityCard';
 import {
   Card,
   StepHeader,
@@ -22,10 +24,11 @@ interface ActivityChoiceScreenProps {
 }
 
 export function ActivityChoiceScreen({ config, onSelect, easterEggState }: ActivityChoiceScreenProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedActivity, setSelectedActivity] = useState<ActivityId | null>(null);
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
   const activityIds = config.activityIds.length > 0 ? config.activityIds : inviteTypeConfig.activityOptions;
+  const themeIdentity = getThemeVisualIdentity(config.theme);
 
   const availableActivities = ACTIVITIES.filter((activity) =>
     activityIds.includes(activity.id)
@@ -40,17 +43,19 @@ export function ActivityChoiceScreen({ config, onSelect, easterEggState }: Activ
   return (
     <motion.div 
       key="activity-choice"
-      className="flex min-h-screen flex-col bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 px-4 py-8"
+      className={`relative flex min-h-screen flex-col px-4 py-8 ${themeIdentity?.backgroundClass || 'bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50'}`}
       variants={pageTransition}
       initial="initial"
       animate="animate"
       exit="exit"
     >
+      {themeIdentity && <ThemeIdentityDecorations theme={config.theme} />}
       <motion.div
+        className="relative z-10"
         variants={fadeInUp}
         transition={{ delay: 0.1 }}
       >
-        <Card>
+        <Card className="bg-white/90 backdrop-blur-md">
           <StepHeader
             title={t('recipient_activity_title')}
             subtitle={t('recipient_activity_subtitle')}
@@ -77,7 +82,10 @@ export function ActivityChoiceScreen({ config, onSelect, easterEggState }: Activ
                     onClick={() => setSelectedActivity(activity.id)}
                     icon={<Icon className="h-6 w-6" />}
                     title={t(activity.titleKey as keyof typeof t)}
-                    description={t(activity.subtitleKey as keyof typeof t)}
+                    description={
+                      getThemeActivitySubtitle(activity.id, config.theme, language) ||
+                      t(activity.subtitleKey as keyof typeof t)
+                    }
                   />
                 </motion.div>
               );
@@ -104,6 +112,7 @@ export function ActivityChoiceScreen({ config, onSelect, easterEggState }: Activ
       {/* Easter egg - always render to keep Portal alive */}
       <EasterEgg
         theme={config.theme}
+        humorLevel={config.advancedSettings?.humorLevel}
         placement={getRandomPlacementForScreen('activities')}
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}

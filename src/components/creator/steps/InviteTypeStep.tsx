@@ -13,6 +13,7 @@ const TYPE_EMOJIS: Record<InviteType, string> = {
   date: '💌',
   birthday: '🎂',
   'friends-night': '🎲',
+  custom: '✨',
 };
 
 export function InviteTypeStep({ draft, updateDraft, onNext }: InviteTypeStepProps) {
@@ -29,6 +30,8 @@ export function InviteTypeStep({ draft, updateDraft, onNext }: InviteTypeStepPro
       theme: config.defaultTheme,
       activityIds,
       introCards: [],
+      customMainQuestion: inviteType === 'custom' ? draft.customMainQuestion : '',
+      customOptions: inviteType === 'custom' ? draft.customOptions : [],
     });
     onNext();
   };

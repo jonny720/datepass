@@ -188,13 +188,17 @@ export function IntroCardsScreen({ config, onNext, easterEggState, duckState }: 
       {/* Easter egg - always render to keep Portal alive */}
       <EasterEgg
         theme={config.theme}
+        humorLevel={config.advancedSettings?.humorLevel}
         placement={getRandomPlacementForScreen('personality')}
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}
       />
       {/* Secret duck */}
       {showDuck && (
-        <SecretDuck onReveal={duckState.markAsRevealed} />
+        <SecretDuck
+          humorLevel={config.advancedSettings?.humorLevel}
+          onReveal={duckState.markAsRevealed}
+        />
       )}
       {/* Continue Button */}
       <motion.div

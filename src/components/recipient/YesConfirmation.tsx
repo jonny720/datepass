@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import type { InviteType, ThemeId } from '@/types';
 import { Check, Shield, Leaf, Music, Heart, Sparkles } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
+import { getThemeVisualIdentity } from '@/config/themes';
 
 interface YesConfirmationProps {
   theme: ThemeId;
@@ -9,7 +11,9 @@ interface YesConfirmationProps {
 }
 
 export function YesConfirmation({ theme, inviteType = 'date', onComplete }: YesConfirmationProps) {
+  const { language } = useLanguage();
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const themeIdentity = getThemeVisualIdentity(theme);
 
   // Haptic feedback
   if ('vibrate' in navigator) {
@@ -42,8 +46,37 @@ export function YesConfirmation({ theme, inviteType = 'date', onComplete }: YesC
         {theme === 'nature' && <NatureConfirmation />}
         {theme === 'party' && <PartyConfirmation />}
         {(theme === 'after_dark' || theme === 'temptation') && <AfterDarkConfirmation isDateInvite={inviteType === 'date'} />}
+        {themeIdentity && <ThemeIdentityConfirmation theme={theme} stamp={themeIdentity.yesStamp[language]} />}
       </motion.div>
     </motion.div>
+  );
+}
+
+function ThemeIdentityConfirmation({ theme, stamp }: { theme: ThemeId; stamp: string }) {
+  const identity = getThemeVisualIdentity(theme);
+  if (!identity) return null;
+
+  const Icon = identity.icon;
+
+  return (
+    <div className="relative">
+      <motion.div
+        className={`mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full border border-current/15 bg-white shadow-xl ${identity.accentClass}`}
+        initial={{ scale: 0, rotate: -12 }}
+        animate={{ scale: [0, 1.15, 1], rotate: [0, 5, 0] }}
+        transition={{ duration: 0.55 }}
+      >
+        <Icon className="h-10 w-10" strokeWidth={2.5} />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className={`text-xl font-bold uppercase tracking-widest ${identity.accentClass}`}
+      >
+        {stamp}
+      </motion.div>
+    </div>
   );
 }
 

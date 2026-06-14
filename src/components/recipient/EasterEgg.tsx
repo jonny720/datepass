@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { ThemeId } from '@/types';
+import type { HumorLevel, ThemeId } from '@/types';
 import type { EasterEggPlacement } from '@/config/easterEggPlacements';
 import {
   getRandomMessageForTheme,
@@ -15,9 +15,12 @@ import {
 } from '@/config/soundConfig';
 import { playSoundEffect } from '@/lib/soundEffects';
 import { Sparkles } from 'lucide-react';
+import { SECRET_MESSAGES_BY_HUMOR, pickHumorMessage, resolveHumorLevel } from '@/config/humorCopy';
+import { getThemeVisualIdentity } from '@/config/themes';
 
 interface EasterEggProps {
   theme: ThemeId;
+  humorLevel?: HumorLevel;
   placement?: EasterEggPlacement;
   onReveal?: () => void;
   hasBeenRevealed?: boolean;
@@ -61,9 +64,49 @@ const THEME_COLORS: Record<ThemeId, { shell: string; accent: string; glow: strin
     accent: 'text-pink-400',
     glow: 'shadow-pink-500/50',
   },
+  'black-tie': {
+    shell: 'from-stone-900 to-yellow-200',
+    accent: 'text-yellow-600',
+    glow: 'shadow-yellow-300/50',
+  },
+  'power-play': {
+    shell: 'from-zinc-950 to-red-900',
+    accent: 'text-red-500',
+    glow: 'shadow-red-500/50',
+  },
+  generic: {
+    shell: 'from-sky-100 to-pink-200',
+    accent: 'text-sky-600',
+    glow: 'shadow-sky-300/50',
+  },
+  stadium: {
+    shell: 'from-green-200 to-lime-300',
+    accent: 'text-green-700',
+    glow: 'shadow-green-300/50',
+  },
+  concert: {
+    shell: 'from-fuchsia-200 to-yellow-200',
+    accent: 'text-fuchsia-700',
+    glow: 'shadow-fuchsia-300/50',
+  },
+  theater: {
+    shell: 'from-rose-200 to-amber-100',
+    accent: 'text-rose-700',
+    glow: 'shadow-rose-300/50',
+  },
+  hotel: {
+    shell: 'from-slate-100 to-amber-100',
+    accent: 'text-amber-700',
+    glow: 'shadow-amber-200/50',
+  },
+  flight: {
+    shell: 'from-blue-100 to-yellow-100',
+    accent: 'text-blue-700',
+    glow: 'shadow-blue-300/50',
+  },
 };
 
-export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeenRevealed = false }: EasterEggProps) {
+export function EasterEgg({ theme, humorLevel, placement = 'bottom-right', onReveal, hasBeenRevealed = false }: EasterEggProps) {
   const { config, language } = useLanguage();
   const [isRevealed, setIsRevealed] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -75,8 +118,21 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const message = getRandomMessageForTheme(theme);
+  const themeIdentity = getThemeVisualIdentity(theme);
+  const resolvedHumorLevel = resolveHumorLevel(humorLevel);
+  const humorMessage = useMemo(
+    () => {
+      if (themeIdentity?.easterEggMessages.length) {
+        const messages = themeIdentity.easterEggMessages;
+        return messages[Math.floor(Math.random() * messages.length)][language];
+      }
+
+      return pickHumorMessage(SECRET_MESSAGES_BY_HUMOR[resolvedHumorLevel], language);
+    },
+    [language, resolvedHumorLevel, themeIdentity]
+  );
   const rareBonus = getRandomRareBonus();
-  const RevealIcon = message.icon;
+  const RevealIcon = themeIdentity?.icon || message.icon;
   const RareBonusIcon = rareBonus.icon;
 
   console.log('🥚 EasterEgg render:', { 
@@ -85,7 +141,7 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
     showRareBonus,
     hasBeenRevealed,
     theme,
-    message: message.en,
+    message: humorMessage,
   });
 
   const themeColors = THEME_COLORS[theme];
@@ -367,7 +423,7 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: prefersReducedMotion ? 0 : 0.2 }}
                 >
-                  {language === 'en' ? message.en : message.he}
+                  {humorMessage}
                 </motion.p>
 
                 {/* Subtitle */}
@@ -392,21 +448,21 @@ export function EasterEgg({ theme, placement = 'bottom-right', onReveal, hasBeen
 // Helper functions for theme-aware popup styling
 function getPopupBackgroundClass(theme: ThemeId): string {
   // Use light popup for most themes, dark popup for dark themes
-  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
+  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play') {
     return 'bg-stone-900 ring-4 ring-white/20';
   }
   return 'bg-white ring-4 ring-black/10';
 }
 
 function getPopupTextClass(theme: ThemeId): string {
-  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
+  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play') {
     return 'text-white';
   }
   return 'text-stone-900';
 }
 
 function getPopupSubtextClass(theme: ThemeId): string {
-  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation') {
+  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play') {
     return 'text-stone-300';
   }
   return 'text-stone-600';

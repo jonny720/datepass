@@ -12,7 +12,9 @@ import { AfterDarkInvitation, AfterDarkElements } from '@/components/afterdark';
 import { EasterEgg } from '@/components/recipient/EasterEgg';
 import { HiddenStamp } from '@/components/recipient/HiddenStamp';
 import { OpeningAnimation } from '@/components/recipient/OpeningAnimation';
+import { ThemeIdentityCard, ThemeIdentityDecorations } from '@/components/recipient/ThemeIdentityCard';
 import { getRandomPlacementForScreen } from '@/config/easterEggPlacements';
+import { getThemeVisualIdentity } from '@/config/themes';
 import { getInviteTypeConfig } from '@/config/inviteTypes';
 import { pageTransition, fadeInUp, scaleIn, gentlePulse, float, prefersReducedMotion } from '@/lib/animations';
 
@@ -28,6 +30,7 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
   const reduceMotion = prefersReducedMotion();
   const [showOpening, setShowOpening] = useState(true);
   const inviteTypeConfig = getInviteTypeConfig(config.inviteType);
+  const themeIdentity = getThemeVisualIdentity(config.theme);
 
   // Theme-specific rendering components
   const renderThemeContent = () => {
@@ -68,12 +71,22 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
           card: <AfterDarkInvitation recipientName={config.recipientName} senderName={config.senderName} variant="invitation" />
         };
       
-      default:
+      default: {
+        const identity = getThemeVisualIdentity(config.theme);
+        if (identity) {
+          return {
+            background: identity.backgroundClass,
+            decorations: <ThemeIdentityDecorations theme={config.theme} />,
+            card: <ThemeIdentityCard config={config} />
+          };
+        }
+
         return {
           background: 'bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50',
           decorations: null,
           card: <NatureInvitation recipientName={config.recipientName} senderName={config.senderName} variant="invitation" />
         };
+      }
     }
   };
 
@@ -86,7 +99,7 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
           <OpeningAnimation
             theme={config.theme}
             recipientName={config.recipientName}
-            openingMessage={config.openingMessage || inviteTypeConfig.openingSubtitle[language]}
+            openingMessage={config.openingMessage || themeIdentity?.openingSubtitle[language] || inviteTypeConfig.openingSubtitle[language]}
             onComplete={() => setShowOpening(false)}
           />
         )}
@@ -106,6 +119,7 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
       {/* Easter egg - always render to keep Portal alive */}
       <EasterEgg
         theme={config.theme}
+        humorLevel={config.advancedSettings?.humorLevel}
         placement={getRandomPlacementForScreen('arrival')}
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}
@@ -128,6 +142,7 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
             {/* Hidden stamp partially peeking from edge */}
             <HiddenStamp
               theme={config.theme}
+              humorLevel={config.advancedSettings?.humorLevel}
               onReveal={stampState.markAsRevealed}
               hasBeenRevealed={stampState.hasBeenRevealed}
             />

@@ -121,6 +121,7 @@ export function ArrivalPreferenceScreen({
 
       <EasterEgg
         theme={config.theme}
+        humorLevel={config.advancedSettings?.humorLevel}
         placement={getRandomPlacementForScreen('activities')}
         onReveal={easterEggState.markAsRevealed}
         hasBeenRevealed={easterEggState.hasBeenRevealed}

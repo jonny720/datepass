@@ -8,7 +8,11 @@ export interface RecipientResponse {
   wantsDate: boolean | null;
   arrivalPreference: ArrivalPreference | null;
   selectedActivity: ActivityId | null;
+  selectedCustomOption: string | null;
   selectedSlot: DateSlot | null;
+  rideAnswer: string | null;
+  spontaneityAnswer: string | null;
+  boundariesAnswer: string | null;
   prefersWhatsappCoordination: boolean;
   personalNote: string;
   foundEasterEgg: boolean;
@@ -22,7 +26,11 @@ export const INITIAL_RESPONSE: RecipientResponse = {
   wantsDate: null,
   arrivalPreference: null,
   selectedActivity: null,
+  selectedCustomOption: null,
   selectedSlot: null,
+  rideAnswer: null,
+  spontaneityAnswer: null,
+  boundariesAnswer: null,
   prefersWhatsappCoordination: false,
   personalNote: '',
   foundEasterEgg: false,
@@ -37,5 +45,7 @@ export const RECIPIENT_STEPS = {
   ARRIVAL_PREFERENCE: 4,
   ACTIVITY_CHOICE: 5,
   SLOT_CHOICE: 6,
-  CONFIRMATION: 7,
+  ADVANCED_DETAILS: 7,
+  BOUNDARIES: 8,
+  CONFIRMATION: 9,
 } as const;

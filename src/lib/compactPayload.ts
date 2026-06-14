@@ -5,12 +5,12 @@
  * for reliable sharing through messaging apps like WhatsApp.
  */
 
-import type { InviteConfig, IntroCard, DateSlot } from '@/types';
+import type { InviteConfig, IntroCard, DateSlot, AdvancedSettings } from '@/types';
 
 // Compact payload version 2
 export type CompactInvitePayloadV2 = {
   v: 2; // version
-  y?: 'd' | 'b' | 'f'; // invite type: d=date, b=birthday, f=friends-night
+  y?: 'd' | 'b' | 'f' | 'c'; // invite type
   g?: 'm' | 'f' | 'p'; // recipient gender: m=male, f=female, p=private
   l: 'h' | 'e'; // language: h=Hebrew, e=English
   s: string; // sender name
@@ -21,6 +21,14 @@ export type CompactInvitePayloadV2 = {
   c?: Array<[string, string]>; // intro cards as [promptKey, answer] tuples
   a?: string[]; // activity codes
   d?: Array<[string, string]>; // date slots as [date, time] tuples
+  q?: string; // custom main question
+  o?: string[]; // custom options
+  x?: {
+    r?: 1;
+    s?: 1;
+    n?: 'p' | 'g' | 'n';
+    h?: 's' | 'n' | 'c';
+  };
 };
 
 // Theme code mappings
@@ -31,6 +39,14 @@ const THEME_TO_CODE = {
   party: 'p',
   after_dark: 'd',
   temptation: 't',
+  'black-tie': 'k',
+  'power-play': 'w',
+  generic: 'g',
+  stadium: 's',
+  concert: 'o',
+  theater: 'e',
+  hotel: 'h',
+  flight: 'l',
 } as const;
 
 const CODE_TO_THEME = {
@@ -40,18 +56,52 @@ const CODE_TO_THEME = {
   p: 'party',
   d: 'after_dark',
   t: 'temptation',
+  k: 'black-tie',
+  w: 'power-play',
+  g: 'generic',
+  s: 'stadium',
+  o: 'concert',
+  e: 'theater',
+  h: 'hotel',
+  l: 'flight',
 } as const;
 
 const INVITE_TYPE_TO_CODE = {
   date: 'd',
   birthday: 'b',
   'friends-night': 'f',
+  custom: 'c',
 } as const;
 
 const CODE_TO_INVITE_TYPE = {
   d: 'date',
   b: 'birthday',
   f: 'friends-night',
+  c: 'custom',
+} as const;
+
+const NO_BUTTON_TO_CODE = {
+  playful: 'p',
+  gentle: 'g',
+  normal: 'n',
+} as const;
+
+const CODE_TO_NO_BUTTON = {
+  p: 'playful',
+  g: 'gentle',
+  n: 'normal',
+} as const;
+
+const HUMOR_TO_CODE = {
+  soft: 's',
+  normal: 'n',
+  chaos: 'c',
+} as const;
+
+const CODE_TO_HUMOR = {
+  s: 'soft',
+  n: 'normal',
+  c: 'chaos',
 } as const;
 
 const RECIPIENT_GENDER_TO_CODE = {
@@ -128,6 +178,32 @@ const CODE_TO_ACTIVITY = {
   x: 'surprise-me',
 } as const;
 
+export function getDefaultNoButtonMode(inviteType?: InviteConfig['inviteType']) {
+  return (inviteType || 'date') === 'date' ? 'playful' : 'gentle';
+}
+
+function compactAdvancedSettings(
+  settings: AdvancedSettings | undefined,
+  inviteType: InviteConfig['inviteType']
+): CompactInvitePayloadV2['x'] | undefined {
+  if (!settings) return undefined;
+
+  const compact: NonNullable<CompactInvitePayloadV2['x']> = {};
+  if (settings.askForRide) compact.r = 1;
+  if (settings.askSpontaneityLevel) compact.s = 1;
+  if (
+    settings.noButtonMode &&
+    settings.noButtonMode !== getDefaultNoButtonMode(inviteType)
+  ) {
+    compact.n = NO_BUTTON_TO_CODE[settings.noButtonMode];
+  }
+  if (settings.humorLevel && settings.humorLevel !== 'normal') {
+    compact.h = HUMOR_TO_CODE[settings.humorLevel];
+  }
+
+  return Object.keys(compact).length > 0 ? compact : undefined;
+}
+
 /**
  * Convert full InviteConfig to compact payload
  */
@@ -165,6 +241,20 @@ export function toCompactPayload(config: InviteConfig): CompactInvitePayloadV2 {
     payload.d = config.dateSlots.map((slot: DateSlot) => [slot.date, slot.time]);
   }
 
+  if (config.inviteType === 'custom') {
+    if (config.customMainQuestion?.trim()) {
+      payload.q = config.customMainQuestion.trim();
+    }
+    if (config.customOptions && config.customOptions.length > 0) {
+      payload.o = config.customOptions.map((option) => option.trim()).filter(Boolean);
+    }
+  }
+
+  const advancedSettings = compactAdvancedSettings(config.advancedSettings, config.inviteType);
+  if (advancedSettings) {
+    payload.x = advancedSettings;
+  }
+
   return payload;
 }
 
@@ -193,6 +283,30 @@ export function fromCompactPayload(
     dateSlots: [],
     whatsappNumber: '',
   };
+
+  if (payload.q) {
+    config.customMainQuestion = payload.q;
+  }
+
+  if (payload.o && payload.o.length > 0) {
+    config.customOptions = payload.o.filter((option) => typeof option === 'string' && option.trim());
+  }
+
+  const advancedSettings: AdvancedSettings = {
+    noButtonMode: getDefaultNoButtonMode(config.inviteType),
+    humorLevel: 'normal',
+  };
+  if (payload.x) {
+    if (payload.x.r === 1) advancedSettings.askForRide = true;
+    if (payload.x.s === 1) advancedSettings.askSpontaneityLevel = true;
+    if (payload.x.n) {
+      advancedSettings.noButtonMode = CODE_TO_NO_BUTTON[payload.x.n] || advancedSettings.noButtonMode;
+    }
+    if (payload.x.h) {
+      advancedSettings.humorLevel = CODE_TO_HUMOR[payload.x.h] || 'normal';
+    }
+  }
+  config.advancedSettings = advancedSettings;
 
   // Restore optional fields
   if (payload.n) {
@@ -270,6 +384,18 @@ export function validateCompactPayload(
   }
 
   if (p.d !== undefined && !Array.isArray(p.d)) {
+    return false;
+  }
+
+  if (p.q !== undefined && typeof p.q !== 'string') {
+    return false;
+  }
+
+  if (p.o !== undefined && !Array.isArray(p.o)) {
+    return false;
+  }
+
+  if (p.x !== undefined && (typeof p.x !== 'object' || p.x === null)) {
     return false;
   }
 

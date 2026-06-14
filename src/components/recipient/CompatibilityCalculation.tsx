@@ -1,17 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
-import type { InviteType } from '@/types';
-import { getInviteTypeConfig } from '@/config/inviteTypes';
+import type { HumorLevel, InviteType, ThemeId } from '@/types';
+import { CALCULATION_STEPS_BY_HUMOR, resolveHumorLevel } from '@/config/humorCopy';
+import { getThemeVisualIdentity } from '@/config/themes';
 
 interface CompatibilityCalculationProps {
   inviteType?: InviteType;
+  humorLevel?: HumorLevel;
+  theme?: ThemeId;
   onComplete: () => void;
 }
 
-export function CompatibilityCalculation({ inviteType = 'date', onComplete }: CompatibilityCalculationProps) {
+export function CompatibilityCalculation({ inviteType = 'date', humorLevel, theme, onComplete }: CompatibilityCalculationProps) {
   const { language } = useLanguage();
-  const steps = getInviteTypeConfig(inviteType).calculationSteps[language];
+  const resolvedHumorLevel = resolveHumorLevel(humorLevel);
+  const themeIdentity = theme ? getThemeVisualIdentity(theme) : undefined;
+  const steps =
+    themeIdentity?.vibeCalculationLines.map((line) => line[language]) ||
+    CALCULATION_STEPS_BY_HUMOR[resolvedHumorLevel][language][inviteType];
+  const label = themeIdentity?.vibeLabel[language];
   const [currentStep, setCurrentStep] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
   const prefersReducedMotion = useRef(
@@ -62,6 +70,11 @@ export function CompatibilityCalculation({ inviteType = 'date', onComplete }: Co
       transition={{ duration: 0.2 }}
     >
       <div className="mx-4 max-w-md space-y-4 text-center">
+        {label && (
+          <p className={`text-xs font-bold uppercase tracking-[0.22em] ${themeIdentity?.accentClass || 'text-pink-600'}`}>
+            {label}
+          </p>
+        )}
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
