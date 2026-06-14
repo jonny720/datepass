@@ -19,7 +19,7 @@ export function InvitationTicket({
   const themeConfig = THEME_CONFIGS[theme];
   const Icon = themeConfig.icon;
   const themeKey = theme.replace(/-/g, '_');
-  const isDarkTicket = theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play' || theme === 'black-tie';
+  const isDarkTicket = theme === 'secret_mission' || theme === 'after_dark' || theme === 'black-tie';
 
   // Theme-specific background classes
   const getBackgroundClass = () => {
@@ -33,12 +33,9 @@ export function InvitationTicket({
       case 'party':
         return 'bg-gradient-to-br from-pink-100 via-purple-100 to-yellow-100';
       case 'after_dark':
-      case 'temptation':
         return 'bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950 text-white';
       case 'black-tie':
         return 'bg-gradient-to-br from-stone-950 via-black to-yellow-950 text-white';
-      case 'power-play':
-        return 'bg-gradient-to-br from-black via-zinc-950 to-red-950 text-white';
       case 'generic':
         return 'bg-gradient-to-br from-white via-sky-50 to-pink-50';
       case 'stadium':

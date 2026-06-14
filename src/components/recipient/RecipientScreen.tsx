@@ -14,7 +14,6 @@ import {
   ActivityChoiceScreen,
   SlotChoiceScreen,
   AdvancedDetailsScreen,
-  BoundariesScreen,
   ConfirmationScreen,
   DeclineScreen,
 } from './screens';
@@ -36,7 +35,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     setSelectedSlot,
     setPrefersWhatsappCoordination,
     setAdvancedAnswers,
-    setBoundariesAnswer,
     setFoundEasterEgg,
     setFoundStamp,
     setFoundDuck,
@@ -107,11 +105,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
     nextStep();
   };
 
-  const handleBoundariesComplete = (answer: string) => {
-    setBoundariesAnswer(answer);
-    nextStep();
-  };
-
   const handleCreateOwn = () => {
     navigate({ type: 'landing' });
   };
@@ -171,9 +164,6 @@ export function RecipientScreen({ config }: RecipientScreenProps) {
             onComplete={handleAdvancedDetailsComplete}
           />
         );
-
-      case RECIPIENT_STEPS.BOUNDARIES:
-        return <BoundariesScreen onComplete={handleBoundariesComplete} />;
 
       case RECIPIENT_STEPS.CONFIRMATION:
         return (

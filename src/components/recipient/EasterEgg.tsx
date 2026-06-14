@@ -59,20 +59,10 @@ const THEME_COLORS: Record<ThemeId, { shell: string; accent: string; glow: strin
     accent: 'text-purple-400',
     glow: 'shadow-purple-500/50',
   },
-  temptation: {
-    shell: 'from-pink-800 to-purple-950',
-    accent: 'text-pink-400',
-    glow: 'shadow-pink-500/50',
-  },
   'black-tie': {
     shell: 'from-stone-900 to-yellow-200',
     accent: 'text-yellow-600',
     glow: 'shadow-yellow-300/50',
-  },
-  'power-play': {
-    shell: 'from-zinc-950 to-red-900',
-    accent: 'text-red-500',
-    glow: 'shadow-red-500/50',
   },
   generic: {
     shell: 'from-sky-100 to-pink-200',
@@ -448,21 +438,21 @@ export function EasterEgg({ theme, humorLevel, placement = 'bottom-right', onRev
 // Helper functions for theme-aware popup styling
 function getPopupBackgroundClass(theme: ThemeId): string {
   // Use light popup for most themes, dark popup for dark themes
-  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play') {
+  if (theme === 'secret_mission' || theme === 'after_dark') {
     return 'bg-stone-900 ring-4 ring-white/20';
   }
   return 'bg-white ring-4 ring-black/10';
 }
 
 function getPopupTextClass(theme: ThemeId): string {
-  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play') {
+  if (theme === 'secret_mission' || theme === 'after_dark') {
     return 'text-white';
   }
   return 'text-stone-900';
 }
 
 function getPopupSubtextClass(theme: ThemeId): string {
-  if (theme === 'secret_mission' || theme === 'after_dark' || theme === 'temptation' || theme === 'power-play') {
+  if (theme === 'secret_mission' || theme === 'after_dark') {
     return 'text-stone-300';
   }
   return 'text-stone-600';

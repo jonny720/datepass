@@ -23,10 +23,7 @@ import {
   Moon,
   Flame,
   Heart,
-  KeyRound,
   Gem,
-  Lock,
-  ScrollText,
   BadgeCheck,
   type LucideIcon,
 } from 'lucide-react';
@@ -70,23 +67,11 @@ export const THEME_ICONS: Record<ThemeId, ThemeIconSet> = {
     tertiary: Flame,
     accent: Heart,
   },
-  temptation: {
-    primary: Flame,
-    secondary: Moon,
-    tertiary: Sparkles,
-    accent: Flame,
-  },
   'black-tie': {
     primary: Gem,
     secondary: Sparkles,
     tertiary: BadgeCheck,
     accent: Star,
-  },
-  'power-play': {
-    primary: Lock,
-    secondary: KeyRound,
-    tertiary: ScrollText,
-    accent: Flame,
   },
   generic: {
     primary: Sparkles,

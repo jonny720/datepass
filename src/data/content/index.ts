@@ -62,22 +62,6 @@ const THEME_PROMPTS: Partial<Record<ThemeId, Record<Language, TonedIntroPrompt[]
       { id: 'black_tie_know', tone: 'light', prompt: 'מה כדאי לדעת', answers: ['אני מעריך נימוס, הומור טוב, ואנשים שמגיעים עם נוכחות.'] },
     ],
   },
-  'power-play': {
-    en: [
-      { id: 'power_rule_one', tone: 'bold', prompt: 'Rule number one', answers: ['Nothing happens without a clear yes.', 'Boundaries are part of the game.', 'The rules can be playful. Consent is not optional.'] },
-      { id: 'power_agreeing', tone: 'bold', prompt: 'What you are agreeing to', answers: ['A little tension, a little control, and a very clear escape route.', 'A private evening where the rules are negotiated first.', 'Curiosity, confidence, and no pressure.'] },
-      { id: 'power_begin', tone: 'bold', prompt: 'Before we begin', answers: ['We choose the boundaries before we test them.', 'Safe word first. Trouble later.', 'You keep the right to stop the game at any moment.'] },
-      { id: 'power_vibe', tone: 'bold', prompt: 'The vibe', answers: ['Dark, controlled, playful, and not entirely innocent.', 'A little restraint. A little tension. A lot of respect.', 'Private rules. Clear limits. Good chemistry.'] },
-      { id: 'power_terms', tone: 'bold', prompt: 'Terms and conditions', answers: ['Read carefully. Misbehavior may be rewarded with eye contact.', 'By continuing, you agree to negotiate boundaries like a responsible adult.', 'The fine print says: consent first, confidence second.'] },
-    ],
-    he: [
-      { id: 'power_rule_one', tone: 'bold', prompt: 'חוק מספר אחד', answers: ['לא קורה כלום בלי כן ברור.', 'גבולות הם חלק מהמשחק.', 'החוקים יכולים להיות שובבים. הסכמה היא לא אופציונלית.'] },
-      { id: 'power_agreeing', tone: 'bold', prompt: 'למה מסכימים כאן', answers: ['קצת מתח, קצת שליטה, ודרך יציאה מאוד ברורה.', 'ערב פרטי שבו קודם מסכמים את החוקים.', 'סקרנות, ביטחון עצמי, ובלי לחץ.'] },
-      { id: 'power_begin', tone: 'bold', prompt: 'לפני שמתחילים', answers: ['בוחרים את הגבולות לפני שבודקים אותם.', 'מילת ביטחון קודם. צרות אחר כך.', 'אפשר לעצור את המשחק בכל רגע.'] },
-      { id: 'power_vibe', tone: 'bold', prompt: 'הווייב', answers: ['כהה, בשליטה, שובב, ולא לגמרי תמים.', 'קצת איפוק. קצת מתח. הרבה כבוד.', 'חוקים פרטיים. גבולות ברורים. כימיה טובה.'] },
-      { id: 'power_terms', tone: 'bold', prompt: 'תנאי שימוש', answers: ['נא לקרוא בזהירות. התנהגות בעייתית עלולה לזכות בקשר עין.', 'בהמשך מאשרים לנהל משא ומתן על גבולות כמו מבוגרים אחראיים.', 'באותיות הקטנות כתוב: הסכמה קודם, ביטחון עצמי אחר כך.'] },
-    ],
-  },
 };
 
 export function getIntroPrompts(language: Language, tone: IntroTone, inviteType: InviteType = 'date', theme?: ThemeId): TonedIntroPrompt[] {

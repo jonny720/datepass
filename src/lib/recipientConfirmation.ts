@@ -20,7 +20,6 @@ export interface RecipientConfirmationParams {
   foundEasterEgg?: boolean;
   rideAnswer?: string | null;
   spontaneityAnswer?: string | null;
-  boundariesAnswer?: string | null;
 }
 
 /**
@@ -60,14 +59,9 @@ function formatDate(dateStr: string, language: Language): string {
  * Build the recipient confirmation message text
  */
 export function buildRecipientConfirmationMessage(params: RecipientConfirmationParams): string {
-  const { inviteType = 'date', theme, language, activityName, selectedSlot, coordinateLater, arrivalPreference, recipientGender, personalNote, noteHeader, foundEasterEgg, rideAnswer, spontaneityAnswer, boundariesAnswer } = params;
+  const { inviteType = 'date', language, activityName, selectedSlot, coordinateLater, arrivalPreference, recipientGender, personalNote, noteHeader, foundEasterEgg, rideAnswer, spontaneityAnswer } = params;
   const typeConfig = getInviteTypeConfig(inviteType);
-  const intro = theme === 'power-play'
-    ? {
-        en: 'I accepted the private terms 🔒',
-        he: 'אישרתי את התנאים הפרטיים 🔒',
-      }
-    : typeConfig.confirmationIntro;
+  const intro = typeConfig.confirmationIntro;
   
   if (language === 'he') {
     let message = `${intro.he}\n\n`;
@@ -104,10 +98,6 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
       message += `\nספונטניות: ${spontaneityAnswer}`;
     }
 
-    if (boundariesAnswer) {
-      message += `\nגבולות: ${boundariesAnswer}`;
-    }
-    
     // Append personal note if provided
     if (personalNote && personalNote.trim()) {
       message += `\n\n${noteHeader || 'הודעה ממני:'}\n${personalNote.trim()}`;
@@ -144,10 +134,6 @@ export function buildRecipientConfirmationMessage(params: RecipientConfirmationP
       message += `\nSpontaneity: ${spontaneityAnswer}`;
     }
 
-    if (boundariesAnswer) {
-      message += `\nBoundaries: ${boundariesAnswer}`;
-    }
-    
     // Append personal note if provided
     if (personalNote && personalNote.trim()) {
       message += `\n\n${noteHeader || 'My note:'}\n${personalNote.trim()}`;

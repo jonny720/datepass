@@ -5,6 +5,5 @@ export { ArrivalPreferenceScreen } from './ArrivalPreferenceScreen';
 export { ActivityChoiceScreen } from './ActivityChoiceScreen';
 export { SlotChoiceScreen } from './SlotChoiceScreen';
 export { AdvancedDetailsScreen } from './AdvancedDetailsScreen';
-export { BoundariesScreen } from './BoundariesScreen';
 export { ConfirmationScreen } from './ConfirmationScreen';
 export { DeclineScreen } from './DeclineScreen';

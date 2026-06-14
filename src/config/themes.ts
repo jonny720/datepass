@@ -1,4 +1,4 @@
-import { Anchor, Shield, Leaf, PartyPopper, Moon, Flame, Sparkles, Trophy, Music, Theater, Hotel, Plane, Flag, Mic2, Drama, KeyRound, Cloud, Gem, Lock, ScrollText, BadgeCheck } from 'lucide-react';
+import { Anchor, Shield, Leaf, PartyPopper, Moon, Sparkles, Trophy, Music, Theater, Hotel, Plane, Flag, Mic2, Drama, KeyRound, Cloud, Gem, BadgeCheck } from 'lucide-react';
 import type { ActivityId, Language, ThemeId } from '@/types';
 
 export type LocalizedString = Record<Language, string>;
@@ -97,14 +97,6 @@ const blackTieActivitySubtitles: Partial<Record<ActivityId, LocalizedString>> = 
   'surprise-me': { en: 'A refined risk.', he: 'סיכון מעודן.' },
 };
 
-const powerPlayActivitySubtitles: Partial<Record<ActivityId, LocalizedString>> = {
-  drinks: { en: 'Low light. Clear boundaries.', he: 'אור נמוך. גבולות ברורים.' },
-  restaurant: { en: 'Dinner first. Rules later.', he: 'קודם ארוחה. אחר כך חוקים.' },
-  coffee: { en: 'Public setting. Private negotiation.', he: 'מקום ציבורי. משא ומתן פרטי.' },
-  movie: { en: 'Two seats. One set of rules.', he: 'שני מושבים. סט חוקים אחד.' },
-  'surprise-me': { en: 'Risky. Respectfully.', he: 'מסוכן. בכבוד.' },
-};
-
 export const THEME_CONFIGS: Record<ThemeId, ThemeConfig> = {
   cruise: {
     id: 'cruise',
@@ -133,12 +125,6 @@ export const THEME_CONFIGS: Record<ThemeId, ThemeConfig> = {
   after_dark: {
     id: 'after_dark',
     icon: Moon,
-    gradientClass: 'after-dark-background',
-    decorativeComponent: 'AfterDarkElements',
-  },
-  temptation: {
-    id: 'temptation',
-    icon: Flame,
     gradientClass: 'after-dark-background',
     decorativeComponent: 'AfterDarkElements',
   },
@@ -191,72 +177,6 @@ export const THEME_CONFIGS: Record<ThemeId, ThemeConfig> = {
         { en: 'All good. The invitation remains classy.', he: 'הכול טוב. ההזמנה נשארת אלגנטית.' },
       ],
       activitySubtitles: blackTieActivitySubtitles,
-    },
-  },
-  'power-play': {
-    id: 'power-play',
-    icon: Lock,
-    gradientClass: 'power-play-background-soft',
-    visualIdentity: {
-      backgroundClass: 'power-play-background-soft',
-      surfaceClass: 'bg-zinc-950 border-red-500/30 text-white',
-      accentClass: 'text-red-300',
-      textClass: 'text-white',
-      mutedTextClass: 'text-red-100',
-      icon: Lock,
-      decorativeIcons: [Lock, KeyRound, ScrollText],
-      openingMotif: { en: 'A private set of rules is waiting.', he: 'סט חוקים פרטי מחכה לך.' },
-      openingSubtitle: { en: 'Rules, tension, boundaries, and a very clear yes.', he: 'חוקים, מתח, גבולות, וכן ברור מאוד.' },
-      ticketMetadata: [
-        { label: { en: 'Access', he: 'גישה' }, value: { en: 'restricted', he: 'מוגבלת' } },
-        { label: { en: 'Mood', he: 'מצב רוח' }, value: { en: 'controlled tension', he: 'מתח בשליטה' } },
-        { label: { en: 'Rule one', he: 'חוק ראשון' }, value: { en: 'consent first', he: 'הסכמה קודם' } },
-        { label: { en: 'Safe word', he: 'מילת ביטחון' }, value: { en: 'required', he: 'חובה' } },
-        { label: { en: 'Status', he: 'סטטוס' }, value: { en: 'awaiting permission', he: 'ממתין לאישור' } },
-      ],
-      yesStamp: { en: 'TERMS ACCEPTED', he: 'התנאים אושרו' },
-      vibeLabel: { en: 'Control reading', he: 'קריאת שליטה' },
-      vibeCalculationLines: [
-        { en: 'Checking tension level...', he: 'בודקים רמת מתח...' },
-        { en: 'Reviewing boundaries...', he: 'בודקים גבולות...' },
-        { en: 'Confirming safe word protocol...', he: 'מאשרים פרוטוקול מילת ביטחון...' },
-        { en: 'Measuring controlled chaos...', he: 'מודדים כאוס בשליטה...' },
-      ],
-      easterEggMessages: [
-        { en: 'Restricted detail unlocked.', he: 'פרט מוגבל נפתח.' },
-        { en: 'You found the fine print.', he: 'מצאת את האותיות הקטנות.' },
-        { en: 'This secret has rules.', he: 'לסוד הזה יש חוקים.' },
-      ],
-      mainQuestions: [
-        { en: 'Do you accept the terms?', he: 'האם התנאים מתקבלים?' },
-        { en: 'Are you curious enough to give up a little control?', he: 'יש מספיק סקרנות כדי לוותר קצת על שליטה?' },
-        { en: 'Want to play by my rules?', he: 'משחקים לפי החוקים שלי?' },
-        { en: 'Ready to negotiate the rules?', he: 'מוכנים לנהל משא ומתן על החוקים?' },
-      ],
-      questionSubtitle: { en: '18+ power-play theme', he: 'ערכת 18+ משחקי שליטה' },
-      recipientBadge: { en: '18+ power-play theme', he: 'ערכת 18+ משחקי שליטה' },
-      yesButtonLabels: [
-        { en: 'I accept the terms', he: 'התנאים מתקבלים' },
-        { en: 'Only with boundaries', he: 'רק עם גבולות' },
-        { en: "I'm curious", he: 'מסקרן אותי' },
-        { en: 'You may proceed', he: 'אפשר להמשיך' },
-        { en: 'Negotiate with me', he: 'נהל איתי משא ומתן' },
-        { en: 'Clear yes', he: 'כן ברור' },
-      ],
-      noButtonLabels: [
-        { en: 'Not my rules', he: 'לא החוקים שלי' },
-        { en: 'Are you sure?', he: 'בטוח/ה?' },
-        { en: 'Still resisting?', he: 'עדיין מתנגדים?' },
-        { en: 'Control looks good on you', he: 'שליטה מחמיאה לך' },
-        { en: 'That was almost convincing', he: 'זה כמעט היה משכנע' },
-        { en: 'Fine. Boundaries respected.', he: 'טוב. גבולות מכבדים.' },
-        { en: 'You can click me now', he: 'עכשיו אפשר ללחוץ' },
-      ],
-      declineMessages: [
-        { en: 'All good. Boundaries respected.', he: 'הכול טוב. גבולות מכבדים.' },
-        { en: 'No problem. Control stays with you.', he: 'אין בעיה. השליטה נשארת אצלך.' },
-      ],
-      activitySubtitles: powerPlayActivitySubtitles,
     },
   },
   generic: {
@@ -472,9 +392,7 @@ export const THEME_IDS: ThemeId[] = [
   'nature',
   'party',
   'after_dark',
-  'temptation',
   'black-tie',
-  'power-play',
   'generic',
   'stadium',
   'concert',

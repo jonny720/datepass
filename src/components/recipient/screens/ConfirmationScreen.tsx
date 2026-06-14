@@ -125,7 +125,6 @@ export function ConfirmationScreen({
     foundEasterEgg: response.foundEasterEgg,
     rideAnswer: response.rideAnswer,
     spontaneityAnswer: response.spontaneityAnswer,
-    boundariesAnswer: response.boundariesAnswer,
   });
 
   // Build WhatsApp URL (returns null if no valid phone)
@@ -144,7 +143,6 @@ export function ConfirmationScreen({
     foundEasterEgg: response.foundEasterEgg,
     rideAnswer: response.rideAnswer,
     spontaneityAnswer: response.spontaneityAnswer,
-    boundariesAnswer: response.boundariesAnswer,
   });
 
   // Development diagnostics
@@ -196,16 +194,12 @@ export function ConfirmationScreen({
   const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   // Generate a deterministic compatibility score based on invite config
-  const compatibilityScore = config.theme === 'black-tie' || config.theme === 'power-play'
+  const compatibilityScore = config.theme === 'black-tie'
     ? 94
     : generateCompatibilityScore(`${config.senderName}-${config.recipientName}-${config.theme}`);
 
   // Get current score disclaimer
-  const currentDisclaimer = config.theme === 'power-play'
-    ? (scoreDisclaimerIndex % 2 === 0
-      ? (language === 'he' ? 'התוצאה תקפה רק בהסכמה.' : 'Result valid only with consent.')
-      : (language === 'he' ? 'מדעית מפוקפק. גבולות חובה.' : 'Scientifically questionable. Boundaries required.'))
-    : getScoreDisclaimer(scoreDisclaimerIndex, language, humorLevel);
+  const currentDisclaimer = getScoreDisclaimer(scoreDisclaimerIndex, language, humorLevel);
   const confirmationSubtitle = CONFIRMATION_SUBTITLES_BY_HUMOR[humorLevel][language];
 
   // Cruise theme rendering
@@ -940,16 +934,6 @@ export function ConfirmationScreen({
             </p>
           </div>
 
-          {response.boundariesAnswer && (
-            <div>
-              <p className={`mb-1 text-sm font-semibold ${themeIdentity?.mutedTextClass || 'text-stone-500'}`}>
-                {language === 'he' ? 'גבולות' : 'Boundaries'}
-              </p>
-              <p className={`text-lg font-bold ${themeIdentity?.textClass || 'text-stone-900'}`}>
-                {response.boundariesAnswer}
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Compatibility Score Disclaimer */}

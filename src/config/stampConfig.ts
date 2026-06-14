@@ -62,26 +62,11 @@ export const THEME_STAMPS: Record<ThemeId, StampConfig> = {
     color: 'text-indigo-700',
     borderColor: 'border-indigo-700',
   },
-  temptation: {
-    label: {
-      en: '18+\nONLY',
-      he: '18+\nבלבד',
-    },
-    rotation: -10,
-    color: 'text-pink-700',
-    borderColor: 'border-pink-700',
-  },
   'black-tie': {
     label: { en: 'EVENING\nAPPROVED', he: 'הערב\nאושר' },
     rotation: -7,
     color: 'text-yellow-700',
     borderColor: 'border-yellow-700',
-  },
-  'power-play': {
-    label: { en: 'TERMS\nACCEPTED', he: 'תנאים\nאושרו' },
-    rotation: -8,
-    color: 'text-red-700',
-    borderColor: 'border-red-700',
   },
   generic: {
     label: { en: 'PLAN\nPASS', he: 'אישור\nתוכנית' },

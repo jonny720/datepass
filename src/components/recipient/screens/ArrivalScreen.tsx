@@ -64,7 +64,6 @@ export function ArrivalScreen({ config, onNext, easterEggState, stampState }: Ar
         };
       
       case 'after_dark':
-      case 'temptation':
         return {
           background: 'after-dark-background',
           decorations: <AfterDarkElements />,

@@ -16,7 +16,6 @@ export function useRecipientState(config: InviteConfig) {
     config.advancedSettings?.askForRide ||
     config.advancedSettings?.askSpontaneityLevel
   );
-  const hasPowerPlayBoundaries = config.theme === 'power-play';
   const isCustomInvite = config.inviteType === 'custom';
 
   const updateResponse = useCallback((updates: Partial<RecipientResponse>) => {
@@ -42,18 +41,12 @@ export function useRecipientState(config: InviteConfig) {
       }
 
       if (nextStep === RECIPIENT_STEPS.ADVANCED_DETAILS && !hasAdvancedDetails) {
-        nextStep = hasPowerPlayBoundaries
-          ? RECIPIENT_STEPS.BOUNDARIES
-          : RECIPIENT_STEPS.CONFIRMATION;
-      }
-
-      if (nextStep === RECIPIENT_STEPS.BOUNDARIES && !hasPowerPlayBoundaries) {
         nextStep = RECIPIENT_STEPS.CONFIRMATION;
       }
 
       return { ...prev, step: nextStep };
     });
-  }, [config.dateSlots.length, hasAdvancedDetails, hasPowerPlayBoundaries, hasValidIntroCards, isCustomInvite]);
+  }, [config.dateSlots.length, hasAdvancedDetails, hasValidIntroCards, isCustomInvite]);
 
   const prevStep = useCallback(() => {
     setResponse((prev) => {
@@ -79,17 +72,9 @@ export function useRecipientState(config: InviteConfig) {
           : RECIPIENT_STEPS.SLOT_CHOICE;
       }
 
-      if (prevStep === RECIPIENT_STEPS.BOUNDARIES && !hasPowerPlayBoundaries) {
-        prevStep = hasAdvancedDetails
-          ? RECIPIENT_STEPS.ADVANCED_DETAILS
-          : config.dateSlots.length === 0
-            ? RECIPIENT_STEPS.ACTIVITY_CHOICE
-            : RECIPIENT_STEPS.SLOT_CHOICE;
-      }
-
       return { ...prev, step: prevStep };
     });
-  }, [config.dateSlots.length, hasAdvancedDetails, hasPowerPlayBoundaries, hasValidIntroCards, isCustomInvite]);
+  }, [config.dateSlots.length, hasAdvancedDetails, hasValidIntroCards, isCustomInvite]);
 
   const setWantsDate = useCallback((wants: boolean | null) => {
     setResponse((prev) => ({ ...prev, wantsDate: wants }));
@@ -113,10 +98,6 @@ export function useRecipientState(config: InviteConfig) {
 
   const setAdvancedAnswers = useCallback((updates: Pick<RecipientResponse, 'rideAnswer' | 'spontaneityAnswer'>) => {
     setResponse((prev) => ({ ...prev, ...updates }));
-  }, []);
-
-  const setBoundariesAnswer = useCallback((boundariesAnswer: string) => {
-    setResponse((prev) => ({ ...prev, boundariesAnswer }));
   }, []);
 
   const setFoundEasterEgg = useCallback((found: boolean) => {
@@ -143,7 +124,6 @@ export function useRecipientState(config: InviteConfig) {
     setSelectedSlot,
     setPrefersWhatsappCoordination,
     setAdvancedAnswers,
-    setBoundariesAnswer,
     setFoundEasterEgg,
     setFoundStamp,
     setFoundDuck,

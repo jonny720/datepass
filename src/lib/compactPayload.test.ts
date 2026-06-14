@@ -55,13 +55,12 @@ describe('compactPayload', () => {
     });
 
     it('maps theme to compact code', () => {
-      const themes: Array<{ theme: 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark' | 'temptation'; code: string }> = [
+      const themes: Array<{ theme: 'cruise' | 'secret_mission' | 'nature' | 'party' | 'after_dark'; code: string }> = [
         { theme: 'cruise', code: 'c' },
         { theme: 'secret_mission', code: 'm' },
         { theme: 'nature', code: 'n' },
         { theme: 'party', code: 'p' },
         { theme: 'after_dark', code: 'd' },
-        { theme: 'temptation', code: 't' },
       ];
 
       themes.forEach(({ theme, code }) => {
@@ -250,7 +249,6 @@ describe('compactPayload', () => {
         { code: 'n', theme: 'nature' },
         { code: 'p', theme: 'party' },
         { code: 'd', theme: 'after_dark' },
-        { code: 't', theme: 'temptation' },
       ];
 
       themes.forEach(({ code, theme }) => {

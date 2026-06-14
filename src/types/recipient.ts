@@ -12,7 +12,6 @@ export interface RecipientResponse {
   selectedSlot: DateSlot | null;
   rideAnswer: string | null;
   spontaneityAnswer: string | null;
-  boundariesAnswer: string | null;
   prefersWhatsappCoordination: boolean;
   personalNote: string;
   foundEasterEgg: boolean;
@@ -30,7 +29,6 @@ export const INITIAL_RESPONSE: RecipientResponse = {
   selectedSlot: null,
   rideAnswer: null,
   spontaneityAnswer: null,
-  boundariesAnswer: null,
   prefersWhatsappCoordination: false,
   personalNote: '',
   foundEasterEgg: false,
@@ -46,6 +44,5 @@ export const RECIPIENT_STEPS = {
   ACTIVITY_CHOICE: 5,
   SLOT_CHOICE: 6,
   ADVANCED_DETAILS: 7,
-  BOUNDARIES: 8,
-  CONFIRMATION: 9,
+  CONFIRMATION: 8,
 } as const;

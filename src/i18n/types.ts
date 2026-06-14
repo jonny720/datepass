@@ -64,12 +64,8 @@ export interface TranslationDictionary {
   creator_theme_party_desc: string;
   creator_theme_after_dark: string;
   creator_theme_after_dark_desc: string;
-  creator_theme_temptation: string;
-  creator_theme_temptation_desc: string;
   creator_theme_black_tie: string;
   creator_theme_black_tie_desc: string;
-  creator_theme_power_play: string;
-  creator_theme_power_play_desc: string;
   creator_theme_generic: string;
   creator_theme_generic_desc: string;
   creator_theme_stadium: string;

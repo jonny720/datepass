@@ -105,22 +105,6 @@ export const THEME_STORIES: Record<ThemeId, ThemeStory> = {
       status: { en: 'Required', he: 'נדרש' },
     },
   },
-  temptation: {
-    metadata: {
-      primary: { en: 'Mood', he: 'אווירה' },
-      secondary: { en: 'Boundary', he: 'גבול' },
-      tertiary: { en: 'Duration', he: 'משך' },
-      quaternary: { en: 'Recommended Energy', he: 'אנרגיה מומלצת' },
-      status: { en: '18+ Notice', he: 'סימון 18+' },
-    },
-    values: {
-      primary: { en: 'Playfully provocative', he: 'פרובוקטיבי בקטע משחקי' },
-      secondary: { en: 'Adults only', he: 'למבוגרים בלבד' },
-      tertiary: { en: 'One Evening', he: 'ערב אחד' },
-      quaternary: { en: 'Confident curiosity', he: 'סקרנות בטוחה בעצמה' },
-      status: { en: 'No validation', he: 'ללא אימות' },
-    },
-  },
   'black-tie': {
     metadata: {
       primary: { en: 'Dress Code', he: 'קוד לבוש' },
@@ -134,22 +118,6 @@ export const THEME_STORIES: Record<ThemeId, ThemeStory> = {
       secondary: { en: 'Elegant', he: 'קלאסי' },
       tertiary: { en: 'Reserved', he: 'שמורה' },
       quaternary: { en: 'One proper evening', he: 'ערב כמו שצריך' },
-      status: { en: 'Awaiting', he: 'ממתין' },
-    },
-  },
-  'power-play': {
-    metadata: {
-      primary: { en: 'Access', he: 'גישה' },
-      secondary: { en: 'Rule One', he: 'חוק ראשון' },
-      tertiary: { en: 'Safe Word', he: 'מילת ביטחון' },
-      quaternary: { en: 'Tone', he: 'טון' },
-      status: { en: 'Permission', he: 'אישור' },
-    },
-    values: {
-      primary: { en: 'Restricted', he: 'מוגבלת' },
-      secondary: { en: 'Consent first', he: 'הסכמה קודם' },
-      tertiary: { en: 'Required', he: 'חובה' },
-      quaternary: { en: 'Controlled tension', he: 'מתח בשליטה' },
       status: { en: 'Awaiting', he: 'ממתין' },
     },
   },

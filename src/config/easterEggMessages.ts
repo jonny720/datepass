@@ -8,7 +8,6 @@ import {
   Music,
   PartyPopper,
   Moon,
-  Flame,
   Sparkles,
   Heart,
   Star,
@@ -139,28 +138,6 @@ export const EASTER_EGG_MESSAGES: EasterEggMessage[] = [
     icon: Moon,
   },
 
-  // Temptation theme
-  {
-    id: 'temptation_1',
-    theme: 'temptation',
-    en: 'Adults-only confidence detected.',
-    he: 'זוהתה תעוזה למבוגרים בלבד.',
-    icon: Flame,
-  },
-  {
-    id: 'temptation_2',
-    theme: 'temptation',
-    en: 'The invitation blushed first.',
-    he: 'ההזמנה הסמיקה קודם.',
-    icon: Sparkles,
-  },
-  {
-    id: 'temptation_3',
-    theme: 'temptation',
-    en: 'Provocative, but still polite.',
-    he: 'פרובוקטיבי, אבל עדיין מנומס.',
-    icon: Flame,
-  },
 ];
 
 // Rare bonus messages

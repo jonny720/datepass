@@ -51,7 +51,6 @@ const mockResponse: RecipientResponse = {
   selectedSlot: mockConfigCruise.dateSlots[0],
   rideAnswer: null,
   spontaneityAnswer: null,
-  boundariesAnswer: null,
   prefersWhatsappCoordination: false,
   personalNote: '',
   foundEasterEgg: false,
