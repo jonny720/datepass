@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, type PointerEvent, type MouseEvent, type KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, useMemo, type PointerEvent, type KeyboardEvent, type TouchEvent } from 'react';
 import { Check, CheckCircle, ChevronDown, Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -220,13 +220,23 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
     }
   };
 
+  // iOS Safari can miss pointer events; keep a touch fallback for reliability.
+  const handleNoTouchStart = (e: TouchEvent<HTMLButtonElement>) => {
+    keyboardActivationRef.current = false;
+
+    if (escapeCount < maxEscapes) {
+      e.preventDefault();
+      handleEscape();
+    }
+  };
+
   const handleNoKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       keyboardActivationRef.current = true;
     }
   };
 
-  const handleNoClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleNoClick = () => {
     const isKeyboardActivation = keyboardActivationRef.current;
     keyboardActivationRef.current = false;
 
@@ -446,6 +456,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                 onPointerEnter={maxEscapes > 0 ? handlePointerEnter : undefined}
                 onPointerLeave={handlePointerLeave}
                 onPointerDown={maxEscapes > 0 ? handlePointerDown : undefined}
+                onTouchStart={maxEscapes > 0 ? handleNoTouchStart : undefined}
                 fullWidth 
                 size="lg"
                 style={{ minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px` }}
@@ -481,6 +492,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                   onPointerEnter={escapeCount < maxEscapes ? handlePointerEnter : undefined}
                   onPointerLeave={escapeCount < maxEscapes ? handlePointerLeave : undefined}
                   onPointerDown={escapeCount < maxEscapes ? handlePointerDown : undefined}
+                  onTouchStart={escapeCount < maxEscapes ? handleNoTouchStart : undefined}
                   size="lg"
                   aria-label={getNoButtonLabel()}
                   style={{
