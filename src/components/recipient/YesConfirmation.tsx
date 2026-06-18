@@ -1,8 +1,11 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { InviteType, ThemeId } from '@/types';
 import { Check, Shield, Leaf, Music, Heart, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getThemeVisualIdentity } from '@/config/themes';
+
+const CONFIRMATION_HOLD_MS = 2000;
 
 interface YesConfirmationProps {
   theme: ThemeId;
@@ -15,15 +18,15 @@ export function YesConfirmation({ theme, inviteType = 'date', onComplete }: YesC
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const themeIdentity = getThemeVisualIdentity(theme);
 
-  // Haptic feedback
-  if ('vibrate' in navigator) {
-    navigator.vibrate(25);
-  }
+  useEffect(() => {
+    navigator.vibrate?.(25);
 
-  // Auto-complete after animation
-  setTimeout(() => {
-    onComplete();
-  }, prefersReducedMotion ? 100 : 800);
+    const completeTimer = window.setTimeout(() => {
+      onComplete();
+    }, prefersReducedMotion ? 100 : CONFIRMATION_HOLD_MS);
+
+    return () => window.clearTimeout(completeTimer);
+  }, [onComplete, prefersReducedMotion]);
 
   if (prefersReducedMotion) return null;
 

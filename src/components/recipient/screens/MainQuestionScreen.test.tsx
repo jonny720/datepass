@@ -155,8 +155,7 @@ describe('MainQuestionScreen - Escaping No Button', () => {
     const yesButton = screen.getByText(/Yes, let's do it/i);
     fireEvent.click(yesButton);
 
-    // Wait for celebration timeout (1200ms in component)
-    vi.advanceTimersByTime(1300);
+    vi.advanceTimersByTime(2100);
 
     expect(onYes).toHaveBeenCalledTimes(1);
 

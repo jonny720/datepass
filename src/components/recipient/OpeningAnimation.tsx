@@ -5,6 +5,10 @@ import { Anchor, Shield, Leaf, Music, Moon, Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getThemeVisualIdentity } from '@/config/themes';
 
+const ENVELOPE_STAGE_MS = 400;
+const REVEAL_HOLD_MS = 2000;
+const EXIT_FADE_MS = 300;
+
 interface OpeningAnimationProps {
   theme: ThemeId;
   recipientName: string;
@@ -26,16 +30,14 @@ export function OpeningAnimation({ theme, recipientName, openingMessage, onCompl
       return;
     }
 
-    // Envelope stage: 400ms
     const envelopeTimer = setTimeout(() => {
       setStage('reveal');
-    }, 400);
+    }, ENVELOPE_STAGE_MS);
 
-    // Reveal stage: 1100ms (total 1.5s)
     const revealTimer = setTimeout(() => {
       setStage('complete');
-      setTimeout(onComplete, 300);
-    }, 1500);
+      setTimeout(onComplete, EXIT_FADE_MS);
+    }, ENVELOPE_STAGE_MS + REVEAL_HOLD_MS);
 
     return () => {
       clearTimeout(envelopeTimer);
