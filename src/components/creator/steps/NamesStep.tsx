@@ -130,7 +130,6 @@ function getPrivateGenderMessage(language: 'en' | 'he') {
         'Fair point. The app is looking respectfully away.',
         'Noted. The form regrets its nosiness.',
         'Mystery selected. The invitation will survive.',
-        'The duck said: boundaries are attractive.',
         'Respectfully backing away from the question.',
         'That answer has main-character privacy energy.',
       ];

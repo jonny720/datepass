@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, type PointerEvent } from 'react';
+import { useState, useRef, useEffect, useMemo, type PointerEvent, type MouseEvent, type KeyboardEvent } from 'react';
 import { Check, CheckCircle, ChevronDown, Heart, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -86,7 +86,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
   const [showYesOptions, setShowYesOptions] = useState(false);
   const [isPointerInside, setIsPointerInside] = useState(false);
   const lastEscapeTime = useRef(0);
-  const lastPointerInteractionTime = useRef(0);
+  const keyboardActivationRef = useRef(false);
   const playAreaRef = useRef<HTMLDivElement>(null);
   const escapingButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useRef(
@@ -106,7 +106,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
     setShowYesOptions(false);
     setIsPointerInside(false);
     lastEscapeTime.current = 0;
-    lastPointerInteractionTime.current = 0;
+    keyboardActivationRef.current = false;
   }, [config, customYesOptions, defaultYesCopy, themeYesOptions]);
 
   const handleYesClick = () => {
@@ -194,10 +194,11 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
   // Desktop: trigger on pointer enter (only once per hover)
   const handlePointerEnter = (e: PointerEvent<HTMLButtonElement>) => {
+    keyboardActivationRef.current = false;
+
     // Only escape on mouse/pen, not touch
     if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
       if (!isPointerInside && escapeCount < maxEscapes) {
-        lastPointerInteractionTime.current = Date.now();
         setIsPointerInside(true);
         handleEscape();
       }
@@ -211,27 +212,32 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
   // Mobile: trigger on pointer down (touch)
   const handlePointerDown = (e: PointerEvent<HTMLButtonElement>) => {
+    keyboardActivationRef.current = false;
+
     if (e.pointerType === 'touch' && escapeCount < maxEscapes) {
       e.preventDefault();
-      lastPointerInteractionTime.current = Date.now();
       handleEscape();
     }
   };
 
-  const handleNoClick = () => {
-    const cameFromRecentPointer = Date.now() - lastPointerInteractionTime.current < 800;
-    if (!cameFromRecentPointer) {
-      onNo();
+  const handleNoKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      keyboardActivationRef.current = true;
+    }
+  };
+
+  const handleNoClick = (e: MouseEvent<HTMLButtonElement>) => {
+    const isKeyboardActivation = keyboardActivationRef.current;
+    keyboardActivationRef.current = false;
+
+    // For pointer/touch clicks, keep escaping until the configured limit.
+    if (escapeCount < maxEscapes && !isKeyboardActivation) {
+      handleEscape();
       return;
     }
 
-    // If still escaping, trigger an escape on click
-    if (escapeCount < maxEscapes) {
-      handleEscape();
-    } else {
-      // After all escapes, actually call onNo
-      onNo();
-    }
+    // After all escapes (or keyboard activation), actually decline.
+    onNo();
   };
 
   const getNoButtonLabel = () => {
@@ -436,6 +442,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
             {escapeCount === 0 && (
               <SecondaryButton 
                 onClick={handleNoClick}
+                onKeyDown={handleNoKeyDown}
                 onPointerEnter={maxEscapes > 0 ? handlePointerEnter : undefined}
                 onPointerLeave={handlePointerLeave}
                 onPointerDown={maxEscapes > 0 ? handlePointerDown : undefined}
@@ -470,6 +477,7 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
                 <SecondaryButton 
                   ref={escapingButtonRef}
                   onClick={handleNoClick}
+                  onKeyDown={handleNoKeyDown}
                   onPointerEnter={escapeCount < maxEscapes ? handlePointerEnter : undefined}
                   onPointerLeave={escapeCount < maxEscapes ? handlePointerLeave : undefined}
                   onPointerDown={escapeCount < maxEscapes ? handlePointerDown : undefined}
