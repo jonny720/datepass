@@ -160,12 +160,12 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
 
     const containerRect = playArea.getBoundingClientRect();
     
-    // For first escape, use estimated button dimensions
-    // After that, measure actual button
+    // For first escape, use compact estimated dimensions because the initial
+    // button is full-width before it jumps into the play area.
     let buttonWidth = 160;
     let buttonHeight = 48;
     
-    if (escapingButtonRef.current) {
+    if (escapeCount > 0 && escapingButtonRef.current) {
       const buttonRect = escapingButtonRef.current.getBoundingClientRect();
       buttonWidth = buttonRect.width;
       buttonHeight = buttonRect.height;
@@ -448,66 +448,46 @@ export function MainQuestionScreen({ config, onYes, onNo, onDecline, recipientGe
               height: 'auto',
             }}
           >
-            {/* Static placeholder when button hasn't started escaping */}
-            {escapeCount === 0 && (
+            <motion.div
+              className={escapeCount === 0 ? 'absolute left-0 top-0 w-full' : 'absolute left-0 top-0'}
+              animate={{
+                x: buttonTransform.x,
+                y: buttonTransform.y,
+                scale: buttonTransform.scale,
+                rotate: buttonTransform.rotate,
+              }}
+              transition={
+                !prefersReducedMotion.current 
+                  ? { ...springs.bouncy, duration: 0.4 }
+                  : { duration: 0.15 }
+              }
+              style={{
+                willChange: 'transform',
+              }}
+            >
               <SecondaryButton 
+                ref={escapingButtonRef}
                 onClick={handleNoClick}
                 onKeyDown={handleNoKeyDown}
-                onPointerEnter={maxEscapes > 0 ? handlePointerEnter : undefined}
-                onPointerLeave={handlePointerLeave}
-                onPointerDown={maxEscapes > 0 ? handlePointerDown : undefined}
-                onTouchStart={maxEscapes > 0 ? handleNoTouchStart : undefined}
-                fullWidth 
+                onPointerEnter={escapeCount < maxEscapes ? handlePointerEnter : undefined}
+                onPointerLeave={escapeCount < maxEscapes ? handlePointerLeave : undefined}
+                onPointerDown={escapeCount < maxEscapes ? handlePointerDown : undefined}
+                onTouchStart={escapeCount < maxEscapes ? handleNoTouchStart : undefined}
+                fullWidth={escapeCount === 0}
                 size="lg"
-                style={{ minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px` }}
+                aria-label={getNoButtonLabel()}
+                style={{
+                  borderRadius: buttonTransform.borderRadius,
+                  minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px`,
+                  maxWidth: '90vw',
+                  whiteSpace: 'nowrap',
+                  cursor: escapeCount >= maxEscapes ? 'pointer' : 'default',
+                }}
               >
                 <X className="h-5 w-5 flex-shrink-0" />
                 {getNoButtonLabel()}
               </SecondaryButton>
-            )}
-
-            {/* Escaping button with absolute positioning */}
-            {escapeCount > 0 && (
-              <motion.div
-                className="absolute left-0 top-0"
-                animate={{
-                  x: buttonTransform.x,
-                  y: buttonTransform.y,
-                  scale: buttonTransform.scale,
-                  rotate: buttonTransform.rotate,
-                }}
-                transition={
-                  !prefersReducedMotion.current 
-                    ? { ...springs.bouncy, duration: 0.4 }
-                    : { duration: 0.15 }
-                }
-                style={{
-                  willChange: 'transform',
-                }}
-              >
-                <SecondaryButton 
-                  ref={escapingButtonRef}
-                  onClick={handleNoClick}
-                  onKeyDown={handleNoKeyDown}
-                  onPointerEnter={escapeCount < maxEscapes ? handlePointerEnter : undefined}
-                  onPointerLeave={escapeCount < maxEscapes ? handlePointerLeave : undefined}
-                  onPointerDown={escapeCount < maxEscapes ? handlePointerDown : undefined}
-                  onTouchStart={escapeCount < maxEscapes ? handleNoTouchStart : undefined}
-                  size="lg"
-                  aria-label={getNoButtonLabel()}
-                  style={{
-                    borderRadius: buttonTransform.borderRadius,
-                    minHeight: `${MIN_TOUCH_TARGET_HEIGHT}px`,
-                    maxWidth: '90vw',
-                    whiteSpace: 'nowrap',
-                    cursor: escapeCount >= maxEscapes ? 'pointer' : 'default',
-                  }}
-                >
-                  <X className="h-5 w-5 flex-shrink-0" />
-                  {getNoButtonLabel()}
-                </SecondaryButton>
-              </motion.div>
-            )}
+            </motion.div>
           </div>
 
           {/* Persistence Easter Egg Message */}

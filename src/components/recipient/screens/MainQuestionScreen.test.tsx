@@ -210,6 +210,30 @@ describe('MainQuestionScreen - Escaping No Button', () => {
     
     // And new label appears
     expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
+    expect(onNo).not.toHaveBeenCalled();
+  });
+
+  it('moves instead of declining on first desktop click', () => {
+    const onYes = vi.fn();
+    const onNo = vi.fn();
+    const onDecline = vi.fn();
+
+    render(
+      <LanguageProvider>
+        <MainQuestionScreen
+          config={mockConfig}
+          onYes={onYes}
+          onNo={onNo}
+          onDecline={onDecline}
+        />
+      </LanguageProvider>
+    );
+
+    fireEvent.click(screen.getByText(/Maybe another time/i));
+
+    expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
+    expect(onNo).not.toHaveBeenCalled();
+    expect(onDecline).not.toHaveBeenCalled();
   });
 
   it('enforces cooldown between escape attempts', () => {
@@ -300,11 +324,12 @@ describe('MainQuestionScreen - Escaping No Button', () => {
 
     const noButton = screen.getByText(/Maybe another time/i);
     
-    // Simulate touch interaction via click (which also triggers escape now)
-    fireEvent.click(noButton);
+    fireEvent.touchStart(noButton);
 
     // Label should change after escape
     expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
+    expect(onNo).not.toHaveBeenCalled();
+    expect(onDecline).not.toHaveBeenCalled();
   });
 
   it('allows clicking No button after max escapes', () => {
